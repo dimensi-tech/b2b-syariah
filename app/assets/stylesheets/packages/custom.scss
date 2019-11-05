@@ -1,0 +1,28 @@
+@charset "UTF-8";
+/* CSS Document */
+
+header {
+  &.sticky {
+    nav {
+      margin-top: 5px;
+    }
+    #logo_home {
+      h1 {
+        a {
+          background-image: asset_url('Logo/majreha_light.png');
+          background-size: auto 100%;
+          filter: none;
+        }
+      }
+    }
+  }
+  #logo_home {
+    h1 {
+      a {
+        background-image: asset_url('Logo/majreha.png');
+        background-size: auto 100%;
+        filter: brightness(0)invert(1);
+      }
+    }
+  }
+}
