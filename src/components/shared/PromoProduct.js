@@ -1,28 +1,9 @@
-import React, {Component, Fragment} from 'react'
-import axios from 'axios'
-
+import React, {Component, Fragment} from 'react';
+import axios from 'axios';
 
 class PromoProduct extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      products: []
-    }
-  }
-
-  componentDidMount() {
-    axios.get(`${process.env.REACT_APP_API_V1_URL}/products/list_products`)
-         .then(response => {
-           const products = response.data
-           this.setState({products})
-         })
-         .catch(error => {
-            console.log(error.response)
-         })
-  }
-
   render() {
-    const {products} = this.state
+    const {products} = this.props;
     return (
       <Fragment>
         <div className='main_title'>
@@ -38,7 +19,7 @@ class PromoProduct extends Component {
                   <div className='img_container'>
                     <a href='single_tour.html'>
                       <img src='https://via.placeholder.com/300' width={800} height={533} className='img-fluid' alt='image' />
-                      <div class="badge_save">Save<strong>20%</strong></div>
+                      <div className="badge_save">Save<strong>20%</strong></div>
                       <div className='short_info'>
                         <i className='icon_set_1_icon-44' />Historic Buildings<span className='price'><sup>Rp </sup>2.000.000</span>
                       </div>
@@ -66,4 +47,4 @@ class PromoProduct extends Component {
   }
 }
 
-export default PromoProduct
+export default PromoProduct;

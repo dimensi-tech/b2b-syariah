@@ -6,18 +6,39 @@ import Madina from '../../assets/img/featured_countries/madina.jpg'
 import Istanbul from '../../assets/img/featured_countries/istanbul.jpg'
 import Mecca from '../../assets/img/featured_countries/mecca.jpg'
 import PromoProduct from '../shared/PromoProduct'
+import { Link } from 'react-router-dom';
+
+import { connect } from 'react-redux';
+import { GET_PRODUCTS_REQUEST } from '../../helpers/constant';
 
 class Home extends React.Component {
+
+  componentDidMount() {
+    this._getProducts();
+  };
+
+  _getProducts = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: GET_PRODUCTS_REQUEST,
+      config: {
+        method: 'get'
+      },
+      path: '/products/list_products'
+    });
+  };
+
   render() {
+    const { products } = this.props;
     return (
       <Fragment>
         <div id='search_container_2'>
           <div id='search_2'>
             <ul className='nav nav-tabs'>
               <li>
-                <a href='#tours' data-toggle='tab' className='active show' id='tab_bt_1'>
+                <Link to='/products' className='active show' id='tab_bt_1'>
                   <span>Cari Tujuan Travelmu</span>
-                </a>
+                </Link>
               </li>
             </ul>
             <div className='tab-content'>
@@ -75,7 +96,7 @@ class Home extends React.Component {
             </div>
           </div>
           <div className='container margin_60'>
-            <PromoProduct />
+            <PromoProduct products={products.data} />
             <div className='white_bg'>
               <div className='container margin_60'>
                 <div className='main_title'>
@@ -179,4 +200,8 @@ class Home extends React.Component {
     )
   }
 }
-export default Home
+export default connect(
+  state => ({
+    products: state.products
+  })
+)(Home);
