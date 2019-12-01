@@ -52,3 +52,27 @@ export function* _login(payload) {
     type: actionTypes.LOGIN_RESET
   });
 };
+
+export function* _getProductDetails(payload) {
+  const config = {
+    ...payload.config,
+    url: BACKEND_URL + payload.path
+  };
+  try {
+    var response = yield call(async () => {
+      const res = await axios(config);
+      return res;
+    });
+    yield put({
+      type: actionTypes.GET_PRODUCT_DETAILS_SUCCESS,
+      data: response.data
+    });
+  }catch (error) {
+    yield put({
+      type: actionTypes.GET_PRODUCT_DETAILS_ERROR
+    });
+  }
+  yield put({
+    type: actionTypes.GET_PRODUCT_DETAILS_RESET
+  });
+};
