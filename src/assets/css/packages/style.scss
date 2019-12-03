@@ -7068,7 +7068,7 @@ a.social_bt {
     &.categories_right {
       height: calc(250px - 4px);
     }
-  
+
     .wrapper {
       width: 100%;
       background: transparent;
@@ -7079,7 +7079,7 @@ a.social_bt {
       bottom: 0;
       line-height: 1;
       padding: 100px 20px 20px 20px;
-  
+
       h2 {
         color: #fff;
         text-transform: uppercase;
@@ -7098,7 +7098,7 @@ a.social_bt {
         -o-transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
         transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
       }
-  
+
       p {
         color: #fff;
         opacity: 0;
@@ -7118,7 +7118,7 @@ a.social_bt {
         transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
       }
     }
-  
+
     img {
       position: absolute;
       top: 0;
@@ -7137,7 +7137,7 @@ a.social_bt {
       -o-transform: scale(1.05);
       transform: scale(1.05);
     }
-  
+
     &:hover {
       img {
         -webkit-transform: scale(1);
@@ -7146,7 +7146,7 @@ a.social_bt {
         -o-transform: scale(1);
         transform: scale(1);
       }
-  
+
       h2 {
         -webkit-transform: translateY(-5px) translateZ(0);
         -moz-transform: translateY(-5px) translateZ(0);
@@ -7154,7 +7154,7 @@ a.social_bt {
         -o-transform: translateY(-5px) translateZ(0);
         transform: translateY(-5px) translateZ(0);
       }
-  
+
       p {
         opacity: 0.8;
         transition-delay: 0.2s;
@@ -7421,7 +7421,7 @@ a.box_news {
 #search_container_2 {
   position: relative;
   height: 580px;
-  background: #ccc url(../../img/packages/hero_3.jpg) no-repeat center top;
+  // background: #ccc url(../../img/packages/hero_3.jpg) no-repeat center top;
   background-size: cover;
   color: #fff;
   width: 100%;

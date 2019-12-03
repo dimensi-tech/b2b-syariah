@@ -44,6 +44,12 @@ class Header extends Component {
     });
   };
 
+  _closeModal = () => {
+    this.setState({
+      showModal: false
+    });
+  };
+
   _logout = () => {
     Authorization().logout();
     this.setState({
@@ -53,6 +59,7 @@ class Header extends Component {
 
   render() {
     const { isLoggedIn, showModal } = this.state;
+    console.log(this.props);
     return (
       <header>
         {
@@ -60,7 +67,7 @@ class Header extends Component {
           <Fragment>
             <div class="mfp-bg my-mfp-zoom-in mfp-ready"></div>
             <div class="mfp-wrap mfp-close-btn-in mfp-auto-cursor my-mfp-zoom-in mfp-ready" tabIndex="-1" style={{overflow: "hidden auto"}}>
-              <div class="mfp-container mfp-inline-holder">
+              <div class="mfp-container mfp-inline-holder" onClick={this._closeModal}>
                 <div class="mfp-content">
                   <Login submitLogin={this._submitLogin}/>
                 </div>

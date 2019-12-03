@@ -7,14 +7,16 @@ import Istanbul from '../../assets/img/featured_countries/istanbul.jpg'
 import Mecca from '../../assets/img/featured_countries/mecca.jpg'
 import PromoProduct from '../shared/PromoProduct'
 import { Link } from 'react-router-dom';
+import Slider from '../shared/Slider';
 
 import { connect } from 'react-redux';
-import { GET_PRODUCTS_REQUEST } from '../../helpers/constant';
+import { GET_PRODUCTS_REQUEST, GET_ADS_REQUEST } from '../../helpers/constant';
 
 class Home extends React.Component {
 
   componentDidMount() {
     this._getProducts();
+    this._getAds();
   };
 
   _getProducts = () => {
@@ -28,12 +30,50 @@ class Home extends React.Component {
     });
   };
 
+  _getAds = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: GET_ADS_REQUEST,
+      config: {
+        method: 'get'
+      },
+      path: '/ads/active_ads'
+    });
+  };
+
   render() {
-    const { products } = this.props;
+    const { products, ads } = this.props;
     return (
       <Fragment>
         <div id='search_container_2'>
           <div id='search_2'>
+            <div className='item-collections'>
+              <Slider
+                data={ads}
+                options={{
+                  pauseAutoPlayOnHover: true,
+                  wrapAround: true,
+                  fullscreen: true,
+                  pageDots: false,
+                }}>
+                {
+                  ads.data.length > 0 &&
+                  ads.data.map((ad, index) => (
+                    <div
+                      key={index}
+                      className='category-item'
+                      style={{marginBottom: 50, position: 'relative'}}
+                      >
+                      <div style={{backgroundColor: '#82ca9c', position: 'absolute', bottom: 10, left: 20, padding: '10px', borderRadius: 5, zIndex: 3}}>
+                        <span style={{opacity: 1, color: 'white', fontWeight: 'bold'}}>{ad.name}</span>
+                      </div>
+                      <div style={{backgroundColor: 'black', height: 300, width: 900, borderRadius: 5, position: 'absolute', marginLeft: 10, opacity: 0.25}} />
+                      <img src={ad.image_path} alt="" style={{height: 300, width: 900, marginLeft: 10, borderRadius: 5}} />
+                    </div>
+                  ))
+                }
+              </Slider>
+            </div>
             <ul className='nav nav-tabs'>
               <li>
                 <Link to='/products' className='active show' id='tab_bt_1'>
@@ -143,65 +183,66 @@ class Home extends React.Component {
               <div className='col-lg-6'>
                 <a className='box_news' href='blog.html'>
                   <figure><img src='img/news_home_1.jpg' alt='' />
-                    <figcaption><strong>28</strong>Dec</figcaption>
-                  </figure>
-                  <ul>
-                    <li>Mark Twain</li>
-                    <li>20.11.2017</li>
-                  </ul>
-                  <h4>Pri oportere scribentur eu</h4>
-                  <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-                </a>
-              </div>
-              <div className='col-lg-6'>
-                <a className='box_news' href='blog.html'>
-                  <figure><img src='img/news_home_2.jpg' alt='' />
-                    <figcaption><strong>28</strong>Dec</figcaption>
-                  </figure>
-                  <ul>
-                    <li>Jhon Doe</li>
-                    <li>20.11.2017</li>
-                  </ul>
-                  <h4>Duo eius postea suscipit ad</h4>
-                  <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-                </a>
-              </div>
-              <div className='col-lg-6'>
-                <a className='box_news' href='blog.html'>
-                  <figure><img src='img/news_home_3.jpg' alt='' />
-                    <figcaption><strong>28</strong>Dec</figcaption>
-                  </figure>
-                  <ul>
-                    <li>Luca Robinson</li>
-                    <li>20.11.2017</li>
-                  </ul>
-                  <h4>Elitr mandamus cu has</h4>
-                  <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-                </a>
-              </div>
-              <div className='col-lg-6'>
-                <a className='box_news' href='blog.html'>
-                  <figure><img src='img/news_home_4.jpg' alt='' />
-                    <figcaption><strong>28</strong>Dec</figcaption>
-                  </figure>
-                  <ul>
-                    <li>Paula Rodrigez</li>
-                    <li>20.11.2017</li>
-                  </ul>
-                  <h4>Id est adhuc ignota delenit</h4>
-                  <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-                </a>
-              </div>
+                  <figcaption><strong>28</strong>Dec</figcaption>
+                </figure>
+                <ul>
+                  <li>Mark Twain</li>
+                  <li>20.11.2017</li>
+                </ul>
+                <h4>Pri oportere scribentur eu</h4>
+                <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
+              </a>
             </div>
-            <p className='btn_home_align'><a href='blog.html' className='btn_1 rounded'>View all news</a></p>
+            <div className='col-lg-6'>
+              <a className='box_news' href='blog.html'>
+                <figure><img src='img/news_home_2.jpg' alt='' />
+                <figcaption><strong>28</strong>Dec</figcaption>
+              </figure>
+              <ul>
+                <li>Jhon Doe</li>
+                <li>20.11.2017</li>
+              </ul>
+              <h4>Duo eius postea suscipit ad</h4>
+              <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
+            </a>
           </div>
-        </main>
-      </Fragment>
-    )
-  }
+          <div className='col-lg-6'>
+            <a className='box_news' href='blog.html'>
+              <figure><img src='img/news_home_3.jpg' alt='' />
+              <figcaption><strong>28</strong>Dec</figcaption>
+            </figure>
+            <ul>
+              <li>Luca Robinson</li>
+              <li>20.11.2017</li>
+            </ul>
+            <h4>Elitr mandamus cu has</h4>
+            <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
+          </a>
+        </div>
+        <div className='col-lg-6'>
+          <a className='box_news' href='blog.html'>
+            <figure><img src='img/news_home_4.jpg' alt='' />
+            <figcaption><strong>28</strong>Dec</figcaption>
+          </figure>
+          <ul>
+            <li>Paula Rodrigez</li>
+            <li>20.11.2017</li>
+          </ul>
+          <h4>Id est adhuc ignota delenit</h4>
+          <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
+        </a>
+      </div>
+    </div>
+    <p className='btn_home_align'><a href='blog.html' className='btn_1 rounded'>View all news</a></p>
+  </div>
+</main>
+</Fragment>
+)
+}
 }
 export default connect(
   state => ({
-    products: state.products
+    products: state.products,
+    ads: state.ads
   })
 )(Home);

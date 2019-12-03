@@ -243,8 +243,9 @@ class Products extends Component {
                       <Link key={index} to={`/product/${product.id}`}>
                         <div className="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s">
                           <div className="row">
+                            {console.log(product)}
                             <div className="col-lg-4 col-md-4">
-                              <div className="ribbon_3 popular"><span>{product.package.name}</span>
+                              <div className="ribbon_3 popular"><span>{product.package !== null && product.package.name}</span>
                               </div>
                               <div className="wishlist">
                                 <div className="tooltip_flip tooltip-effect-1">+<span className="tooltip-content-flip"><span className="tooltip-back">Add to wishlist</span></span></div>
@@ -262,7 +263,7 @@ class Products extends Component {
                                 <div className="rating"><i className="icon-star voted" /><i className="icon-star  voted" /><i className="icon-star  voted" /><i className="icon-star  voted" /><i className="icon-star-empty" />
                                 </div>
                                 <h3>{data.name}</h3>
-                                <p>{product.package.description}</p>
+                                <p>{product.package !== null && product.package.description}</p>
                                 <ul className="add_info">
                                   <li>
                                     <div className="tooltip-1" data-placement="top" title="Free Wifi"><i className="icon_set_1_icon-86" /></div>
@@ -284,7 +285,7 @@ class Products extends Component {
                             </div>
                             <div className="col-lg-2 col-md-2">
                               <div className="price_list">
-                                <div><sup>IDR</sup>{parseFloat(product.package.price).toLocaleString()}<span className="normal_price_list">$99</span><small>*From/Per night</small>
+                                <div><sup>IDR</sup>{product.package !== null && parseFloat(product.package.price).toLocaleString()}<span className="normal_price_list">$99</span><small>*From/Per night</small>
                                   <p><span className="btn_1">Details</span>
                                   </p>
                                 </div>
