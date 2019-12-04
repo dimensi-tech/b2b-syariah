@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { GET_PRODUCTS_REQUEST } from "../../helpers/constant";
-
+import { Link } from "react-router-dom";
 
 class Products extends Component {
 
@@ -240,57 +240,60 @@ class Products extends Component {
                   {
                     data.length > 0 &&
                     data.map((product, index) => (
-                      <div key={index} className="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s">
-                        <div className="row">
-                          <div className="col-lg-4 col-md-4">
-                            <div className="ribbon_3 popular"><span>{product.package.name}</span>
-                            </div>
-                            <div className="wishlist">
-                              <a className="tooltip_flip tooltip-effect-1" href="#:void(0);">+<span className="tooltip-content-flip"><span className="tooltip-back">Add to wishlist</span></span></a>
-                            </div>
-                            <div className="img_list">
-                              <a href="single_hotel.html"><img src="img/hotel_2.jpg" alt="Image" />
-                                <div className="short_info" />
-                              </a>
-                            </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6">
-                            <div className="tour_list_desc">
-                              <div className="score">Superb<span>9.0</span>
+                      <Link key={index} to={`/product/${product.id}`}>
+                        <div className="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s">
+                          <div className="row">
+                            {console.log(product)}
+                            <div className="col-lg-4 col-md-4">
+                              <div className="ribbon_3 popular"><span>{product.package !== null && product.package.name}</span>
                               </div>
-                              <div className="rating"><i className="icon-star voted" /><i className="icon-star  voted" /><i className="icon-star  voted" /><i className="icon-star  voted" /><i className="icon-star-empty" />
+                              <div className="wishlist">
+                                <div className="tooltip_flip tooltip-effect-1">+<span className="tooltip-content-flip"><span className="tooltip-back">Add to wishlist</span></span></div>
                               </div>
-                              <h3>{data.name}</h3>
-                              <p>{product.package.description}</p>
-                              <ul className="add_info">
-                                <li>
-                                  <a href="#:void(0);" className="tooltip-1" data-placement="top" title="Free Wifi"><i className="icon_set_1_icon-86" /></a>
-                                </li>
-                                <li>
-                                  <a href="#:void(0);" className="tooltip-1" data-placement="top" title="Plasma TV with cable channels"><i className="icon_set_2_icon-116" /></a>
-                                </li>
-                                <li>
-                                  <a href="#:void(0);" className="tooltip-1" data-placement="top" title="Swimming pool"><i className="icon_set_2_icon-110" /></a>
-                                </li>
-                                <li>
-                                  <a href="#:void(0);" className="tooltip-1" data-placement="top" title="Fitness Center"><i className="icon_set_2_icon-117" /></a>
-                                </li>
-                                <li>
-                                  <a href="#:void(0);" className="tooltip-1" data-placement="top" title="Restaurant"><i className="icon_set_1_icon-58" /></a>
-                                </li>
-                              </ul>
+                              <div className="img_list">
+                                <div href="single_hotel.html"><img src="img/hotel_2.jpg" alt="Image" />
+                                  <div className="short_info" />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-lg-2 col-md-2">
-                            <div className="price_list">
-                              <div><sup>IDR</sup>{parseFloat(product.package.price).toLocaleString()}<span className="normal_price_list">$99</span><small>*From/Per night</small>
-                                <p><a href="single_hotel.html" className="btn_1">Details</a>
-                                </p>
+                            <div className="col-lg-6 col-md-6">
+                              <div className="tour_list_desc">
+                                <div className="score">Superb<span>9.0</span>
+                                </div>
+                                <div className="rating"><i className="icon-star voted" /><i className="icon-star  voted" /><i className="icon-star  voted" /><i className="icon-star  voted" /><i className="icon-star-empty" />
+                                </div>
+                                <h3>{data.name}</h3>
+                                <p>{product.package !== null && product.package.description}</p>
+                                <ul className="add_info">
+                                  <li>
+                                    <div className="tooltip-1" data-placement="top" title="Free Wifi"><i className="icon_set_1_icon-86" /></div>
+                                  </li>
+                                  <li>
+                                    <div className="tooltip-1" data-placement="top" title="Plasma TV with cable channels"><i className="icon_set_2_icon-116" /></div>
+                                  </li>
+                                  <li>
+                                    <div className="tooltip-1" data-placement="top" title="Swimming pool"><i className="icon_set_2_icon-110" /></div>
+                                  </li>
+                                  <li>
+                                    <div className="tooltip-1" data-placement="top" title="Fitness Center"><i className="icon_set_2_icon-117" /></div>
+                                  </li>
+                                  <li>
+                                    <div className="tooltip-1" data-placement="top" title="Restaurant"><i className="icon_set_1_icon-58" /></div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="col-lg-2 col-md-2">
+                              <div className="price_list">
+                                <div><sup>IDR</sup>{product.package !== null && parseFloat(product.package.price).toLocaleString()}<span className="normal_price_list">$99</span><small>*From/Per night</small>
+                                  <p><span className="btn_1">Details</span>
+                                  </p>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     ))
                   }
                   {/*End strip */}

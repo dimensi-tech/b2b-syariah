@@ -19,5 +19,14 @@ export const ROUTE = [
       loader: () => import("./components/pages/Products"),
       loading: () => <div>Loading..</div>
     })
+  },
+  {
+    private: false,
+    path: "/product/:product_id",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/pages/ProductDetails"),
+      loading: () => <div>Loading..</div>
+    })
   }
 ];

@@ -3,8 +3,12 @@ import * as actionTypes from "../helpers/constant";
 
 import {
     _getProducts,
-    _login
+    _login,
+    _getProductDetails,
+    _getAds
 } from "./worker";
 
 export function* getProducts() { yield takeEvery(actionTypes.GET_PRODUCTS_REQUEST, _getProducts); };
 export function* login() { yield takeEvery(actionTypes.LOGIN_REQUEST, _login); };
+export function* getProductDetails() { yield takeEvery(actionTypes.GET_PRODUCT_DETAILS_REQUEST, _getProductDetails); };
+export function* getAds() { yield takeEvery(actionTypes.GET_ADS_REQUEST, _getAds); };
