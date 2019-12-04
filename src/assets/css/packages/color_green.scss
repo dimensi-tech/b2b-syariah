@@ -1,40 +1,40 @@
 /*Typography and buttons*/
 
 h2 span, h3 span, h4 span, h5 span, h6 span {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 a.button_intro, .button_intro {
-  background: #82ca9c;
+  background: #28a880;
 }
 
 a.button_intro:hover, .button_intro:hover {
-  color: #82ca9c !important;
+  color: #28a880 !important;
 }
 
 a.button_intro:hover, .button_intro:hover {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 a.button_drop, .button_drop {
-  color: #82ca9c !important;
+  color: #28a880 !important;
 }
 
 a.button_drop.outilne, .button_drop.outline {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 a.btn_1, .btn_1 {
-  background: #82ca9c;
+  background: #28a880;
 }
 
 a.btn_1.white, .btn_1.white {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 a.btn_1.outline:hover, .btn_1.outiline:hover, input .btn_1.outiline:hover {
-  background: #82ca9c;
-  border: 2px solid #82ca9c;
+  background: #28a880;
+  border: 2px solid #28a880;
 }
 
 a.btn_1:hover, .btn_1:hover {
@@ -43,164 +43,164 @@ a.btn_1:hover, .btn_1:hover {
 
 a {
   &.btn_map {
-    background: #82ca9c;
+    background: #28a880;
   }
 
-  color: #82ca9c;
+  color: #28a880;
 }
 
 #search .btn_1.green {
-  background: #82ca9c;
+  background: #28a880;
 }
 
 a.box_news:hover h4 {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 .owl-theme .owl-dots .owl-dot {
   &.active span, &:hover span {
-    border: 2px solid #82ca9c;
+    border: 2px solid #28a880;
   }
 
   span::before {
-    background-color: #82ca9c !important;
+    background-color: #28a880 !important;
   }
 }
 
 #search_2 .nav-tabs > li > a {
   &.active, &:hover .active, &:focus .active {
-    background-color: #82ca9c;
+    background-color: #28a880;
   }
 }
 
 .custom-search-input-2 input[type='submit'] {
-  background-color: #82ca9c;
+  background-color: #28a880;
 }
 
 /* Header */
 
 header#colored.sticky {
-  background-color: #82ca9c;
-  border-bottom: 2px solid #82ca9c;
+  background-color: #28a880;
+  border-bottom: 2px solid #28a880;
 }
 
 .dropdown-cart .dropdown-menu {
-  border-top: 2px solid #82ca9c;
+  border-top: 2px solid #28a880;
 
   &:before {
-    border-bottom-color: #82ca9c;
+    border-bottom-color: #28a880;
   }
 }
 
 ul {
   &#cart_items li strong > a:hover {
-    color: #82ca9c;
+    color: #28a880;
   }
 
   &#top_links a, &#top_tools a {
     color: #fff;
 
     &:hover {
-      color: #82ca9c;
+      color: #28a880;
     }
   }
 }
 
 .dropdown-mini .dropdown-menu {
-  border-top: 2px solid #82ca9c;
+  border-top: 2px solid #28a880;
 
   &:before {
-    border-bottom-color: #82ca9c;
+    border-bottom-color: #28a880;
   }
 
   ul#lang_menu li a {
     color: #555 !important;
 
     &:hover {
-      color: #82ca9c !important;
+      color: #28a880 !important;
     }
   }
 }
 
 a.cart_bt strong {
-  background-color: #82ca9c;
+  background-color: #28a880;
 }
 
 /* Content and common */
 
 #search .nav-tabs > li.active > a {
-  background-color: #82ca9c;
+  background-color: #28a880;
 
   &:hover, &:focus {
-    background-color: #82ca9c;
+    background-color: #28a880;
   }
 }
 
 .cbp_tmtimeline {
   &:before {
-    background: #82ca9c !important;
+    background: #28a880 !important;
   }
 
   > li .cbp_tmicon {
-    color: #82ca9c !important;
-    box-shadow: 0 0 0 3px #82ca9c !important;
+    color: #28a880 !important;
+    box-shadow: 0 0 0 3px #28a880 !important;
   }
 }
 
 .input-group button {
   &:hover, &:focus {
-    background-color: #82ca9c;
-    border-color: #82ca9c;
+    background-color: #28a880;
+    border-color: #28a880;
   }
 }
 
 .other_tours ul li a:hover {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {
-  background: #82ca9c;
+  background: #28a880;
 }
 
 .form_title h3 strong, .features-content {
-  background-color: #82ca9c;
+  background-color: #28a880;
 }
 
 #Img_carousel .sp-selected-thumbnail {
-  border-bottom: 2px solid #82ca9c;
+  border-bottom: 2px solid #28a880;
 }
 
 #directions {
-  background-color: #82ca9c;
+  background-color: #28a880;
 }
 
 ul {
   &.list_ok li:before {
-    color: #82ca9c;
+    color: #28a880;
   }
 
   &.list_order li span {
-    background-color: #82ca9c;
+    background-color: #28a880;
   }
 }
 
 .tooltip-back {
-  background: #82ca9c;
+  background: #28a880;
 }
 
 .tooltip-content-flip {
   .tooltip-front::after, .tooltip-back::after {
-    border-top: 10px solid #82ca9c;
+    border-top: 10px solid #28a880;
   }
 }
 
 .banner {
   h4 {
-    color: #82ca9c;
+    color: #28a880;
   }
 
   &.colored {
-    background: #82ca9c url(../../img/packages/banner_bg_colored.png) no-repeat center bottom;
+    background: #28a880 url(../../img/packages/banner_bg_colored.png) no-repeat center bottom;
   }
 }
 
@@ -209,24 +209,24 @@ ul {
 
 .main-menu {
   > ul > li:hover > a {
-    color: #82ca9c;
+    color: #28a880;
   }
 
   ul {
     ul {
       &:before {
-        border-bottom-color: #82ca9c;
+        border-bottom-color: #28a880;
       }
 
-      border-top: 2px solid #82ca9c;
+      border-top: 2px solid #28a880;
     }
 
     .menu-wrapper {
-      border-top: 2px solid #82ca9c;
+      border-top: 2px solid #28a880;
     }
 
     ul li:hover > a {
-      color: #82ca9c;
+      color: #28a880;
     }
   }
 }
@@ -235,7 +235,7 @@ ul {
 
 .search-overlay-menu {
   .search-overlay-close:hover, form button:hover {
-    color: #82ca9c;
+    color: #28a880;
   }
 }
 
@@ -243,19 +243,19 @@ ul {
   /* Menu */
 
   .main-menu ul li a:hover {
-    color: #82ca9c !important;
+    color: #28a880 !important;
   }
 
   a {
     &.show-submenu {
       &:hover, &:focus {
-        color: #82ca9c !important;
+        color: #28a880 !important;
       }
     }
 
     &.show-submenu-mega {
       &:hover, &:focus {
-        color: #82ca9c !important;
+        color: #28a880 !important;
       }
     }
   }
@@ -270,7 +270,7 @@ ul {
 @media only screen and (min-width: 992px) {
   .main-menu ul {
     ul, li .menu-wrapper {
-      border-top: 2px solid #82ca9c;
+      border-top: 2px solid #28a880;
     }
   }
 }
@@ -279,92 +279,92 @@ ul {
 
 div.datedropper.primary {
   &:before, .pick-submit, .pick-lg-b .pick-sl:before, .pick-m, .pick-lg-h {
-    background-color: #82ca9c !important;
+    background-color: #28a880 !important;
   }
 
   .pick-y.pick-jump, .pick li span, .pick-lg-b .pick-wke, .pick-btn {
-    color: #82ca9c;
+    color: #28a880;
   }
 }
 
 #td-clock-0 {
   .td-clock .td-time span.on {
-    color: #82ca9c !important;
+    color: #28a880 !important;
   }
 
   .td-lancette {
-    color: #82ca9c !important;
-    border: 2px solid #82ca9c !important;
+    color: #28a880 !important;
+    border: 2px solid #28a880 !important;
   }
 
   .td-clock {
-    box-shadow: 0 0 0 1px #82ca9c, 0 0 0 8px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 0 0 1px #28a880, 0 0 0 8px rgba(0, 0, 0, 0.05) !important;
 
     &:before {
-      border-color: #82ca9c !important;
+      border-color: #28a880 !important;
     }
   }
 }
 
 .td-select svg {
-  stroke: #82ca9c !important;
+  stroke: #28a880 !important;
 }
 
 #td-clock-0 {
   .td-lancette div:after {
-    background: #82ca9c !important;
+    background: #28a880 !important;
   }
 
   .td-select:after {
-    box-shadow: 0 0 0 1px #82ca9c !important;
+    box-shadow: 0 0 0 1px #28a880 !important;
   }
 }
 
 /*-------- Map --------*/
 
 .btn_infobox_get_directions {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 a {
   &.btn_infobox_phone {
-    color: #82ca9c;
+    color: #28a880;
   }
 
   &.btn_infobox {
-    background-color: #82ca9c;
+    background-color: #28a880;
   }
 }
 
 .btn_infobox {
-  background-color: #82ca9c;
+  background-color: #28a880;
 }
 
 .view_on_map:before {
-  color: #82ca9c;
+  color: #28a880;
 }
 
 #map_filter ul li a {
   &:hover, &.active {
-    color: #82ca9c;
+    color: #28a880;
   }
 }
 
 /*-------- Shop --------*/
 
 .shop-item .image-box .item-options .btn_shop:hover {
-  background: #82ca9c !important;
+  background: #28a880 !important;
 }
 
 .prod-tabs .tab-btns .tab-btn.active-btn {
-  color: #82ca9c !important;
+  color: #28a880 !important;
 }
 
 .btn_cart_outine:hover {
-  background: #82ca9c;
-  border: 2px solid #82ca9c;
+  background: #28a880;
+  border: 2px solid #28a880;
 }
 
 .card-header a .indicator {
-  color: #82ca9c;
+  color: #28a880;
 }

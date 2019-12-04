@@ -1,0 +1,32 @@
+.tour_list_desc {
+  p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    p {
+      &:not(:first-child) {
+        display: none;
+      }
+    }
+  }
+}
+
+.price_list {
+  color: #28a880;
+  .package-name {
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+  .package-price {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 5px 0;
+  }
+  .btn_1 {
+    background: #ff7f5c;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

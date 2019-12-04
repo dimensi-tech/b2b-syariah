@@ -1,26 +1,26 @@
-import React, {Fragment} from 'react'
-import Search from '../shared/Search'
+import React, { Component, Fragment } from 'react'
+import '../../assets/css/home.scss'
 
 import AbuDhabi from '../../assets/img/featured_countries/abu_dhabi.jpg'
 import Madina from '../../assets/img/featured_countries/madina.jpg'
 import Istanbul from '../../assets/img/featured_countries/istanbul.jpg'
 import Mecca from '../../assets/img/featured_countries/mecca.jpg'
+
+import Search from '../shared/Search'
 import PromoProduct from '../shared/PromoProduct'
-import { Link } from 'react-router-dom';
-import Slider from '../shared/Slider';
+import Slider from '../shared/Slider'
 
-import { connect } from 'react-redux';
-import { GET_PRODUCTS_REQUEST, GET_ADS_REQUEST } from '../../helpers/constant';
+import { connect } from 'react-redux'
+import { GET_PRODUCTS_REQUEST, GET_ADS_REQUEST } from '../../helpers/constant'
 
-class Home extends React.Component {
-
+class Home extends Component {
   componentDidMount() {
     this._getProducts();
     this._getAds();
   };
 
   _getProducts = () => {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: GET_PRODUCTS_REQUEST,
       config: {
@@ -31,7 +31,7 @@ class Home extends React.Component {
   };
 
   _getAds = () => {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: GET_ADS_REQUEST,
       config: {
@@ -42,48 +42,38 @@ class Home extends React.Component {
   };
 
   render() {
-    const { products, ads } = this.props;
+    const { products, ads } = this.props
     return (
       <Fragment>
         <div id='search_container_2'>
           <div id='search_2'>
-            <div className='item-collections'>
+            <div className='ads-collections'>
               <Slider
                 data={ads}
                 options={{
-                  pauseAutoPlayOnHover: true,
-                  wrapAround: true,
-                  fullscreen: true,
-                  pageDots: false,
+                  autoPlay: 5000,
+                  pauseAutoPlayOnHover: true
                 }}>
                 {
                   ads.data.length > 0 &&
                   ads.data.map((ad, index) => (
-                    <div
-                      key={index}
-                      className='category-item'
-                      style={{marginBottom: 50, position: 'relative'}}
-                      >
-                      <div style={{backgroundColor: '#82ca9c', position: 'absolute', bottom: 10, left: 20, padding: '10px', borderRadius: 5, zIndex: 3}}>
-                        <span style={{opacity: 1, color: 'white', fontWeight: 'bold'}}>{ad.name}</span>
+                    <div key={index}
+                         style={{height: 300, width: 'calc(70% + 20px)'}}
+                         className='ads-item'
+                    >
+                      <div className='ads-content'>
+                        <span>{ad.name}</span>
+                        <img src={ad.image_path} alt={ad.name} />
                       </div>
-                      <div style={{backgroundColor: 'black', height: 300, width: 900, borderRadius: 5, position: 'absolute', marginLeft: 10, opacity: 0.25}} />
-                      <img src={ad.image_path} alt="" style={{height: 300, width: 900, marginLeft: 10, borderRadius: 5}} />
                     </div>
                   ))
                 }
               </Slider>
             </div>
-            <ul className='nav nav-tabs'>
-              <li>
-                <Link to='/products' className='active show' id='tab_bt_1'>
-                  <span>Cari Tujuan Travelmu</span>
-                </Link>
-              </li>
-            </ul>
+            <h1>Cari tujuan travelmu</h1>
             <div className='tab-content'>
               <div className='tab-pane fade active show' id='tours'>
-                <Search />
+                <Search history={this.props.history}/>
               </div>
             </div>
           </div>

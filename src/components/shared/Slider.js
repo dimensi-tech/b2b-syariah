@@ -1,58 +1,58 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Flickity from "flickity";
-import "flickity/dist/flickity.min.css";
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import Flickity from 'flickity'
+import 'flickity/dist/flickity.min.css'
 
-export default class Slider extends React.Component {
+class Slider extends Component {
   constructor(props) {
-    super(props);
-
+    super(props)
     this.state = {
-      flickityReady: false,
-    };
+      flickityReady: false
+    }
 
-    this.refreshFlickity = this.refreshFlickity.bind(this);
+    this.refreshFlickity = this.refreshFlickity.bind(this)
   }
 
   componentDidMount() {
-    this.flickity = new Flickity(this.flickityNode, this.props.options || {});
-
+    this.flickity = new Flickity(this.flickityNode, this.props.options || {})
     this.setState({
-      flickityReady: true,
-    });
+      flickityReady: true
+    })
   }
 
   refreshFlickity() {
-    this.flickity.reloadCells();
-    this.flickity.resize();
-    this.flickity.updateDraggable();
+    this.flickity.reloadCells()
+    this.flickity.resize()
+    this.flickity.updateDraggable()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const flickityDidBecomeActive = !prevState.flickityReady && this.state.flickityReady;
-    const childrenDidChange = prevProps.children.length !== this.props.children.length;
+    const flickityDidBecomeActive = !prevState.flickityReady && this.state.flickityReady
+    const childrenDidChange = prevProps.children.length !== this.props.children.length
 
     if (flickityDidBecomeActive || childrenDidChange) {
-      this.refreshFlickity();
+      this.refreshFlickity()
     }
   }
 
   renderPortal() {
     if (!this.flickityNode) {
-      return null;
+      return null
     }
 
-    const mountNode = this.flickityNode.querySelector(".flickity-slider");
+    const mountNode = this.flickityNode.querySelector('.flickity-slider')
 
     if (mountNode) {
-      return ReactDOM.createPortal(this.props.children, mountNode);
+      return ReactDOM.createPortal(this.props.children, mountNode)
     }
   }
 
   render() {
     return [
-      <div className={"slider"} key="flickityBase" ref={node => (this.flickityNode = node)} />,
+      <div className={'slider'} key='flickityBase' ref={node => (this.flickityNode = node)} />,
       this.renderPortal()
-    ].filter(Boolean);
+    ].filter(Boolean)
   }
 }
+
+export default Slider
