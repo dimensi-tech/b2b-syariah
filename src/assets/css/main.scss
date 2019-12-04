@@ -3,3 +3,7 @@
 @import 'packages/style.scss';
 @import 'packages/vendors.scss';
 @import 'packages/color_green.scss';
+
+header {
+  box-shadow: 0 2px 4px 0 rgba(27, 27, 27, 0.2);
+}

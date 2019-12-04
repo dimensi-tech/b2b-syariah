@@ -1,13 +1,10 @@
-import React, {Fragment} from "react";
+import React from "react";
 import {render} from "react-dom";
 import {Route, Switch, BrowserRouter as Router} from "react-router-dom";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import "./assets/css/main.scss";
 import { store } from "./store";
-
-import Home from "./components/pages/Home";
-import Products from "./components/pages/Products";
 
 import { ROUTE } from "./routeConfig";
 import { PrivateRoute, PublicRoute} from "./helpers/Route";

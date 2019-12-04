@@ -61,14 +61,14 @@ class Header extends Component {
     const { isLoggedIn, showModal } = this.state;
     console.log(this.props);
     return (
-      <header>
+      <header id='plain'>
         {
           showModal &&
           <Fragment>
-            <div class="mfp-bg my-mfp-zoom-in mfp-ready"></div>
-            <div class="mfp-wrap mfp-close-btn-in mfp-auto-cursor my-mfp-zoom-in mfp-ready" tabIndex="-1" style={{overflow: "hidden auto"}}>
-              <div class="mfp-container mfp-inline-holder" onClick={this._closeModal}>
-                <div class="mfp-content">
+            <div className="mfp-bg my-mfp-zoom-in mfp-ready"></div>
+            <div className="mfp-wrap mfp-close-btn-in mfp-auto-cursor my-mfp-zoom-in mfp-ready" tabIndex="-1" style={{overflow: "hidden auto"}}>
+              <div className="mfp-container mfp-inline-holder" onClick={this._closeModal}>
+                <div className="mfp-content">
                   <Login submitLogin={this._submitLogin}/>
                 </div>
               </div>

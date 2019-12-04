@@ -31,16 +31,16 @@
   font-style: normal;
 }
 
-// @font-face {
-//   font-family: 'icon_set_2';
-//   src: url('../../fonts/icon_set_2.eot');
-//   src: url('../../fonts/icon_set_2.eot') format('embedded-opentype'),
-//        url('../../fonts/icon_set_2.woff') format('woff'),
-//        url('../../fonts/icon_set_2.ttf') format('truetype'),
-//        url('../../fonts/icon_set_2.svg') format('svg');
-//   font-weight: 400;
-//   font-style: normal;
-// }
+@font-face {
+  font-family: 'icon_set_2';
+  src: url('../../fonts/icon_set_2.eot');
+  src: url('../../fonts/icon_set_2.eot') format('embedded-opentype'),
+       url('../../fonts/icon_set_2.woff') format('woff'),
+       url('../../fonts/icon_set_2.ttf') format('truetype'),
+       url('../../fonts/icon_set_2.svg') format('svg');
+  font-weight: 400;
+  font-style: normal;
+}
 
 @font-face {
   font-family: 'Glyphter';
