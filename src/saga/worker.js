@@ -44,12 +44,66 @@ export function* _login(payload) {
     });
     Authorization().login({token: response.data.jwt});
   }catch (error) {
-    yield put({
-      type: actionTypes.LOGIN_ERROR
-    });
+    if (error.response) {
+      if (error.response.status === 404) {
+        yield put({
+          type: actionTypes.LOGIN_ERROR,
+          message: "User not found or password incorrect!"
+        });
+      }else{
+        yield put({
+          type: actionTypes.LOGIN_ERROR,
+          message: "Server busy!"
+        });
+      }
+    }else{
+      yield put({
+        type: actionTypes.LOGIN_ERROR,
+        message: "Unable connect to server!"
+      })
+    }
   }
   yield put({
     type: actionTypes.LOGIN_RESET
+  });
+};
+
+export function* _register(payload) {
+  const config = {
+    ...payload.config,
+    url: BACKEND_URL + payload.path
+  };
+  try {
+    var response = yield call(async () => {
+      const res = await axios(config);
+      return res;
+    });
+    if (response.data.email) {
+      yield put({
+        type: actionTypes.REGISTER_SUCCESS,
+        message: "Register success, please login to continue!"
+      });
+    }else{
+      yield put({
+        type: actionTypes.REGISTER_ERROR,
+        message: "Email already registered!"
+      });
+    }
+  }catch (error) {
+    if (error.response) {
+      yield put({
+        type: actionTypes.REGISTER_ERROR,
+        message: "Server busy!"
+      });
+    }else{
+      yield put({
+        type: actionTypes.REGISTER_ERROR,
+        message: "Unable connect to server!"
+      });
+    }
+  }
+  yield put({
+    type: actionTypes.REGISTER_RESET
   });
 };
 

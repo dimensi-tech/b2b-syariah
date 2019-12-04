@@ -1,12 +1,12 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props)
     this.state = {
       email: '',
       password: ''
-    }
+    };
   };
 
   _onChange = evt => {
@@ -19,7 +19,7 @@ class Login extends Component {
   _handleSubmit = evt => {
     evt.preventDefault();
     const { email, password } = this.state;
-    this.props.submitLogin({
+    this.props.submitRegister({
       email, password
     });
   };
@@ -34,15 +34,14 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state;
-    const { errors, success } = this.props;
+    const { errors } = this.props;
     return (
       <div id='sign-in-dialog' className='zoom-anim-dialog'>
         <div className='small-dialog-header'>
-          <h3>Login Masuk</h3>
+          <h3>Register</h3>
           <div className="mfp-close" onClick={this._closeModal} />
         </div>
-        {errors.map(x => x.type).includes("LOGIN") && <div className="alert-error">{errors.filter(x => x.type === "LOGIN")[0].message}</div>}
-        {success.map(x => x.type).includes("REGISTER") && <div className="alert-success">{success.filter(x => x.type === "REGISTER")[0].message}</div>}
+        {errors.map(x => x.type).includes("REGISTER") && <div className="alert-error">{errors.filter(x => x.type === "REGISTER")[0].message}</div>}
         <form onSubmit={this._handleSubmit}>
           <div className='sign-in-wrapper'>
             {/* <a href='#0' className='social_bt facebook'>Login with Facebook</a>
@@ -58,18 +57,11 @@ class Login extends Component {
               <input type='password' id='password' name='password' value={password} className='form-control' onChange={this._onChange} />
               <i className='icon_lock_alt' />
             </div>
-            <div className='clearfix add_bottom_15'>
-              <div className='checkboxes float-left'>
-                <input id='remember-me' type='checkbox' name='check' />
-                <label htmlFor='remember-me'>Remember Me</label>
-              </div>
-              <div className='float-right'><a id='forgot' href='#'>Forgot Password?</a></div>
-            </div>
             <div className='text-center'>
               <input type='submit' defaultValue='Log In' className='btn_login' />
             </div>
             <div className='text-center'>
-              Don’t have an account? <a href="#" onClick={this._switchView}>Sign up</a>
+              Have an account? <a href="#" onClick={this._switchView}>Sign in</a>
             </div>
             <div id='forgot_pw'>
               <div className='form-group'>
@@ -87,4 +79,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default Register;

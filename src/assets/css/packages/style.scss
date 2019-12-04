@@ -6475,6 +6475,9 @@ div.datedropper {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: 12px;
     right: 20px;
     width: 32px;
@@ -6501,6 +6504,7 @@ div.datedropper {
 #sign-in-dialog .mfp-close:hover, #small-dialog .mfp-close:hover {
   color: #fff;
   background-color: #66676b;
+  cursor: pointer;
 }
 
 #sign-in-dialog .mfp-close:before {
@@ -6518,7 +6522,9 @@ div.datedropper {
   -webkit-border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
   border-radius: 4px 4px 0 0;
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #f6f6f6;
   padding: 15px 20px;
   margin-bottom: 30px;
