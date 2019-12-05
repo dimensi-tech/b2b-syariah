@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import {Link} from "react-router-dom";
 import Login from "../auth/Login";
+import Register from "../auth/Register";
 import { connect } from "react-redux";
-import { LOGIN_REQUEST } from "../../helpers/constant";
+import { LOGIN_REQUEST, REGISTER_REQUEST } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
 
 class Header extends Component {
@@ -10,9 +11,12 @@ class Header extends Component {
     super(props)
     this.state = {
       isLoggedIn: Authorization().isLoggedIn(),
-      showModal: false
-    }
-  }
+      showModal: false,
+      displayLogin: true,
+      errors: [],
+      success: []
+    };
+  };
 
   _submitLogin = credentials => {
     const { dispatch } = this.props;
@@ -26,13 +30,68 @@ class Header extends Component {
     });
   };
 
+  _submitRegister = credentials => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: REGISTER_REQUEST,
+      config: {
+        method: "post",
+        data: credentials
+      },
+      path: "/customers"
+    });
+  };
+
   componentDidUpdate(prevProps) {
-    const { login } = this.props;
+    const { login, register } = this.props;
+    const { errors, success } = this.state;
     if (prevProps.login.success !== login.success) {
       if (login.success) {
         this.setState({
           isLoggedIn: true,
-          showModal: false
+          showModal: false,
+          errors: [],
+          success: []
+        });
+      }
+    }
+    if (prevProps.login.error !== login.error) {
+      if (login.error) {
+        let clone = [...errors];
+        clone.push({
+          type: "LOGIN",
+          message: login.message
+        });
+        this.setState({
+          errors: clone,
+          success: []
+        })
+      }
+    }
+    if (prevProps.register.success !== register.success) {
+      if (register.success) {
+        let clone = [...success];
+        clone.push({
+          type: "REGISTER",
+          message: register.message
+        });
+        this.setState({
+          success: clone,
+          displayLogin: true,
+          errors: []
+        });
+      }
+    }
+    if (prevProps.register.error !== register.error) {
+      if (register.error) {
+        let clone = [...errors];
+        clone.push({
+          type: "REGISTER",
+          message: register.message
+        });
+        this.setState({
+          errors: clone,
+          success: []
         })
       }
     }
@@ -46,7 +105,10 @@ class Header extends Component {
 
   _closeModal = () => {
     this.setState({
-      showModal: false
+      showModal: false,
+      displayLogin: true,
+      success: [],
+      errors: []
     });
   };
 
@@ -57,9 +119,16 @@ class Header extends Component {
     });
   };
 
+  _switchView = () => {
+    this.setState({
+      displayLogin: !this.state.displayLogin,
+      success: [],
+      errors: []
+    });
+  };
+
   render() {
-    const { isLoggedIn, showModal } = this.state;
-    console.log(this.props);
+    const { isLoggedIn, showModal, displayLogin, success, errors } = this.state;
     return (
       <header id='plain'>
         {
@@ -67,9 +136,26 @@ class Header extends Component {
           <Fragment>
             <div className="mfp-bg my-mfp-zoom-in mfp-ready"></div>
             <div className="mfp-wrap mfp-close-btn-in mfp-auto-cursor my-mfp-zoom-in mfp-ready" tabIndex="-1" style={{overflow: "hidden auto"}}>
-              <div className="mfp-container mfp-inline-holder" onClick={this._closeModal}>
+              <div className="mfp-container mfp-inline-holder">
                 <div className="mfp-content">
-                  <Login submitLogin={this._submitLogin}/>
+                  {
+                    displayLogin
+                    ?
+                    <Login
+                      closeModal={this._closeModal}
+                      switchView={this._switchView}
+                      submitLogin={this._submitLogin}
+                      errors={errors}
+                      success={success}
+                      />
+                    :
+                    <Register
+                      closeModal={this._closeModal}
+                      switchView={this._switchView}
+                      submitRegister={this._submitRegister}
+                      errors={errors}
+                      />
+                  }
                 </div>
               </div>
             </div>
@@ -84,9 +170,13 @@ class Header extends Component {
                   {
                     isLoggedIn
                     ?
-                    <li onClick={this._logout}>Sign out</li>
+                    <li onClick={this._logout}>
+                      <a href="#">Sign out</a>
+                    </li>
                     :
-                    <li onClick={this._showModal}>Sign in</li>
+                    <li onClick={this._showModal}>
+                      <a href="#">Sign in</a>
+                    </li>
                   }
                   <li><a href="wishlist.html" id="wishlist_link">Wishlist</a></li>
                 </ul>
@@ -180,6 +270,7 @@ class Header extends Component {
 
 export default connect(
   state => ({
-    login: state.login
+    login: state.login,
+    register: state.register
   })
 )(Header);

@@ -7,17 +7,17 @@ let initialState = {
   message: ""
 };
 
-export default function login(state = initialState, action) {
+export default function register(state = initialState, action) {
   switch (action.type) {
 
-    case actionTypes.LOGIN_REQUEST:
+    case actionTypes.REGISTER_REQUEST:
     return Object.assign({}, state, {
       success: false,
       processing: true,
       error: false
     });
 
-    case actionTypes.LOGIN_SUCCESS:
+    case actionTypes.REGISTER_SUCCESS:
     return Object.assign({}, state, {
       success: true,
       processing: false,
@@ -25,7 +25,7 @@ export default function login(state = initialState, action) {
       message: action.message
     });
 
-    case actionTypes.LOGIN_ERROR:
+    case actionTypes.REGISTER_ERROR:
     return Object.assign({}, state, {
       success: false,
       processing: false,
@@ -33,7 +33,7 @@ export default function login(state = initialState, action) {
       message: action.message
     });
 
-    case actionTypes.LOGIN_RESET:
+    case actionTypes.REGISTER_RESET:
     return Object.assign({}, state, {
       success: false,
       processing: false,

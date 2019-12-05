@@ -44,12 +44,66 @@ export function* _login(payload) {
     });
     Authorization().login({token: response.data.jwt});
   }catch (error) {
-    yield put({
-      type: actionTypes.LOGIN_ERROR
-    });
+    if (error.response) {
+      if (error.response.status === 404) {
+        yield put({
+          type: actionTypes.LOGIN_ERROR,
+          message: "Email atau password salah!"
+        });
+      }else{
+        yield put({
+          type: actionTypes.LOGIN_ERROR,
+          message: "Server sedang sibuk, coba beberapa saat lagi!"
+        });
+      }
+    }else{
+      yield put({
+        type: actionTypes.LOGIN_ERROR,
+        message: "Tidak dapat tersambung ke server!"
+      })
+    }
   }
   yield put({
     type: actionTypes.LOGIN_RESET
+  });
+};
+
+export function* _register(payload) {
+  const config = {
+    ...payload.config,
+    url: BACKEND_URL + payload.path
+  };
+  try {
+    var response = yield call(async () => {
+      const res = await axios(config);
+      return res;
+    });
+    if (response.data.email) {
+      yield put({
+        type: actionTypes.REGISTER_SUCCESS,
+        message: "Registrasi berhasil, silahkan login untuk melanjutkan!"
+      });
+    }else{
+      yield put({
+        type: actionTypes.REGISTER_ERROR,
+        message: "Email sudah digunakan!"
+      });
+    }
+  }catch (error) {
+    if (error.response) {
+      yield put({
+        type: actionTypes.REGISTER_ERROR,
+        message: "Server sedang sibuk, coba beberapa saat lagi!"
+      });
+    }else{
+      yield put({
+        type: actionTypes.REGISTER_ERROR,
+        message: "Tidak dapat tersambung ke server!"
+      });
+    }
+  }
+  yield put({
+    type: actionTypes.REGISTER_RESET
   });
 };
 

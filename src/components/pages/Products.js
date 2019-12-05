@@ -13,18 +13,22 @@ class Products extends Component {
   }
 
   _getProducts = () => {
-    const { dispatch } = this.props
+    const { dispatch, location } = this.props;
+    const queryParams = location.search.replace('?searchresults=', '');
     dispatch({
       type: GET_PRODUCTS_REQUEST,
       config: {
-        method: 'get'
+        method: 'get',
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       },
-      path: '/products/list_products'
+      path: '/products/list_products?q[name_cont]=' + queryParams
     })
   }
 
   render() {
-    const { data } = this.props.products
+    const { data } = this.props.products;
     return(
       <Fragment>
         <main>
