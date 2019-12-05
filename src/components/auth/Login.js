@@ -38,7 +38,7 @@ class Login extends Component {
     return (
       <div id='sign-in-dialog' className='zoom-anim-dialog'>
         <div className='small-dialog-header'>
-          <h3>Login Masuk</h3>
+          <h3>Masuk</h3>
           <div className="mfp-close" onClick={this._closeModal} />
         </div>
         {errors.map(x => x.type).includes("LOGIN") && <div className="alert-error">{errors.filter(x => x.type === "LOGIN")[0].message}</div>}
@@ -61,15 +61,15 @@ class Login extends Component {
             <div className='clearfix add_bottom_15'>
               <div className='checkboxes float-left'>
                 <input id='remember-me' type='checkbox' name='check' />
-                <label htmlFor='remember-me'>Remember Me</label>
+                <label htmlFor='remember-me'>Ingatkan Saya</label>
               </div>
-              <div className='float-right'><a id='forgot' href='#'>Forgot Password?</a></div>
+              <div className='float-right'><a id='forgot' href='#'>Lupa Password?</a></div>
             </div>
             <div className='text-center'>
               <input type='submit' defaultValue='Log In' className='btn_login' />
             </div>
             <div className='text-center'>
-              Don’t have an account? <a href="#" onClick={this._switchView}>Sign up</a>
+              Belum punya akun? <a href="#" onClick={this._switchView}>Daftar disini</a>
             </div>
             <div id='forgot_pw'>
               <div className='form-group'>

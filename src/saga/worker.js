@@ -48,18 +48,18 @@ export function* _login(payload) {
       if (error.response.status === 404) {
         yield put({
           type: actionTypes.LOGIN_ERROR,
-          message: "User not found or password incorrect!"
+          message: "Email atau password salah!"
         });
       }else{
         yield put({
           type: actionTypes.LOGIN_ERROR,
-          message: "Server busy!"
+          message: "Server sedang sibuk, coba beberapa saat lagi!"
         });
       }
     }else{
       yield put({
         type: actionTypes.LOGIN_ERROR,
-        message: "Unable connect to server!"
+        message: "Tidak dapat tersambung ke server!"
       })
     }
   }
@@ -81,24 +81,24 @@ export function* _register(payload) {
     if (response.data.email) {
       yield put({
         type: actionTypes.REGISTER_SUCCESS,
-        message: "Register success, please login to continue!"
+        message: "Registrasi berhasil, silahkan login untuk melanjutkan!"
       });
     }else{
       yield put({
         type: actionTypes.REGISTER_ERROR,
-        message: "Email already registered!"
+        message: "Email sudah digunakan!"
       });
     }
   }catch (error) {
     if (error.response) {
       yield put({
         type: actionTypes.REGISTER_ERROR,
-        message: "Server busy!"
+        message: "Server sedang sibuk, coba beberapa saat lagi!"
       });
     }else{
       yield put({
         type: actionTypes.REGISTER_ERROR,
-        message: "Unable connect to server!"
+        message: "Tidak dapat tersambung ke server!"
       });
     }
   }
