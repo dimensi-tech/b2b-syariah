@@ -24,7 +24,10 @@ function Filter() {
         </ul>
       </div>
       <div id="filters_col">
-        <a data-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt"><i className="icon_set_1_icon-65" />Filters</a>
+        <a data-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">
+          <i className="icon_set_1_icon-65" />
+          Filters
+        </a>
         <div className="collapse show" id="collapseFilters">
           <div className="filter_type">
             <h6>Price</h6>

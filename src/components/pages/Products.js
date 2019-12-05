@@ -1,11 +1,12 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
-import { GET_PRODUCTS_REQUEST } from '../../helpers/constant'
-import { Link } from 'react-router-dom'
-import Filter from '../shared/Filter'
-import Breadcrumb from '../shared/Breadcrumb'
-import Sort from '../shared/Sort'
-import '../../assets/css/products.scss'
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { GET_PRODUCTS_REQUEST } from "../../helpers/constant";
+import { Link } from "react-router-dom";
+import Filter from "../shared/Filter";
+import Breadcrumb from "../shared/Breadcrumb";
+import Sort from "../shared/Sort";
+import CustomerCare from "../shared/CustomerCare";
+import "../../assets/css/products.scss";
 
 class Products extends Component {
   componentDidMount() {
@@ -43,19 +44,14 @@ class Products extends Component {
                   <a className='btn_map' data-toggle='collapse' href='#collapseMap' aria-expanded='false' aria-controls='collapseMap' data-text-swap='Hide map' data-text-original='View on map'>View on map</a>
                 </p>
                 <Filter />
-                <div className='box_style_2'>
-                  <i className='icon_set_1_icon-57' />
-                  <h4>Need <span>Help?</span></h4>
-                  <a href='tel://004542344599' className='phone'>+45 423 445 99</a>
-                  <small>Monday to Friday 9.00am - 7.30pm</small>
-                </div>
+                <CustomerCare />
               </aside>
               <div className='col-lg-9'>
                 <Sort />
                 {
                   data.length > 0 &&
-                  data.map((product, index) => (
-                    <div key={index} className='strip_all_tour_list wow fadeIn' data-wow-delay='0.1s'>
+                  data.map(product => (
+                    <div key={product.id} className='strip_all_tour_list wow fadeIn' data-wow-delay='0.1s'>
                       <div className='row'>
                         <div className='col-lg-4 col-md-4'>
                           <div className='wishlist'>

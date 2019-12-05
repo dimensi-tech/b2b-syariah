@@ -524,23 +524,23 @@ header {
 
 @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
   #logo_home h1 a {
-    background-image: url(../../img/packages/logo_2x.png);
+    background-image: url(../../img/Logo.png);
     background-size: 160px 34px;
   }
 
   header {
     &#colored #logo_home h1 a {
-      background-image: url(../../img/packages/logo_2x.png);
+      background-image: url(../../img/Logo.png);
       background-size: 160px 34px;
     }
 
     &.sticky #logo_home h1 a, &#plain #logo_home h1 a {
-      background-image: url(../../img/packages/logo_sticky_2x.png);
+      background-image: url(../../img/Logo.png);
       background-size: 160px 34px;
     }
 
     &.sticky#colored #logo_home h1 a {
-      background-image: url(../../img/packages/logo_sticky_colored_2x.png);
+      background-image: url(../../img/Logo.png);
       background-size: 160px 34px;
     }
   }
@@ -8037,23 +8037,23 @@ a.box_news {
 /* LOGO H1 FOR RETINA DISPLAY  */
 @media only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 991px), only screen and (-o-min-device-pixel-ratio: 2 / 1) and (max-width: 991px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 991px), only screen and (min-device-pixel-ratio: 2) and (max-width: 991px) {
   #logo_home h1 a {
-    background-image: url(../../img/packages/logo_2x.png);
+    background-image: url(../../img/Logo.png);
     background-size: auto 30px;
   }
 
   header {
     &#colored #logo_home h1 a {
-      background-image: url(../../img/packages/logo_2x.png);
+      background-image: url(../../img/Logo.png);
       background-size: auto 30px;
     }
 
     &.sticky #logo_home h1 a, &#plain #logo_home h1 a {
-      background-image: url(../../img/packages/logo_sticky_2x.png);
+      background-image: url(../../img/Logo.png);
       background-size: auto 30px;
     }
 
     &.sticky#colored #logo_home h1 a {
-      background-image: url(../../img/packages/logo_sticky_colored_2x.png);
+      background-image: url(../../img/Logo.png);
       background-size: auto 30px;
     }
   }
