@@ -1,15 +1,90 @@
 import React, { Component } from "react";
 import "react-tabs/style/react-tabs.css";
 import { connect } from "react-redux";
-import { GET_PRODUCT_DETAILS_REQUEST } from "../../helpers/constant";
+import { GET_PRODUCT_DETAILS_REQUEST, CREATE_BOOKING_REQUEST } from "../../helpers/constant";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import moment from "moment";
+import Authorization from "../../helpers/Authorization";
 
 import BookingForm from "../shared/BookingForm";
 import CustomerCare from "../shared/CustomerCare";
+import jwtDecode from "jwt-decode";
+
+const initialState = {
+  package_id: "",
+  price: "",
+  person: "1",
+  departure_date: "",
+  voucher_id: ""
+};
 
 class ProductDetails extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      formControl: {
+        ...initialState
+      },
+      selected_index: null
+    };
+  };
+
   componentDidMount() {
     this._getProductDetails();
+  };
+
+  _onChange = evt => {
+    const { name, value } = evt.target;
+    const { packages } = this.props.productDetails.data;
+    if (name === "package_id") {
+      const id = value.split("@")[0];
+      const index = value.split("@")[1];
+      if (id === "") {
+        this.setState({
+          formControl: Object.assign({}, this.state.formControl, {
+            package_id: id,
+          }),
+          selected_index: null
+        });
+      }else{
+        this.setState({
+          formControl: Object.assign({}, this.state.formControl, {
+            package_id: id,
+            departure_date: moment(new Date(packages[index].available_date[0])).format("DD-MM-YYYY"),
+            price: packages[index].normal_price
+          }),
+          selected_index: index
+        });
+      }
+    }else{
+      this.setState({
+        formControl: Object.assign({}, this.state.formControl, {
+          [name]: value
+        })
+      });
+    }
+  };
+
+  _submitBooking = async () => {
+    const token = Authorization().getAuthUser();
+    const { dispatch } = this.props;
+    const { formControl } = this.state;
+    if (typeof token === "string") {
+      dispatch({
+        type: CREATE_BOOKING_REQUEST,
+        config: {
+          method: "post",
+          headers: {
+            "Authorization": token,
+            "Content-Type": "multipart/form-data"
+          }
+        },
+        path: "/bookings/create_booking",
+        data: formControl
+      });
+    }else{
+      document.getElementsByName("login-label-clickable")[0].click();
+    }
   };
 
   _getProductDetails = () => {
@@ -23,9 +98,31 @@ class ProductDetails extends Component {
     });
   };
 
+  componentDidUpdate(prevProps) {
+    const { booking } = this.props;
+    if (prevProps.booking.error !== booking.error) {
+      if (booking.error) {
+        document.getElementsByName("logout-label-clickable")[0].click();
+        setTimeout(() => {
+          document.getElementsByName("login-label-clickable")[0].click();
+        }, 500)
+      }
+    }
+    if (prevProps.booking.success !== booking.success) {
+      if (booking.success) {
+        this.setState({
+          formControl: {
+            ...initialState
+          },
+          selected_index: null
+        });
+      }
+    }
+  };
+
   render() {
     const { data } = this.props.productDetails;
-    console.log(data)
+    const { formControl, selected_index } = this.state;
     if (!Object.keys(data).length) {
       return <div>Loading ..</div>
     } else {
@@ -89,7 +186,7 @@ class ProductDetails extends Component {
                       ))
                     }
                   </Tabs>
-                  
+
                   <div className="row">
                     <div className="col-lg-3">
                       <h3>Schedule</h3>
@@ -156,7 +253,13 @@ class ProductDetails extends Component {
                   <hr />
                 </div>
                 <aside className="col-lg-4">
-                  <BookingForm />
+                  <BookingForm
+                    data={data.packages}
+                    formControl={formControl}
+                    onChange={this._onChange}
+                    index={selected_index}
+                    submitBooking={this._submitBooking}
+                    />
                   <CustomerCare />
                 </aside>
               </div>
@@ -170,6 +273,7 @@ class ProductDetails extends Component {
 
 export default connect(
   state => ({
-    productDetails: state.productDetails
+    productDetails: state.productDetails,
+    booking: state.booking
   })
 )(ProductDetails);

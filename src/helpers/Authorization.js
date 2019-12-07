@@ -25,8 +25,8 @@ const Authorization = () => {
   const getAuthUser = () => {
     try {
       const ls = localStorage.getItem("auth_user");
-      const auth = JSON.parse(ls).auth_user;
-      return auth;
+      const auth = JSON.parse(ls);
+      return auth.token;
     }catch(error) {
       return {};
     }

@@ -11,7 +11,7 @@ export function* _getProducts(payload) {
     url: BACKEND_URL + payload.path
   };
   try {
-    var response = yield call(async () => {
+    const response = yield call(async () => {
       const res = await axios(config);
       return res;
     })
@@ -35,7 +35,7 @@ export function* _login(payload) {
     url: BACKEND_URL + payload.path
   };
   try {
-    var response = yield call(async () => {
+    const response = yield call(async () => {
       const res = await axios(config);
       return res;
     });
@@ -74,7 +74,7 @@ export function* _register(payload) {
     url: BACKEND_URL + payload.path
   };
   try {
-    var response = yield call(async () => {
+    const response = yield call(async () => {
       const res = await axios(config);
       return res;
     });
@@ -113,7 +113,7 @@ export function* _getProductDetails(payload) {
     url: BACKEND_URL + payload.path
   };
   try {
-    var response = yield call(async () => {
+    const response = yield call(async () => {
       const res = await axios(config);
       return res;
     });
@@ -137,7 +137,7 @@ export function* _getAds(payload) {
     url: BACKEND_URL + payload.path
   };
   try {
-    var response = yield call(async () => {
+    const response = yield call(async () => {
       const res = await axios(config);
       return res;
     });
@@ -152,5 +152,50 @@ export function* _getAds(payload) {
   }
   yield put({
     type: actionTypes.GET_ADS_RESET
+  });
+};
+
+export function* _booking(payload) {
+  let formData = new FormData();
+  formData.append("booking[package_id]", payload.data.package_id);
+  formData.append("booking[person]", payload.data.person);
+  formData.append("booking[departure_date]", payload.data.departure_date);
+  formData.append("booking[voucher_id]", payload.data.voucher_id);
+  formData.append("booking[price]", payload.data.price);
+  const config = {
+    ...payload.config,
+    url: BACKEND_URL + payload.path,
+    data: formData
+  };
+  try {
+    const response = yield call(async () => {
+      const res = await axios(config);
+      return res;
+    });
+    yield put({
+      type: actionTypes.CREATE_BOOKING_SUCCESS
+    });
+  }catch (error) {
+    if (error.response) {
+      if (error.response.status === 500) {
+        yield put({
+          type: actionTypes.CREATE_BOOKING_ERROR,
+          message: "Sesi anda telah berakhir, silahkan login kembali."
+        });
+      }else{
+        yield put({
+          type: actionTypes.CREATE_BOOKING_ERROR,
+          message: "Server sedang sibuk!"
+        });
+      }
+    }else{
+      yield put({
+        type: actionTypes.CREATE_BOOKING_ERROR,
+        message: "Tidak dapat terhubung ke server!"
+      })
+    }
+  }
+  yield put({
+    type: actionTypes.CREATE_BOOKING_RESET
   });
 };
