@@ -330,7 +330,7 @@ a.btn_full:hover, .btn_full:hover {
   background: #333;
 }
 
-a {
+a, button {
   &.btn_full_outline {
     border: none;
     font-family: inherit;
