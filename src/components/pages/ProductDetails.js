@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import "react-tabs/style/react-tabs.css";
+import "../../assets/css/product_details.scss";
 import { connect } from "react-redux";
 import { GET_PRODUCT_DETAILS_REQUEST, CREATE_BOOKING_REQUEST } from "../../helpers/constant";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import moment from "moment";
-import Authorization from "../../helpers/Authorization";
+import ImageZoom from 'react-medium-image-zoom'
 
+import Authorization from "../../helpers/Authorization";
 import BookingForm from "../shared/BookingForm";
 import CustomerCare from "../shared/CustomerCare";
-import jwtDecode from "jwt-decode";
+import Breadcrumb from "../shared/Breadcrumb";
 
 const initialState = {
   package_id: "",
@@ -131,23 +133,12 @@ class ProductDetails extends Component {
       } else {
         return(
           <main>
-            <div id="position">
-              <div className="container">
-                <ul>
-                  <li><a href="#">Home</a>
-                  </li>
-                  <li><a href="#">Category</a>
-                  </li>
-                  <li>Page active</li>
-                </ul>
-              </div>
-            </div>
-            {/* End Position */}
-
-            {/* End Map */}
+            <Breadcrumb />
             <div className="container margin_60">
               <div className="row">
                 <div className="col-lg-8" id="single_tour_desc">
+                  <h1>{data.name}</h1>
+                  <img src={data.image_path} alt={data.name} className="img-fluid styled mb-4" />
                   <Tabs>
                     <TabList>
                       {
@@ -163,15 +154,44 @@ class ProductDetails extends Component {
                         <TabPanel key={pack.id}>
                           <div id="single_tour_feat">
                             <ul>
-                              <li><i className="icon_set_1_icon-4" />Museum</li>
-                              <li><i className="icon_set_1_icon-83" />3 Hours</li>
-                              <li><i className="icon_set_1_icon-13" />Accessibiliy</li>
-                              <li><i className="icon_set_1_icon-82" />144 Likes</li>
-                              <li><i className="icon_set_1_icon-22" />Pet allowed</li>
-                              <li><i className="icon_set_1_icon-97" />Audio guide</li>
-                              <li><i className="icon_set_1_icon-29" />Tour guide</li>
+                              <li>
+                                <i className="icon_set_1_icon-4" />
+                                {data.category ? data.category.name : 'Semua Kategori'}
+                              </li>
+                              <li>
+                                <i className="icon_set_1_icon-83" />
+                                {pack.duration_trip} Hari
+                              </li>
+                              <li>
+                                <i className="icon_set_1_icon-30" />
+                                Min. {pack.min_person} orang
+                              </li>
+                              <li>
+                                <i className="icon_set_1_icon-82" />
+                                144 Likes
+                              </li>
+                              <li>
+                                <i className="icon_set_1_icon-18" />
+                                Recommended
+                              </li>
+                              <li>
+                                <i className="icon_set_1_icon-89" />
+                                24/7 Servis Bantuan
+                              </li>
                             </ul>
                           </div>
+
+                          <div className="row">
+                            <div className="col-lg-3">
+                              <h3>Harga</h3>
+                            </div>
+                            <div className="col-lg-9">
+                              <h4>RP {parseFloat(pack.normal_price).toLocaleString('id')}/pax</h4>
+                              <p>Down Payment = RP {parseFloat(pack.down_payment).toLocaleString('id')}</p>
+                            </div>
+                          </div>
+                          
+                          <hr />
 
                           <div className="row">
                             <div className="col-lg-3">
@@ -181,76 +201,56 @@ class ProductDetails extends Component {
                                  dangerouslySetInnerHTML={{ __html: pack.description }}
                             />
                           </div>
+                          
                           <hr />
+
+                          <div className="row">
+                            <div className="col-lg-3">
+                              <h3>Rencana Perjalanan</h3>
+                            </div>
+                            <div className="col-lg-9">
+                              <ul className="cbp_tmtimeline">
+                                {
+                                  pack.package_details.length > 0 &&
+                                  pack.package_details.map(package_detail => (
+                                    <li>
+                                      <div className="cbp_tmicon timeline_icon_point" />
+                                      <div className="cbp_tmlabel">
+                                        <div className="row">
+                                          <div className="col-lg-6">
+                                            <h2>
+                                              <span>Hari ke</span>
+                                              {package_detail.day}
+                                            </h2>
+                                            <p>{package_detail.description}</p>
+                                          </div>
+                                          <div className="col-lg-6">
+                                            <ImageZoom
+                                              image={{
+                                                src: package_detail.image_path,
+                                                alt: package_detail.day,
+                                                className: "img-fluid"
+                                              }}
+                                              zoomImage={{
+                                                src: package_detail.image_path,
+                                                alt: package_detail.day
+                                              }}
+                                            />
+                                            {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcToT-aCXNqcYDwgEk0n9TljwgjNLPVDBomczRMLoFf1Em1zUrml" alt={package_detail.day} className="img-fluid" /> */}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  ))
+                                }
+                              </ul>
+                            </div>
+                          </div>
                         </TabPanel>
                       ))
                     }
                   </Tabs>
-
-                  <div className="row">
-                    <div className="col-lg-3">
-                      <h3>Schedule</h3>
-                    </div>
-                    <div className="col-lg-9">
-                      <ul className="cbp_tmtimeline">
-                        <li>
-                          <time className="cbp_tmtime" dateTime="09:30"><span>30 minutes</span> <span>09:30</span>
-                          </time>
-                          <div className="cbp_tmicon timeline_icon_point" />
-                          <div className="cbp_tmlabel">
-                            <div className="float-right d-none d-md-block">Guide <strong>John Doe</strong><img src="img/guide_1.jpg" alt="Image" className="rounded-circle speaker" />
-                            </div>
-                            <h2><span>Lorem ipsum</span>Meeting point</h2>
-                            <p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape radish bush tomato ricebean black-eyed pea maize eggplant. </p>
-                          </div>
-                        </li>
-                        <li>
-                          <time className="cbp_tmtime" dateTime="11:30"><span>2 hours</span> <span>11:30</span>
-                          </time>
-                          <div className="cbp_tmicon timeline_icon_pic" />
-                          <div className="cbp_tmlabel">
-                            <div className="float-right d-none d-md-block">Guide <strong>John Doe</strong><img src="img/guide_2.jpg" alt="Image" className="rounded-circle speaker" />
-                            </div>
-                            <h2><span>Lorem ipsum</span>Exhibitions</h2>
-                            <p>Caulie dandelion maize lentil collard greens radish arugula sweet pepper water spinach kombu courgette lettuce. Celery coriander bitterleaf epazote radicchio shallot winter purslane collard greens spring onion squash lentil. Artichoke salad bamboo shoot black-eyed pea brussels sprout garlic kohlrabi.</p>
-                          </div>
-                        </li>
-                        <li>
-                          <time className="cbp_tmtime" dateTime="13:30"><span>1 hour</span> <span>13:30</span>
-                          </time>
-                          <div className="cbp_tmicon timeline_icon_break" />
-                          <div className="cbp_tmlabel">
-                            <h2><span>Lorem ipsum</span>Lunch and coffee break</h2>
-                            <p>Parsnip lotus root celery yarrow seakale tomato collard greens tigernut epazote ricebean melon tomatillo soybean chicory broccoli beet greens peanut salad. </p>
-                          </div>
-                        </li>
-                        <li>
-                          <time className="cbp_tmtime" dateTime="14:30"><span>2 hours</span> <span>14:30</span>
-                          </time>
-                          <div className="cbp_tmicon timeline_icon_audio" />
-                          <div className="cbp_tmlabel">
-                            <div className="float-right d-none d-md-block">Guide <strong>John Doe</strong><img src="img/guide_1.jpg" alt="Image" className="rounded-circle speaker" />
-                            </div>
-                            <h2><span>Lorem ipsum</span>The auditorium Louvre</h2>
-                            <p>Peanut gourd nori welsh onion rock melon mustard jícama. Desert raisin amaranth kombu aubergine kale seakale brussels sprout pea. Black-eyed pea celtuce bamboo shoot salad kohlrabi leek squash prairie turnip catsear rock melon chard taro broccoli turnip greens. Fennel quandong potato watercress ricebean swiss chard garbanzo. Endive daikon brussels sprout lotus root silver beet epazote melon shallot.</p>
-                          </div>
-                        </li>
-                        <li>
-                          <time className="cbp_tmtime" dateTime="16:30"><span>2 hours</span> <span>16:30</span>
-                          </time>
-                          <div className="cbp_tmicon timeline_icon_pic" />
-                          <div className="cbp_tmlabel">
-                            <div className="float-right d-none d-md-block">Guide <strong>John Doe</strong><img src="img/guide_2.jpg" alt="Image" className="rounded-circle speaker" />
-                            </div>
-                            <h2><span>Lorem ipsum</span>Modern art</h2>
-                            <p>Parsley amaranth tigernut silver beet maize fennel spinach. Ricebean black-eyed pea maize scallion green bean spinach cabbage jícama bell pepper carrot onion corn plantain garbanzo. Sierra leone bologi komatsuna celery peanut swiss chard silver beet squash dandelion maize chicory burdock tatsoi dulse radish wakame beetroot.</p>
-                          </div>
-                        </li>
-                      </ul>
-
-                    </div>
-                  </div>
-                  <hr />
+                  
                 </div>
                 <aside className="col-lg-4">
                   <BookingForm

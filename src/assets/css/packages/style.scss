@@ -49,7 +49,7 @@ h1, h2, h3 {
 }
 
 h2 span, h3 span, h4 span, h5 span, h6 span {
-  color: #e04f67;
+  color: #ff7f5c;
 }
 
 .box_style_1 h3.inner {
@@ -106,7 +106,7 @@ a.button_intro, .button_intro {
   font-family: inherit;
   font-size: inherit;
   color: #fff !important;
-  background: #e04f67;
+  background: #ff7f5c;
   cursor: pointer;
   padding: 8px 25px;
   display: inline-block;
@@ -126,7 +126,7 @@ a.button_intro, .button_intro {
 
 a.button_intro:hover, .button_intro:hover {
   background: #fff;
-  color: #e04f67 !important;
+  color: #ff7f5c !important;
 }
 
 a.button_intro.outilne, .button_intro.outline {
@@ -138,14 +138,14 @@ a.button_intro.outilne, .button_intro.outline {
 
 a.button_intro:hover, .button_intro:hover {
   background: #fff;
-  color: #e04f67;
+  color: #ff7f5c;
 }
 
 a.button_drop, .button_drop {
   border: none;
   font-family: inherit;
   font-size: inherit;
-  color: #e04f67 !important;
+  color: #ff7f5c !important;
   background: #ededed;
   cursor: pointer;
   padding: 5px 15px !important;
@@ -167,7 +167,7 @@ a.button_drop, .button_drop {
 
 a.button_drop.outilne, .button_drop.outline {
   border: 2px solid #ededed;
-  color: #e04f67;
+  color: #ff7f5c;
   background: none;
   padding: 3px 23px !important;
 }
@@ -209,7 +209,7 @@ a.btn_1.green, .btn_1.green {
 
 a.btn_1.white, .btn_1.white {
   background: #fff;
-  color: #e04f67;
+  color: #ff7f5c;
 }
 
 a.btn_1.white:hover, .btn_1.white a:hover {
@@ -226,8 +226,8 @@ a.btn_1.outline, .btn_1.outiline, input .btn_1.outiline {
 
 a.btn_1.outline:hover, .btn_1.outiline:hover, input .btn_1.outiline:hover {
   color: #fff;
-  background: #e04f67;
-  border: 2px solid #e04f67;
+  background: #ff7f5c;
+  border: 2px solid #ff7f5c;
 }
 
 a.btn_1.medium, .btn_1.medium {
@@ -253,7 +253,7 @@ a {
     font-family: inherit;
     font-size: inherit;
     color: #fff;
-    background: #e04f67;
+    background: #ff7f5c;
     cursor: pointer;
     padding: 12px 20px;
     display: inline-block;
@@ -574,7 +574,7 @@ ul#top_tools {
     color: #fff;
 
     &:hover {
-      color: #e04f67;
+      color: #ff7f5c;
     }
   }
 }
@@ -664,7 +664,7 @@ ul#top_links {
     color: #fff;
 
     &:hover {
-      color: #e04f67;
+      color: #ff7f5c;
     }
   }
 }
@@ -733,9 +733,9 @@ header#plain {
 /* Header  colored*/
 
 header#colored.sticky {
-  background-color: #e04f67;
+  background-color: #ff7f5c;
   padding-bottom: 0;
-  border-bottom: 2px solid #e04f67;
+  border-bottom: 2px solid #ff7f5c;
 
   ul#top_tools a {
     color: #fff;
@@ -756,7 +756,7 @@ header#colored.sticky {
   font-weight: normal;
   text-shadow: none;
   text-transform: none !important;
-  border-top: 2px solid #e04f67;
+  border-top: 2px solid #ff7f5c;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 
@@ -769,7 +769,7 @@ header#colored.sticky {
     width: 0;
     position: absolute;
     pointer-events: none;
-    border-bottom-color: #e04f67;
+    border-bottom-color: #ff7f5c;
     border-width: 7px;
     margin-left: -7px;
   }
@@ -785,7 +785,7 @@ a.cart_bt {
     width: 15px;
     height: 15px;
     display: block;
-    background-color: #e04f67;
+    background-color: #ff7f5c;
     color: #fff;
     text-align: center;
     position: absolute;
@@ -838,7 +838,7 @@ ul#cart_items {
         display: block;
 
         &:hover {
-          color: #e04f67;
+          color: #ff7f5c;
         }
       }
     }
@@ -1059,7 +1059,7 @@ a {
   }
 
   &:hover > a {
-    color: #e04f67;
+    color: #ff7f5c;
   }
 }
 
@@ -1074,7 +1074,7 @@ header {
     }
 
     &:hover > a {
-      color: #e04f67;
+      color: #ff7f5c;
     }
   }
 
@@ -1159,7 +1159,7 @@ a.dropdown-toggle.icon-search {
 
       ul {
         position: absolute;
-        border-top: 2px solid #e04f67;
+        border-top: 2px solid #ff7f5c;
         z-index: 1;
         visibility: hidden;
         left: 3px;
@@ -1182,7 +1182,7 @@ a.dropdown-toggle.icon-search {
       li {
         .menu-wrapper {
           position: absolute;
-          border-top: 2px solid #e04f67;
+          border-top: 2px solid #ff7f5c;
           z-index: 1;
           visibility: hidden;
           left: 3px;
@@ -1252,7 +1252,7 @@ a.dropdown-toggle.icon-search {
 
         &:hover > a {
           background-color: #f9f9f9;
-          color: #e04f67;
+          color: #ff7f5c;
           padding-left: 15px;
         }
       }
@@ -1314,7 +1314,7 @@ a.dropdown-toggle.icon-search {
           width: 0;
           position: absolute;
           pointer-events: none;
-          border-bottom-color: #e04f67;
+          border-bottom-color: #ff7f5c;
           border-width: 7px;
           margin-left: -7px;
         }
@@ -1327,7 +1327,7 @@ a.dropdown-toggle.icon-search {
         li.third-level > a {
           &:hover {
             background-color: #f9f9f9;
-            color: #e04f67;
+            color: #ff7f5c;
             padding-left: 18px;
             opacity: 1;
           }
@@ -1361,21 +1361,21 @@ a.dropdown-toggle.icon-search {
   }
 
   .main-menu ul li a:hover {
-    color: #e04f67 !important;
+    color: #ff7f5c !important;
     background-color: #f9f9f9;
   }
 
   a {
     &.show-submenu {
       &:hover, &:focus {
-        color: #e04f67 !important;
+        color: #ff7f5c !important;
         background-color: #f9f9f9;
       }
     }
 
     &.show-submenu-mega {
       &:hover, &:focus {
-        color: #e04f67 !important;
+        color: #ff7f5c !important;
         background-color: #f9f9f9;
       }
     }
@@ -1419,7 +1419,7 @@ a.dropdown-toggle.icon-search {
     }
 
     a:hover {
-      color: #e04f67 !important;
+      color: #ff7f5c !important;
     }
 
     ul {
@@ -1709,7 +1709,7 @@ a.dropdown-toggle.icon-search {
 
     &:hover {
       background-color: #f9f9f9;
-      color: #e04f67;
+      color: #ff7f5c;
     }
 
     i {
@@ -2287,7 +2287,7 @@ a#filters_col_bt {
 /*-------- 2.3 Single tour page --------*/
 
 #Img_carousel .sp-selected-thumbnail {
-  border-bottom: 2px solid #e04f67;
+  border-bottom: 2px solid #ff7f5c;
 }
 
 .parallax-content-2 {
@@ -2410,7 +2410,7 @@ a#filters_col_bt {
     }
 
     tr.total {
-      color: #e04f67;
+      color: #ff7f5c;
       font-size: 16px;
       font-weight: bold;
       text-transform: uppercase;
@@ -2614,7 +2614,7 @@ a#filters_col_bt {
           content: ' ';
           width: 14px;
           height: 14px;
-          background: #e04f67;
+          background: #ff7f5c;
           border-radius: 50px;
           position: absolute;
           top: 8px;
@@ -2683,7 +2683,7 @@ a#filters_col_bt {
 
   h3 {
     strong {
-      background-color: #e04f67;
+      background-color: #ff7f5c;
       text-align: center;
       width: 40px;
       height: 40px;
@@ -2899,7 +2899,7 @@ input.qty2 {
   position: relative;
   padding: 11% 100px 10% 100px;
   height: 400px;
-  background-color: #e04f67;
+  background-color: #ff7f5c;
   color: #fff;
   font-size: 14px;
 
@@ -2967,7 +2967,7 @@ input.qty2 {
 }
 
 #directions {
-  background-color: #e04f67;
+  background-color: #ff7f5c;
   padding: 22px 0;
 }
 
@@ -3366,7 +3366,7 @@ ul.list_icons {
     font-family: "fontello";
     font-size: 14px;
     content: "\ecea";
-    color: #e04f67;
+    color: #ff7f5c;
     position: absolute;
     left: 15px;
     top: 7px;
@@ -3656,7 +3656,7 @@ ul {
         font-family: "icon_set_1";
         font-size: 14px;
         content: "\6c";
-        color: #e04f67;
+        color: #ff7f5c;
         position: absolute;
         left: 0;
         top: 0;
@@ -3677,7 +3677,7 @@ ul {
       margin-bottom: 10px;
 
       span {
-        background-color: #e04f67;
+        background-color: #ff7f5c;
         color: #fff;
         position: absolute;
         left: 0;
@@ -4243,7 +4243,7 @@ ul {
 }
 
 .tooltip-back {
-  background: #e04f67;
+  background: #ff7f5c;
   font-size: 12px;
   line-height: 14px;
   padding-top: 25px;
@@ -4385,7 +4385,7 @@ ul {
     font-size: 32px;
     margin: 0;
     padding: 0;
-    color: #e04f67;
+    color: #ff7f5c;
     font-family: "Gochi Hand", cursive;
 
     span {
@@ -4400,7 +4400,7 @@ ul {
   }
 
   &.colored {
-    background: #e04f67 url(../../img/packages/banner_bg_colored.png) no-repeat center bottom;
+    background: #ff7f5c url(../../img/packages/banner_bg_colored.png) no-repeat center bottom;
     color: #fff;
 
     h4 {
@@ -4536,7 +4536,7 @@ ul {
 
 .card-header a {
   .indicator {
-    color: #e04f67;
+    color: #ff7f5c;
   }
 
   &:hover .indicator {
@@ -5255,7 +5255,7 @@ ul.plan-features {
 
         &:hover, &.active {
           background-color: #fff;
-          color: #e04f67;
+          color: #ff7f5c;
         }
 
         i {
@@ -5585,7 +5585,7 @@ footer {
   font-weight: normal;
   text-shadow: none;
   text-transform: none !important;
-  border-top: 2px solid #e04f67;
+  border-top: 2px solid #ff7f5c;
 
   &:before {
     bottom: 100%;
@@ -5596,7 +5596,7 @@ footer {
     width: 0;
     position: absolute;
     pointer-events: none;
-    border-bottom-color: #e04f67;
+    border-bottom-color: #ff7f5c;
     border-width: 7px;
     margin-left: -7px;
   }
@@ -5620,7 +5620,7 @@ footer {
 
         &:hover {
           background-color: #f9f9f9;
-          color: #e04f67 !important;
+          color: #ff7f5c !important;
           padding-left: 15px;
         }
       }
@@ -5728,7 +5728,7 @@ a.btn_infobox_detail:before, .btn_infobox_get_directions:before, a.btn_infobox_p
 .btn_infobox_get_directions, a.btn_infobox_phone {
   border: none;
   display: inline-block;
-  color: #e04f67;
+  color: #ff7f5c;
   background: none;
   cursor: pointer;
   margin: 0 5px;
@@ -6002,7 +6002,7 @@ main {
     outline: none;
 
     &:hover {
-      color: #e04f67;
+      color: #ff7f5c;
     }
   }
 
@@ -6015,7 +6015,7 @@ main {
     color: #c6c6c6;
 
     &:hover {
-      color: #e04f67;
+      color: #ff7f5c;
       cursor: pointer;
     }
   }
@@ -6060,11 +6060,11 @@ div.datedropper {
 
   &.primary {
     &:before, .pick-submit, .pick-lg-b .pick-sl:before, .pick-m, .pick-lg-h {
-      background-color: #e04f67 !important;
+      background-color: #ff7f5c !important;
     }
 
     .pick-y.pick-jump, .pick li span, .pick-lg-b .pick-wke, .pick-btn {
-      color: #e04f67;
+      color: #ff7f5c;
     }
   }
 }
@@ -6252,7 +6252,7 @@ div.datedropper {
 
       a {
         &:hover {
-          color: #e04f67;
+          color: #ff7f5c;
         }
 
         small {
@@ -6296,7 +6296,7 @@ div.datedropper {
 
       &:hover {
         h3 {
-          color: #e04f67;
+          color: #ff7f5c;
         }
 
         background-color: #f8f8f8;
@@ -6772,7 +6772,7 @@ a.social_bt {
 }
 
 .default {
-  background: #e04f67;
+  background: #ff7f5c;
 }
 
 .aqua {

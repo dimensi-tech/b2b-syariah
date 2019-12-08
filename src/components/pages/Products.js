@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import "../../assets/css/products.scss";
 import { connect } from "react-redux";
 import { GET_PRODUCTS_REQUEST } from "../../helpers/constant";
 import { Link } from "react-router-dom";
@@ -6,7 +7,6 @@ import Filter from "../shared/Filter";
 import Breadcrumb from "../shared/Breadcrumb";
 import Sort from "../shared/Sort";
 import CustomerCare from "../shared/CustomerCare";
-import "../../assets/css/products.scss";
 
 class Products extends Component {
   componentDidMount() {
@@ -110,7 +110,7 @@ class Products extends Component {
                           <div className='price_list'>
                             <div>
                               <p className='package-name'>{product.package && product.package.name}</p>
-                              <p className='package-price'>RP {product.package && parseFloat(product.package.price).toLocaleString()}</p>
+                              <p className='package-price'>RP {product.package && parseFloat(product.package.price).toLocaleString('id')}</p>
                               {/* <span className='normal_price_list'>$99</span> */}
                               <small>Per pax</small>
                               <Link to={`/product/${product.id}`}>
