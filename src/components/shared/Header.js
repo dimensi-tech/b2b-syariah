@@ -14,7 +14,11 @@ class Header extends Component {
       showModal: false,
       displayLogin: true,
       errors: [],
-      success: []
+      success: [],
+      bookingError: {
+        status: false,
+        message: ""
+      }
     };
   };
 
@@ -43,15 +47,19 @@ class Header extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { login, register } = this.props;
-    const { errors, success } = this.state;
+    const { login, register, booking } = this.props;
+    const { errors, success, bookingError } = this.state;
     if (prevProps.login.success !== login.success) {
       if (login.success) {
         this.setState({
           isLoggedIn: true,
           showModal: false,
           errors: [],
-          success: []
+          success: [],
+          bookingError: Object.assign({}, this.state.bookingError, {
+            status: false,
+            message: ""
+          })
         });
       }
     }
@@ -95,6 +103,16 @@ class Header extends Component {
         })
       }
     }
+    if (prevProps.booking.error !== booking.error) {
+      if (booking.error) {
+        this.setState({
+          bookingError: Object.assign({}, bookingError, {
+            status: true,
+            message: booking.message
+          })
+        });
+      }
+    }
   };
 
   _showModal = () => {
@@ -128,7 +146,7 @@ class Header extends Component {
   };
 
   render() {
-    const { isLoggedIn, showModal, displayLogin, success, errors } = this.state;
+    const { isLoggedIn, showModal, displayLogin, success, errors, bookingError } = this.state;
     return (
       <header id='plain'>
         {
@@ -147,6 +165,7 @@ class Header extends Component {
                       submitLogin={this._submitLogin}
                       errors={errors}
                       success={success}
+                      bookingError={bookingError}
                       />
                     :
                     <Register
@@ -170,12 +189,12 @@ class Header extends Component {
                   {
                     isLoggedIn
                     ?
-                    <li onClick={this._logout}>
-                      <a href="#">Sign out</a>
+                    <li name="logout-label-clickable" onClick={this._logout}>
+                      <a href="#">Logout</a>
                     </li>
                     :
-                    <li onClick={this._showModal}>
-                      <a href="#">Sign in</a>
+                    <li name="login-label-clickable" onClick={this._showModal}>
+                      <a href="#">Login</a>
                     </li>
                   }
                   <li><a href="wishlist.html" id="wishlist_link">Wishlist</a></li>
@@ -271,6 +290,7 @@ class Header extends Component {
 export default connect(
   state => ({
     login: state.login,
-    register: state.register
+    register: state.register,
+    booking: state.booking
   })
 )(Header);

@@ -34,7 +34,7 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state;
-    const { errors, success } = this.props;
+    const { errors, success, bookingError } = this.props;
     return (
       <div id='sign-in-dialog' className='zoom-anim-dialog'>
         <div className='small-dialog-header'>
@@ -43,6 +43,7 @@ class Login extends Component {
         </div>
         {errors.map(x => x.type).includes("LOGIN") && <div className="alert-error">{errors.filter(x => x.type === "LOGIN")[0].message}</div>}
         {success.map(x => x.type).includes("REGISTER") && <div className="alert-success">{success.filter(x => x.type === "REGISTER")[0].message}</div>}
+        {bookingError.status && <div className="alert-error">{bookingError.message}</div>}
         <form onSubmit={this._handleSubmit}>
           <div className='sign-in-wrapper'>
             {/* <a href='#0' className='social_bt facebook'>Login with Facebook</a>

@@ -4,13 +4,15 @@ import login from "./login";
 import productDetails from "./productDetails";
 import ads from "./ads";
 import register from "./register";
+import booking from "./booking";
 
 const rootReducer = combineReducers({
     products,
     login,
     productDetails,
     ads,
-    register
+    register,
+    booking
 });
 
 export default rootReducer;
