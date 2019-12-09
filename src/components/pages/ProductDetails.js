@@ -118,6 +118,7 @@ class ProductDetails extends Component {
           },
           selected_index: null
         });
+        this.props.history.push("/booking/" + booking.bookingId);
       }
     }
   };
@@ -190,7 +191,7 @@ class ProductDetails extends Component {
                               <p>Down Payment = RP {parseFloat(pack.down_payment).toLocaleString('id')}</p>
                             </div>
                           </div>
-                          
+
                           <hr />
 
                           <div className="row">
@@ -201,7 +202,7 @@ class ProductDetails extends Component {
                                  dangerouslySetInnerHTML={{ __html: pack.description }}
                             />
                           </div>
-                          
+
                           <hr />
 
                           <div className="row">
@@ -213,7 +214,7 @@ class ProductDetails extends Component {
                                 {
                                   pack.package_details.length > 0 &&
                                   pack.package_details.map(package_detail => (
-                                    <li>
+                                    <li key={package_detail.id}>
                                       <div className="cbp_tmicon timeline_icon_point" />
                                       <div className="cbp_tmlabel">
                                         <div className="row">
@@ -222,7 +223,7 @@ class ProductDetails extends Component {
                                               <span>Hari ke</span>
                                               {package_detail.day}
                                             </h2>
-                                            <p>{package_detail.description}</p>
+                                            <p dangerouslySetInnerHTML={{ __html: package_detail.description }} />
                                           </div>
                                           <div className="col-lg-6">
                                             <ImageZoom
@@ -250,7 +251,7 @@ class ProductDetails extends Component {
                       ))
                     }
                   </Tabs>
-                  
+
                 </div>
                 <aside className="col-lg-4">
                   <BookingForm

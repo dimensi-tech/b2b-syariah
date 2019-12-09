@@ -5,6 +5,7 @@ import productDetails from "./productDetails";
 import ads from "./ads";
 import register from "./register";
 import booking from "./booking";
+import bookingDetails from "./bookingDetails";
 
 const rootReducer = combineReducers({
     products,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     productDetails,
     ads,
     register,
-    booking
+    booking,
+    bookingDetails
 });
 
 export default rootReducer;

@@ -1,45 +1,42 @@
 import * as actionTypes from "../helpers/constant";
 
 let initialState = {
+  data: {},
   success: false,
   processing: false,
-  error: false,
-  message: "",
-  bookingId: null
+  error: false
 };
 
-export default function booking(state = initialState, action) {
+export default function bookingDetails(state = initialState, action) {
   switch (action.type) {
 
-    case actionTypes.CREATE_BOOKING_REQUEST:
+    case actionTypes.GET_BOOKING_DETAILS_REQUEST:
     return Object.assign({}, state, {
       success: false,
       processing: true,
       error: false
     });
 
-    case actionTypes.CREATE_BOOKING_SUCCESS:
+    case actionTypes.GET_BOOKING_DETAILS_SUCCESS:
     return Object.assign({}, state, {
       success: true,
       processing: false,
       error: false,
-      bookingId: action.bookingId
+      data: action.data
     });
 
-    case actionTypes.CREATE_BOOKING_ERROR:
+    case actionTypes.GET_BOOKING_DETAILS_ERROR:
     return Object.assign({}, state, {
       success: false,
       processing: false,
       error: true,
-      message: action.message
     });
 
-    case actionTypes.CREATE_BOOKING_RESET:
+    case actionTypes.GET_BOOKING_DETAILS_RESET:
     return Object.assign({}, state, {
       success: false,
       processing: false,
-      error: false,
-      bookingId: null
+      error: false
     });
 
     default:
