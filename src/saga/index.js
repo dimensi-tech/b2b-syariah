@@ -5,7 +5,8 @@ import {
     getProductDetails,
     getAds,
     register,
-    booking
+    booking,
+    bookingDetails
 } from "./watcher";
 
 export default function* rootSaga() {
@@ -15,6 +16,7 @@ export default function* rootSaga() {
         getProductDetails(),
         getAds(),
         register(),
-        booking()
+        booking(),
+        bookingDetails()
     ]);
 };

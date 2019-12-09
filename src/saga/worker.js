@@ -173,7 +173,8 @@ export function* _booking(payload) {
       return res;
     });
     yield put({
-      type: actionTypes.CREATE_BOOKING_SUCCESS
+      type: actionTypes.CREATE_BOOKING_SUCCESS,
+      bookingId: response.data.id
     });
   }catch (error) {
     if (error.response) {
@@ -197,5 +198,29 @@ export function* _booking(payload) {
   }
   yield put({
     type: actionTypes.CREATE_BOOKING_RESET
+  });
+};
+
+export function* _getBookingDetails(payload) {
+  const config = {
+    ...payload.config,
+    url: BACKEND_URL + payload.path
+  };
+  try {
+    const response = yield call(async () => {
+      const res = await axios(config);
+      return res;
+    });
+    yield put({
+      type: actionTypes.GET_BOOKING_DETAILS_SUCCESS,
+      data: response.data
+    });
+  }catch (error) {
+    yield put({
+      type: actionTypes.GET_BOOKING_DETAILS_ERROR
+    });
+  }
+  yield put({
+    type: actionTypes.GET_BOOKING_DETAILS_RESET
   });
 };
