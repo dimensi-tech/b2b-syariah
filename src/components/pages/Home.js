@@ -10,6 +10,7 @@ import Search from '../shared/Search'
 import PromoProduct from '../shared/PromoProduct'
 import Slider from '../shared/Slider'
 
+import { isMobileOnly, isMobile } from 'react-device-detect';
 import { connect } from 'react-redux'
 import { GET_PRODUCTS_REQUEST, GET_ADS_REQUEST } from '../../helpers/constant'
 
@@ -52,13 +53,14 @@ class Home extends Component {
                 data={ads}
                 options={{
                   autoPlay: 5000,
-                  pauseAutoPlayOnHover: true
+                  pauseAutoPlayOnHover: true,
+                  contain: isMobile ? true : false
                 }}>
                 {
                   ads.data.length > 0 &&
                   ads.data.map((ad, index) => (
                     <div key={index}
-                         style={{height: 300, width: 'calc(70% + 20px)'}}
+                         style={{height: isMobileOnly ? 150 : 300, width: isMobile ? '100%' : 'calc(70% + 20px)'}}
                          className='ads-item'
                     >
                       <div className='ads-content'>

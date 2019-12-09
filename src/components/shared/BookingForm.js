@@ -57,7 +57,7 @@ class BookingForm extends Component {
             <div className="form-group">
               <label>
                 <i className="icon-users-1 mr-2" />
-                Jumlah Orang {index !== null && `(${data[index].min_person} - ${data[index].max_person} orang)`}
+                Jumlah Orang {index && `(${data[index].min_person} - ${data[index].max_person} orang)`}
               </label>
               <input
                 className="time-pick form-control"
@@ -65,10 +65,10 @@ class BookingForm extends Component {
                 name="person"
                 onChange={this._onChange}
                 value={formControl.person}
-                disabled={index === null}
-                min={index === null ? 1 : data[index].min_person}
-                max={index === null ? 1 : data[index].max_person}
-                ref={input => this.personCount = input }
+                disabled={!index}
+                min={index ? data[index].min_person : 1}
+                max={index ? data[index].max_person : 1}
+                ref={input => this.personCount = input}
                 onFocus={this._blurThis}
                 />
             </div>
@@ -81,7 +81,7 @@ class BookingForm extends Component {
               </label>
               <select name="departure_date" value={formControl.departure_date} onChange={this._onChange} disabled={index === null} className="form-control">
                 {
-                  index !== null &&
+                  index &&
                   data[index].available_date.map((value, i) => (
                     <option value={moment(new Date(value)).format("DD-MM-YYYY")} key={i}>{moment(new Date(value)).format("DD-MMM-YYYY")}</option>
                   ))
@@ -97,14 +97,14 @@ class BookingForm extends Component {
               </label>
               <div className="d-flex align-items-center">
                 <input className="form-control mr-2" type="text" />
-                <a className="" href="/">Gunakan</a>
+                <button className="btn_full_outline" style={{padding: '8px'}}>Gunakan</button>
               </div>
             </div>
           </div>
         </div>
         <br />
         {
-          index !== null &&
+          index &&
           <table className="table table_summary">
             <tbody>
               <tr className="total text-center">
@@ -114,10 +114,10 @@ class BookingForm extends Component {
               </tr>
               <tr>
                 <td>
-                  {`${index !== null && data[index].name}`}
+                  {`${index && data[index].name}`}
                 </td>
                 <td className="text-right nowrap">
-                  Rp {`${index !== null && parseInt(data[index].normal_price, 10).toLocaleString()}`}/pax
+                  Rp {`${index && parseInt(data[index].normal_price, 10).toLocaleString()}`}/pax
                 </td>
               </tr>
               <tr>
@@ -138,17 +138,15 @@ class BookingForm extends Component {
               </tr>
               <tr className="total">
                 <td colSpan="2" className="text-right">
-                  <p>Rp {`${index !== null && parseInt(data[index].normal_price).toLocaleString()}`}</p>
+                  <p>
+                    Rp {`${index && parseFloat(data[index].normal_price * formControl.person).toLocaleString('id')}`}
+                  </p>
                 </td>
               </tr>
             </tbody>
           </table>
         }
         <button className="btn_full" onClick={this._submitBooking}>Pesan</button>
-        <a className="btn_full_outline" href="#">
-          <i className=" icon-heart" />
-          Tambah ke wishlist
-        </a>
       </div>
     )
   }

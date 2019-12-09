@@ -28,5 +28,14 @@ export const ROUTE = [
       loader: () => import("./components/pages/ProductDetails"),
       loading: () => <div>Loading..</div>
     })
+  },
+  {
+    private: true,
+    path: "/booking/:product_id",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/pages/BookingDetails"),
+      loading: () => <div>Loading..</div>
+    })
   }
 ];
