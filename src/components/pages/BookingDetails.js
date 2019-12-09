@@ -40,7 +40,6 @@ class BookingDetails extends Component {
 
   render() {
     const { data } = this.props.bookingDetails;
-    console.log(data)
     if (!Object.keys(data).length) {
       return <div>Loading ..</div>
     } else {
