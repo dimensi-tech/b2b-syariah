@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../../assets/css/packages/tabs.scss";
 import "../../assets/css/booking_list.scss";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { GET_BOOKING_LIST_REQUEST } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
@@ -80,7 +81,9 @@ class BookingList extends Component {
                       </div>
                       <div className="col-lg-2 col-md-2">
                         <div className="booking_buttons">
-                          <a href="#0" className="btn_full_outline">Lihat detail pesanan</a>
+                          <Link to={`booking/${value.id}`} target="_blank" className="btn_full_outline">
+                            Lihat detail pesanan
+                          </Link>
                         </div>
                       </div>
                     </div>
