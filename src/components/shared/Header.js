@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 import { connect } from "react-redux";
 import { LOGIN_REQUEST, REGISTER_REQUEST } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
+import jwtDecode from "jwt-decode";
+import { loginSuccessToast, logoutSuccessToast } from '../static/Toast';
 
 class Header extends Component {
   constructor(props) {
@@ -61,6 +63,7 @@ class Header extends Component {
             message: ""
           })
         });
+        loginSuccessToast()
       }
     }
     if (prevProps.login.error !== login.error) {
@@ -135,6 +138,7 @@ class Header extends Component {
     this.setState({
       isLoggedIn: false
     });
+    logoutSuccessToast()
   };
 
   _switchView = () => {
@@ -147,6 +151,7 @@ class Header extends Component {
 
   render() {
     const { isLoggedIn, showModal, displayLogin, success, errors, bookingError } = this.state;
+    const token = Authorization().getAuthUser();
     return (
       <header id='plain'>
         {
@@ -189,15 +194,20 @@ class Header extends Component {
                   {
                     isLoggedIn
                     ?
-                    <li name="logout-label-clickable" onClick={this._logout}>
-                      <a href="#">Logout</a>
-                    </li>
+                    <Fragment>
+                      {
+                        typeof(token) === "string" &&
+                        <li><i class="icon-user-3"></i>{jwtDecode(token).customer_email}</li>
+                      }
+                      <li name="logout-label-clickable" onClick={this._logout}>
+                        <a href="#">Logout</a>
+                      </li>
+                    </Fragment>
                     :
                     <li name="login-label-clickable" onClick={this._showModal}>
                       <a href="#">Login</a>
                     </li>
                   }
-                  <li><a href="wishlist.html" id="wishlist_link">Wishlist</a></li>
                 </ul>
               </div>
             </div>

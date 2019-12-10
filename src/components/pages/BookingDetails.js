@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { GET_BOOKING_DETAILS_REQUEST, ID_MONTH } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
+import Preloader from "../static/Preloader";
 
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
 
@@ -34,7 +35,7 @@ class BookingDetails extends Component {
   render() {
     const { data } = this.props.bookingDetails;
     if (!Object.keys(data).length) {
-      return <div>Loading ..</div>
+      return <Preloader />
     } else {
       if (data.success === false) {
         return <div>Product not found</div>
