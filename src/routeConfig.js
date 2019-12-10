@@ -1,5 +1,6 @@
 import React from "react";
 import Loadable from "react-loadable";
+import Preloader from "./components/static/Preloader";
 
 export const ROUTE = [
   {
@@ -8,7 +9,7 @@ export const ROUTE = [
     exact: true,
     component: Loadable({
       loader: () => import("./components/pages/Home"),
-      loading: () => <div>Loading..</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -17,7 +18,7 @@ export const ROUTE = [
     exact: true,
     component: Loadable({
       loader: () => import("./components/pages/Products"),
-      loading: () => <div>Loading..</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -26,7 +27,7 @@ export const ROUTE = [
     exact: true,
     component: Loadable({
       loader: () => import("./components/pages/ProductDetails"),
-      loading: () => <div>Loading..</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -35,7 +36,7 @@ export const ROUTE = [
     exact: true,
     component: Loadable({
       loader: () => import("./components/pages/BookingDetails"),
-      loading: () => <div>Loading..</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -44,7 +45,7 @@ export const ROUTE = [
     exact: true,
     component: Loadable({
       loader: () => import("./components/pages/BookingList"),
-      loading: () => <div>Loading..</div>
+      loading: () => <Preloader />
     })
   }
 ];

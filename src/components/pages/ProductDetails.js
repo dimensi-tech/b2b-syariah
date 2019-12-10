@@ -11,6 +11,7 @@ import Authorization from "../../helpers/Authorization";
 import BookingForm from "../shared/BookingForm";
 import CustomerCare from "../shared/CustomerCare";
 import Breadcrumb from "../shared/Breadcrumb";
+import Preloader from "../static/Preloader";
 
 const initialState = {
   package_id: "",
@@ -127,7 +128,7 @@ class ProductDetails extends Component {
     const { data } = this.props.productDetails;
     const { formControl, selected_index } = this.state;
     if (!Object.keys(data).length) {
-      return <div>Loading ..</div>
+      return <Preloader />
     } else {
       if (data.success === false) {
         return <div>Product not found</div>
