@@ -8,13 +8,6 @@ import Authorization from "../../helpers/Authorization";
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
 
 class BookingDetails extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loading: true
-    };
-  };
-
   componentDidMount() {
     const id = this.props.match.params.product_id;
     const { data } = this.props.bookingDetails;

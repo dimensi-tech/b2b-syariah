@@ -224,3 +224,27 @@ export function* _getBookingDetails(payload) {
     type: actionTypes.GET_BOOKING_DETAILS_RESET
   });
 };
+
+export function* _getBookingList(payload) {
+  const config = {
+    ...payload.config,
+    url: BACKEND_URL + payload.path
+  };
+  try {
+    const response = yield call(async () => {
+      const res = await axios(config);
+      return res;
+    });
+    yield put({
+      type: actionTypes.GET_BOOKING_LIST_SUCCESS,
+      data: response.data
+    });
+  }catch (error) {
+    yield put({
+      type: actionTypes.GET_BOOKING_LIST_ERROR
+    });
+  }
+  yield put({
+    type: actionTypes.GET_BOOKING_LIST_RESET
+  });
+};

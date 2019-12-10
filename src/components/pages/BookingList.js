@@ -1,9 +1,33 @@
 import React, { Component } from "react";
 import "../../assets/css/packages/tabs.scss";
 import "../../assets/css/booking_list.scss";
+import { connect } from "react-redux";
+import { GET_BOOKING_LIST_REQUEST } from "../../helpers/constant";
+import Authorization from "../../helpers/Authorization";
+import moment from "moment";
 
 class BookingList extends Component {
+  componentDidMount() {
+    this._getData();
+  };
+
+  _getData = (id) => {
+    const { dispatch } = this.props;
+    const token = Authorization().getAuthUser();
+    dispatch({
+      type: GET_BOOKING_LIST_REQUEST,
+      config: {
+        method: "get",
+        headers: {
+          "Authorization": token
+        }
+      },
+      path: "/bookings/list_bookings"
+    });
+  };
+
   render() {
+    const { data } = this.props.bookingList;
     return (
       <div className="container margin_60">
         <div className="row">
@@ -14,7 +38,7 @@ class BookingList extends Component {
                   <div className="col-lg-3 col-md-3 col-6">
                     <div className="styled-select-filters">
                       <select name="sort_type" id="sort_type">
-                        <option value selected>Sort by type</option>
+                        <option value="">Sort by type</option>
                         <option value="tours">Tours</option>
                         <option value="hotels">Hotels</option>
                         <option value="transfers">Transfers</option>
@@ -24,7 +48,7 @@ class BookingList extends Component {
                   <div className="col-lg-3 col-md-3 col-6">
                     <div className="styled-select-filters">
                       <select name="sort_date" id="sort_date">
-                        <option value selected>Sort by date</option>
+                        <option value="">Sort by date</option>
                         <option value="oldest">Oldest</option>
                         <option value="recent">Recent</option>
                       </select>
@@ -32,102 +56,37 @@ class BookingList extends Component {
                   </div>
                 </div>
               </div>
-              <div className="strip_booking">
-                <div className="row">
-                  <div className="col-lg-2 col-md-2">
-                    <div className="date">
-                      <span className="month">Dec</span>
-                      <span className="day"><strong>23</strong>2019</span>
+              {data.length === 0 && <div>Loading..</div>}
+              {data.success === false && <div>Data not found!</div>}
+              {
+                data.length > 0 &&
+                data.map((value, index) => (
+                  <div key={index} className="strip_booking">
+                    <div className="row">
+                      <div className="col-lg-2 col-md-2">
+                        <div className="date">
+                          <span className="month">{moment(value.departure_date).format("MMM")}</span>
+                          <span className="day"><strong>{moment(value.departure_date).format("DD")}</strong>{moment(value.departure_date).format("YYYY")}</span>
+                        </div>
+                      </div>
+                      <div className="col-lg-5 col-md-5">
+                        <h3 className="tours_booking">{value.product.name}<span>{value.package.name}</span></h3>
+                      </div>
+                      <div className="col-lg-3 col-md-3">
+                        <ul className="info_booking">
+                          <li><strong>ID Pesanan</strong> {value.id}</li>
+                          <li><strong>Status Pesanan</strong>Menunggu Pembayaran</li>
+                        </ul>
+                      </div>
+                      <div className="col-lg-2 col-md-2">
+                        <div className="booking_buttons">
+                          <a href="#0" className="btn_full_outline">Lihat detail pesanan</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-lg-5 col-md-5">
-                    <h3 className="tours_booking">HAJI<span>Gold</span></h3>
-                  </div>
-                  <div className="col-lg-3 col-md-3">
-                    <ul className="info_booking">
-                      <li><strong>ID Pesanan</strong> 23442</li>
-                      <li><strong>Status Pesanan</strong>Menunggu Pembayaran</li>
-                    </ul>
-                  </div>
-                  <div className="col-lg-2 col-md-2">
-                    <div className="booking_buttons">
-                      <a href="#0" className="btn_full_outline">Lihat detail pesanan</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="strip_booking">
-                <div className="row">
-                  <div className="col-lg-2 col-md-2">
-                    <div className="date">
-                      <span className="month">Dec</span>
-                      <span className="day"><strong>27</strong>2019</span>
-                    </div>
-                  </div>
-                  <div className="col-lg-5 col-md-5">
-                    <h3 className="tours_booking">TURKI<span>TURKI EXPRESS TOUR</span></h3>
-                  </div>
-                  <div className="col-lg-3 col-md-3">
-                    <ul className="info_booking">
-                      <li><strong>ID Pesanan</strong> 23442</li>
-                      <li><strong>Status Pesanan</strong>Menunggu Pembayaran</li>
-                    </ul>
-                  </div>
-                  <div className="col-lg-2 col-md-2">
-                    <div className="booking_buttons">
-                      <a href="#0" className="btn_full_outline">Lihat detail pesanan</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="strip_booking">
-                <div className="row">
-                  <div className="col-lg-2 col-md-2">
-                    <div className="date">
-                      <span className="month">Dec</span>
-                      <span className="day"><strong>28</strong>2019</span>
-                    </div>
-                  </div>
-                  <div className="col-lg-5 col-md-5">
-                    <h3 className="tours_booking">Tour Eiffel<span>TURKI EXPRESS TOUR</span></h3>
-                  </div>
-                  <div className="col-lg-3 col-md-3">
-                    <ul className="info_booking">
-                      <li><strong>ID Pesanan</strong> 23442</li>
-                      <li><strong>Status Pesanan</strong>Menunggu Pembayaran</li>
-                    </ul>
-                  </div>
-                  <div className="col-lg-2 col-md-2">
-                    <div className="booking_buttons">
-                      <a href="#0" className="btn_full_outline">Lihat detail pesanan</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="strip_booking">
-                <div className="row">
-                  <div className="col-lg-2 col-md-2">
-                    <div className="date">
-                      <span className="month">Dec</span>
-                      <span className="day"><strong>30</strong>2019</span>
-                    </div>
-                  </div>
-                  <div className="col-lg-5 col-md-5">
-                    <h3 className="tours_booking">Orly Airport<span>TURKI EXPRESS TOUR</span></h3>
-                  </div>
-                  <div className="col-lg-3 col-md-3">
-                    <ul className="info_booking">
-                      <li><strong>ID Pesanan</strong> 23442</li>
-                      <li><strong>Status Pesanan</strong>Menunggu Pembayaran</li>
-                    </ul>
-                  </div>
-                  <div className="col-lg-2 col-md-2">
-                    <div className="booking_buttons">
-                      <a href="#0" className="btn_full_outline" style={{fontSize: 9}}>Lihat detail pesanan</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                ))
+              }
             </section>
           </div>
         </div>
@@ -136,4 +95,8 @@ class BookingList extends Component {
   }
 }
 
-export default BookingList;
+export default connect(
+  state => ({
+    bookingList: state.bookingList
+  })
+)(BookingList);
