@@ -10,6 +10,7 @@ import { ROUTE } from "./routeConfig";
 import { PrivateRoute, PublicRoute} from "./helpers/Route";
 
 import Header from "./components/shared/Header";
+import Footer from "./components/shared/Footer";
 
 import NotFound from "./components/static/NotFound";
 
@@ -49,6 +50,7 @@ const routing = (
         <Route component={NotFound} />
         <PublicRoute exact={true} path="/" component={PublicRoute} />
       </Switch>
+      <Footer />
     </Router>
   </Provider>
 )

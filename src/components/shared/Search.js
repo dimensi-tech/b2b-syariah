@@ -27,7 +27,7 @@ class Search extends Component {
         <div className='row no-gutters custom-search-input-2'>
           <div className='col-lg-10'>
             <div className='form-group'>
-              <input className='form-control' type='text' placeholder='Abu Dhabi' onChange={this._handleChange} />
+              <input className='form-control' type='text' placeholder='Turki' onChange={this._handleChange} />
               <i className='icon_pin_alt' />
             </div>
           </div>

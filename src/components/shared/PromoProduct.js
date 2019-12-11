@@ -1,46 +1,58 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
 
 class PromoProduct extends Component {
   render() {
-    const {products} = this.props;
+    const { products } = this.props;
+    console.log(products)
+
     return (
       <Fragment>
         <div className='main_title'>
           <h2>Special <span>Promo</span></h2>
-          <p>Quisque at tortor a libero posuere laoreet vitae sed arcu. Curabitur consequat.</p>
+          <p>Penawaran promo istimewa hanya untuk Anda!</p>
         </div>
-        <div className='owl-carousel owl-theme list_carousel add_bottom_30'>
-          {products.length > 0
-            && products.map((product, key) =>
-              <div className='item' key={key}>
-                <div className='tour_container'>
-                  <div className='ribbon_3 popular'><span>Promo</span></div>
-                  <div className='img_container'>
-                    <a href='single_tour.html'>
-                      <img src='https://via.placeholder.com/300' width={800} height={533} className='img-fluid' alt='image' />
-                      <div className="badge_save">Save<strong>20%</strong></div>
-                      <div className='short_info'>
-                        <i className='icon_set_1_icon-44' />Historic Buildings<span className='price'><sup>Rp </sup>2.000.000</span>
+        <div className='add_bottom_30 special-promo-section'>
+          <div className="row">
+            {products.length > 0
+              && products.slice(0, 3).map(product =>
+                <div className="col-lg-4">
+                  <div className='item' key={product.id}>
+                    <div className='tour_container'>
+                      <div className='ribbon_3 top_rated'><span>Promo</span></div>
+                      <div className='img_container'>
+                        <Link to={`/product/${product.id}`}>
+                          <img src={product.image_path} style={{height: 300}} className='img-fluid' alt={`Promo ${product.name}`} />
+                          <div className="badge_save">Save<strong>20%</strong></div>
+                          <div className='short_info'>
+                            <span className='price'>
+                              RP {parseFloat(product.package.price - product.package.price / 100 * 20).toLocaleString('id')}
+                            </span>
+                            <span className='normal_price_in'>RP {parseFloat(product.package.price).toLocaleString('id')}</span>
+                          </div>
+                        </Link>
                       </div>
-                    </a>
-                  </div>
-                  <div className='tour_title'>
-                    <h3>{product.name}</h3>
-                    <div className='rating'>
-                      <i className='icon-smile voted' /><i className='icon-smile voted' /><i className='icon-smile voted' /><i className='icon-smile voted' /><i className='icon-smile' /><small>(75)</small>
-                    </div>
-                    <div className='wishlist'>
-                      <a className='tooltip_flip tooltip-effect-1' href='#!'>+<span className='tooltip-content-flip'><span className='tooltip-back'>Add to wishlist</span></span></a>
+                      <div className='tour_title'>
+                        <h3>{product.name}</h3>
+                        <div className='rating'>
+                          <i className='icon-star voted' />
+                          <i className='icon-star voted' />
+                          <i className='icon-star voted' />
+                          <i className='icon-star voted' />
+                          <i className='icon-star' />
+                          <small>(75)</small>
+                        </div>
+                        <div className='wishlist'>
+                          <a className='tooltip_flip tooltip-effect-1' href='#!'>+<span className='tooltip-content-flip'><span className='tooltip-back'>Add to wishlist</span></span></a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )
-          }
+              )
+            }
+          </div>
         </div>
-        <p className='text-center add_bottom_30'>
-          <a href='all_tours_list.html' className='btn_1'>View all Tours</a>
-        </p>
       </Fragment>
     )
   }
