@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 class PromoProduct extends Component {
   render() {
     const { products } = this.props;
-    console.log(products)
-
     return (
       <Fragment>
         <div className='main_title'>
@@ -16,8 +14,8 @@ class PromoProduct extends Component {
           <div className="row">
             {products.length > 0
               && products.slice(0, 3).map(product =>
-                <div className="col-lg-4">
-                  <div className='item' key={product.id}>
+                <div className="col-lg-4" key={product.id}>
+                  <div className='item'>
                     <div className='tour_container'>
                       <div className='ribbon_3 top_rated'><span>Promo</span></div>
                       <div className='img_container'>

@@ -5820,6 +5820,14 @@ main {
   background-color: #f9f9f9;
   z-index: 2;
   position: relative;
+  &.with-bg {
+    background-color: #FFF;
+    // background-image: url("https://www8.lunapic.com/do-not-link-here-use-hosting-instead/158087486590757652?276816");
+    background-image: url("../../img/main-background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% auto;
+  }
 }
 
 .parallax-content-1 {

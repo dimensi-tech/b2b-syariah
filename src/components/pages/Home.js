@@ -54,13 +54,17 @@ class Home extends Component {
                 options={{
                   autoPlay: 5000,
                   pauseAutoPlayOnHover: true,
+                  pageDots: false,
                   contain: isMobile ? true : false
                 }}>
                 {
                   ads.data.length > 0 &&
                   ads.data.map((ad, index) => (
                     <div key={index}
-                         style={{height: isMobileOnly ? 150 : 300, width: isMobile ? '100%' : 'calc(70% + 20px)'}}
+                         style={{
+                           height: isMobileOnly ? 150 : 450,
+                           width: isMobile ? '100%' : 'calc(70% + 20px)'
+                          }}
                          className='ads-item'
                     >
                       <div className='ads-content'>
@@ -80,7 +84,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <main>
+        <main className="with-bg">
           <div className='white_bg'>
             <div className='container margin_60'>
               <div className='row small-gutters categories_grid'>

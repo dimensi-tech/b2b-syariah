@@ -32,7 +32,7 @@ class Products extends Component {
     const { data } = this.props.products;
     return(
       <Fragment>
-        <main>
+        <main className="with-bg">
           <Breadcrumb />
           <div className='collapse' id='collapseMap'>
             <div id='map' className='map' />
@@ -47,7 +47,7 @@ class Products extends Component {
                 <CustomerCare />
               </aside>
               <div className='col-lg-9'>
-                <Sort />
+                {/* <Sort /> */}
                 {
                   data.length > 0 &&
                   data.map(product => (
@@ -125,7 +125,6 @@ class Products extends Component {
                     </div>
                   ))
                 }
-                <hr />
                 <nav aria-label='Page navigation'>
                   <ul className='pagination justify-content-center'>
                     <li className='page-item'>
