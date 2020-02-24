@@ -47,5 +47,32 @@ export const ROUTE = [
       loader: () => import("./components/pages/BookingList"),
       loading: () => <Preloader />
     })
+  },
+  {
+    private: true,
+    path: "/payment-success",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/static/PaymentSucces"),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: true,
+    path: "/payment-unfinish",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/static/PaymentUnfinish"),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: true,
+    path: "/payment-error",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/static/PaymentError"),
+      loading: () => <Preloader />
+    })
   }
 ];

@@ -1,39 +1,134 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "../../assets/css/booking_details.scss";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { GET_BOOKING_DETAILS_REQUEST, ID_MONTH } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
 import Preloader from "../static/Preloader";
+import Axios from "axios";
+import moment from "moment";
 
+const API_URL = process.env.REACT_APP_API_V1_URL;
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
+const MIDTRANS_SERVER = process.env.REACT_APP_MIDTRANS_SERVER;
+const PROXY = "https://cors-anywhere.herokuapp.com";
+const TOKEN = Authorization().getAuthUser();
+const HEADERS = {
+  headers: {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+  auth: {
+    username: MIDTRANS_SERVER,
+    password: ""
+  }
+};
 
 class BookingDetails extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      openPayment: false,
+      paymentStatus: 'Loading...',
+      midtransStatus: {}
+    }
+  };
+
   componentDidMount() {
     const id = this.props.match.params.product_id;
     const { data } = this.props.bookingDetails;
     if (Object.keys(data).length === 0 || Object.keys(data).includes("message") || id !== data.id) {
       this._getData(id);
     }
+
+    const script = document.createElement("script");
+    script.src = "https://app.sandbox.midtrans.com/snap/snap.js"
+    script.setAttribute("data-client-key", "SB-Mid-server-YAxhhaXZP5u3MJchUadi296f")
+    document.body.appendChild(script);
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    const { data } = this.props.bookingDetails;
+    const { midtransStatus } = this.state;
+    if (data.midtrans_id && Object.keys(midtransStatus).length === 0) {
+      Axios
+      .get(`${PROXY}/https://api.sandbox.midtrans.com/v2/${data.midtrans_id}/status`, HEADERS)
+      .then(res => {
+        this.setState({midtransStatus: res})
+        const expireDate = moment(res.data.transacation_time).add(1, 'days').format('DD MMMM YYYY, h:mm:ss a');
+        if (prevState.paymentStatus === "Loading...") {
+          if (res.data.transaction_status === "pending") {
+            this.setState({
+              paymentStatus: `Status pembayaran pending, mohon bayar sebelum tanggal ${expireDate}`
+            })
+          } else if (res.data.transaction_status === "settlement") {
+            this.setState({
+              paymentStatus: "Pembayaran telah selesai"
+            })
+          } else if (res.data.transaction_status === "deny" || res.data.status_code === "404") {
+            this.setState({
+              paymentStatus: "Menunggu Pembayaran"
+            })
+          }
+        }
+      })
+    } else if (data.midtrans_id === null) {
+      if (prevState.paymentStatus === "Loading...") {
+        this.setState({
+          paymentStatus: "Menunggu Pembayaran"
+        })
+      }
+    }
+  }
 
   _getData = (id) => {
     const { dispatch } = this.props;
-    const token = Authorization().getAuthUser();
     dispatch({
       type: GET_BOOKING_DETAILS_REQUEST,
       config: {
         method: "get",
         headers: {
-          "Authorization": token
+          "Authorization": TOKEN
         }
       },
       path: "/booking/" + id
     });
   };
 
+  _pay = () => {
+    this.setState({
+      openPayment: true
+    })
+    const { data } = this.props.bookingDetails;
+    let parameter = {
+      "transaction_details": {
+        "order_id": `${data.id}${Date.now()}`,
+        "gross_amount": data.price
+      }, "credit_card":{
+        "secure" : true
+      }
+    };
+    let updateMidtrans = {
+      booking_id: data.id,
+      midtrans_id: `${data.id}${Date.now()}`,
+      status: 0
+    }
+    Axios.post(`${PROXY}/https://app.sandbox.midtrans.com/snap/v1/transactions`, parameter, HEADERS).then(res => {
+      Axios.post(`${API_URL}/bookings/update_midtrans`, updateMidtrans, {
+        headers: {
+          Authorization: TOKEN
+        }
+      })
+      window.snap.pay(`${res.data.token}`);
+      this.setState({
+        openPayment: false
+      })
+    })
+  }
+
   render() {
     const { data } = this.props.bookingDetails;
+    const { paymentStatus } = this.state;
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -104,10 +199,22 @@ class BookingDetails extends Component {
                       <div className="box_style_3">
                         <h3 className="inner">Status Pemesanan</h3>
                         <p>
-                          Menunggu Pembayaran
+                          {paymentStatus}
                         </p>
-                        <hr />
-                        <button className="btn_full_outline">Bayar Sekarang</button>
+                        {
+                          paymentStatus === "Menunggu Pembayaran" && (
+                            <Fragment>
+                              <hr />
+                              <button
+                                className="btn_full_outline"
+                                onClick={this._pay}
+                                disabled={this.state.openPayment}
+                                >
+                                Bayar Sekarang
+                              </button>
+                            </Fragment>
+                          )
+                        }
                       </div>
                     </div>
                   </div>
@@ -167,7 +274,9 @@ class BookingDetails extends Component {
                             <td>
                               <strong>Status Pembayaran</strong>
                             </td>
-                            <td>Lunas <i className="icon-ok"></i></td>
+                            <td>
+                              {paymentStatus}
+                            </td>
                           </tr>
                         </tbody>
                       </table>

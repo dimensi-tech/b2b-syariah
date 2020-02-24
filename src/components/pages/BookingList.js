@@ -29,6 +29,7 @@ class BookingList extends Component {
 
   render() {
     const { data } = this.props.bookingList;
+    console.log(data)
     return (
       <div className="container margin_60">
         <div className="row">
@@ -70,13 +71,17 @@ class BookingList extends Component {
                           <span className="day"><strong>{moment(value.departure_date).format("DD")}</strong>{moment(value.departure_date).format("YYYY")}</span>
                         </div>
                       </div>
-                      <div className="col-lg-5 col-md-5">
+                      <div className="col-md-4">
                         <h3 className="tours_booking">{value.product.name}<span>{value.package.name}</span></h3>
                       </div>
-                      <div className="col-lg-3 col-md-3">
+                      <div className="col-md-4">
                         <ul className="info_booking">
-                          <li><strong>ID Pesanan</strong> {value.id}</li>
-                          <li><strong>Status Pesanan</strong>Menunggu Pembayaran</li>
+                          <li><strong>ID Pesanan</strong> <p>{value.id}</p></li>
+                          <li><strong>Status Pesanan</strong>
+                          <p>Menunggu Pembayaran</p></li>
+                          <li>
+                            <h4>RP {parseFloat(value.price).toLocaleString("id")}</h4>
+                          </li>
                         </ul>
                       </div>
                       <div className="col-lg-2 col-md-2">

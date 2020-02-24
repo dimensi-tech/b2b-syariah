@@ -197,7 +197,7 @@ class Header extends Component {
                     <Fragment>
                       {
                         typeof(token) === "string" &&
-                        <li><i class="icon-user-3"></i>{jwtDecode(token).customer_email}</li>
+                        <li><i className="icon-user-3"></i>{jwtDecode(token).customer_email}</li>
                       }
                       <li name="logout-label-clickable" onClick={this._logout}>
                         <a href="#">Logout</a>
@@ -262,31 +262,10 @@ class Header extends Component {
               </div>
               <ul id="top_tools">
                 <li>
-                  <div className="dropdown dropdown-cart">
-                    <a href="#" data-toggle="dropdown" className="cart_bt"><i className="icon_bag_alt" /><strong>3</strong></a>
-                    <ul className="dropdown-menu" id="cart_items">
-                      <li>
-                        <div className="image"><img src="img/thumb_cart_1.jpg" alt="image" /></div>
-                        <strong><a href="#">Louvre museum</a>1x $36.00 </strong>
-                        <a href="#" className="action"><i className="icon-trash" /></a>
-                      </li>
-                      <li>
-                        <div className="image"><img src="img/thumb_cart_2.jpg" alt="image" /></div>
-                        <strong><a href="#">Versailles tour</a>2x $36.00 </strong>
-                        <a href="#" className="action"><i className="icon-trash" /></a>
-                      </li>
-                      <li>
-                        <div className="image"><img src="img/thumb_cart_3.jpg" alt="image" /></div>
-                        <strong><a href="#">Versailles tour</a>1x $36.00 </strong>
-                        <a href="#" className="action"><i className="icon-trash" /></a>
-                      </li>
-                      <li>
-                        <div>Total: <span>$120.00</span></div>
-                        <a href="cart.html" className="button_drop">Go to cart</a>
-                        <a href="payment.html" className="button_drop outline">Check out</a>
-                      </li>
-                    </ul>
-                  </div>
+                 {
+                  isLoggedIn &&
+                    <Link to="/booking-list">Booking History</Link>
+                  }
                 </li>
               </ul>
             </nav>
