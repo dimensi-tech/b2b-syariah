@@ -100,10 +100,11 @@ class BookingDetails extends Component {
       openPayment: true
     })
     const { data } = this.props.bookingDetails;
+    const grossAmount = data.price * data.person
     let parameter = {
       "transaction_details": {
         "order_id": `${data.id}${Date.now()}`,
-        "gross_amount": data.price
+        "gross_amount": grossAmount
       }, "credit_card":{
         "secure" : true
       }
