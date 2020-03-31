@@ -49,6 +49,15 @@ export const ROUTE = [
     })
   },
   {
+    private: false,
+    path: "/booking/:product_id/:index",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/pages/BookingUpdateIdentity"),
+      loading: () => <Preloader />
+    })
+  },
+  {
     private: true,
     path: "/payment-success",
     exact: true,

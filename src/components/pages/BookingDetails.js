@@ -7,10 +7,13 @@ import Authorization from "../../helpers/Authorization";
 import Preloader from "../static/Preloader";
 import Axios from "axios";
 import moment from "moment";
+import _ from "lodash";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
 const MIDTRANS_SERVER = process.env.REACT_APP_MIDTRANS_SERVER;
+const KYC_URL = process.env.REACT_APP_KYC_URL;
+const KYC_API_V1 = process.env.REACT_APP_KYC_API_V1;
 const PROXY = "https://cors-anywhere.herokuapp.com";
 const TOKEN = Authorization().getAuthUser();
 const HEADERS = {
@@ -30,7 +33,8 @@ class BookingDetails extends Component {
     this.state = {
       openPayment: false,
       paymentStatus: 'Loading...',
-      midtransStatus: {}
+      midtransStatus: {},
+      persons: []
     }
   };
 
@@ -50,6 +54,12 @@ class BookingDetails extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props.bookingDetails;
     const { midtransStatus } = this.state;
+    if (!_.isEmpty(data) && data.identity_ids.length > 0 && _.isEmpty(this.state.persons)) {
+      this.setState({persons: data.identity_ids});
+      [...Array(data.person).keys()].map(person =>
+        data.identity_ids[person] !== null && this._showDataPerson(person)
+      )
+    }
     if (data.midtrans_id && Object.keys(midtransStatus).length === 0) {
       Axios
       .get(`${PROXY}/https://api.sandbox.midtrans.com/v2/${data.midtrans_id}/status`, HEADERS)
@@ -127,9 +137,27 @@ class BookingDetails extends Component {
     })
   }
 
+  _showDataPerson = (person) => {
+    const { data } = this.props.bookingDetails;
+    if (!_.isEmpty(data)) {
+      if (data.identity_ids.length > 0) {
+        const identity = data.identity_ids[person];
+        if (identity) {
+          Axios.get(`${KYC_API_V1}/identities/find_identity?id=${identity}`).then(res => {
+            let clone = [...this.state.persons];
+            clone[person] = res.data;
+            this.setState({
+              persons: clone
+            })
+          })
+        }
+      }
+    }
+  }
+
   render() {
     const { data } = this.props.bookingDetails;
-    const { paymentStatus } = this.state;
+    const { paymentStatus, persons } = this.state;
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -202,19 +230,17 @@ class BookingDetails extends Component {
                         <p>
                           {paymentStatus}
                         </p>
-                        {
-                          paymentStatus === "Menunggu Pembayaran" && (
-                            <Fragment>
-                              <hr />
-                              <button
-                                className="btn_full_outline"
-                                onClick={this._pay}
-                                disabled={this.state.openPayment}
-                                >
-                                Bayar Sekarang
-                              </button>
-                            </Fragment>
-                          )
+                        {paymentStatus === "Menunggu Pembayaran" &&
+                          <Fragment>
+                            <hr />
+                            <button
+                              className="btn_full_outline"
+                              onClick={this._pay}
+                              disabled={this.state.openPayment}
+                              >
+                              Bayar Sekarang
+                            </button>
+                          </Fragment>
                         }
                       </div>
                     </div>
@@ -290,24 +316,23 @@ class BookingDetails extends Component {
                 </div>
                 <div className="step">
                   <div className="row">
-                    <div className="col-lg-4">
-                      <div className="identity-item box_style_1">
-                        <h3 className="inner">Penumpang 1</h3>
-                        <button className="btn_full_outline">Isi Data</button>
+                    {persons.length > 0 && persons.map((person, index) =>
+                      <div className="col-lg-4" key={person}>
+                        <div className="identity-item box_style_1">
+                          <h3 className="inner">Penumpang {index + 1}</h3>
+                          {person && typeof(person) === "object" ? (
+                            <dl>
+                              <dt>NIK</dt>
+                              <dd>{person.nik}</dd>
+                              <dt>Nama</dt>
+                              <dd>{person.name}</dd>
+                            </dl>
+                          ) : (
+                            <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="identity-item box_style_1">
-                        <h3 className="inner">Penumpang 2</h3>
-                        <button className="btn_full_outline">Isi Data</button>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="identity-item box_style_1">
-                        <h3 className="inner">Penumpang 3</h3>
-                        <button className="btn_full_outline">Isi Data</button>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
