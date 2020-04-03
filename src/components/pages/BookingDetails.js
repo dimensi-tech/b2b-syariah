@@ -54,11 +54,16 @@ class BookingDetails extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props.bookingDetails;
     const { midtransStatus } = this.state;
-    if (!_.isEmpty(data) && data.identity_ids.length > 0 && _.isEmpty(this.state.persons)) {
-      this.setState({persons: data.identity_ids});
-      [...Array(data.person).keys()].map(person =>
-        data.identity_ids[person] !== null && this._showDataPerson(person)
-      )
+    if (!_.isEmpty(data) && _.isEmpty(this.state.persons)) {
+      if (data.identity_ids.length > 0) {
+        this.setState({persons: data.identity_ids});
+        [...Array(data.person).keys()].map(person =>
+          data.identity_ids[person] !== null ? this._showDataPerson(person) : null
+        )
+      } else {
+        const persons = [...Array(data.person).keys()].map(person => null)
+        this.setState({persons: persons});
+      }
     }
     if (data.midtrans_id && Object.keys(midtransStatus).length === 0) {
       Axios
@@ -317,15 +322,35 @@ class BookingDetails extends Component {
                 <div className="step">
                   <div className="row">
                     {persons.length > 0 && persons.map((person, index) =>
-                      <div className="col-lg-4" key={person}>
+                      <div className="col-lg-4" key={index}>
                         <div className="identity-item box_style_1">
                           <h3 className="inner">Penumpang {index + 1}</h3>
                           {person && typeof(person) === "object" ? (
                             <dl>
+                              <p className="text-center">PROVINSI {person.province_name}</p>
+                              <p className="text-center">{person.city_name}</p>
                               <dt>NIK</dt>
                               <dd>{person.nik}</dd>
                               <dt>Nama</dt>
                               <dd>{person.name}</dd>
+                              <dt>Tempat/Tgl Lahir</dt>
+                              <dd>{person.birth_place}, {moment(person.birth_date).format("DD MMMM YYYY")}</dd>
+                              <dt>Jenis Kelamin</dt>
+                              <dd>{person.gender}</dd>
+                              <dt>Alamat</dt>
+                              <dd>{person.address}</dd>
+                              <dt>RT/RW</dt>
+                              <dd>{person.rt} / {person.rw}</dd>
+                              <dt>Kel/Desa</dt>
+                              <dd>{person.vilage_name}</dd>
+                              <dt>Kecamatan</dt>
+                              <dd>{person.district_name}</dd>
+                              <dt>Agama</dt>
+                              <dd>{person.religion}</dd>
+                              <dt>Status Perkawinan</dt>
+                              <dd>{person.martial_status}</dd>
+                              <dt>Pekerjaan</dt>
+                              <dd>{person.occupation}</dd>
                             </dl>
                           ) : (
                             <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>

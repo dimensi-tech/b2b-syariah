@@ -25,7 +25,7 @@ class BookingUpdateIdenity extends React.Component {
     if (!_.isEmpty(data)) {
       let identities = [];
       if (data.identity_ids.length > 0) {
-        identities = data.identity_ids;
+        identities = [...Array(data.person).keys()].map((index) => data.identity_ids[index] !== null ? data.identity_ids[index] : "");
         identities[match.params.index] = parameters.identity_callback;
       } else {
         identities = [...Array(data.person).keys()].map(() => "");
