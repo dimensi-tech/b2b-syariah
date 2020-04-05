@@ -119,9 +119,7 @@ class Header extends Component {
   };
 
   _showModal = () => {
-    this.setState({
-      showModal: true
-    });
+    this.setState({showModal: true});
   };
 
   _closeModal = () => {

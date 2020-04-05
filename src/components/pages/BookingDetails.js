@@ -8,6 +8,8 @@ import Preloader from "../static/Preloader";
 import Axios from "axios";
 import moment from "moment";
 import _ from "lodash";
+import IdentityModal from "../shared/IdentityModal";
+import PassportModal from "../shared/PassportModal";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
@@ -34,7 +36,10 @@ class BookingDetails extends Component {
       openPayment: false,
       paymentStatus: 'Loading...',
       midtransStatus: {},
-      persons: []
+      persons: [],
+      passports: [],
+      showIdentityModal: [false, {}],
+      showPassportModal: [false, {}]
     }
   };
 
@@ -63,6 +68,17 @@ class BookingDetails extends Component {
       } else {
         const persons = [...Array(data.person).keys()].map(person => null)
         this.setState({persons: persons});
+      }
+    }
+    if (!_.isEmpty(data) && _.isEmpty(this.state.passports)) {
+      if (data.identity_ids.length > 0) {
+        this.setState({passports: data.identity_ids});
+        [...Array(data.person).keys()].map(person =>
+          data.identity_ids[person] !== null ? this._showDataPassport(person) : null
+        )
+      } else {
+        const passports = [...Array(data.person).keys()].map(person => null)
+        this.setState({passports: passports});
       }
     }
     if (data.midtrans_id && Object.keys(midtransStatus).length === 0) {
@@ -160,9 +176,44 @@ class BookingDetails extends Component {
     }
   }
 
+  _showDataPassport = (passport) => {
+    const { data } = this.props.bookingDetails;
+    if (!_.isEmpty(data)) {
+      if (data.identity_ids.length > 0) {
+        const identity = data.identity_ids[passport];
+        if (identity) {
+          Axios.get(`${KYC_API_V1}/passports/find_passport?id=${identity}`).then(res => {
+            let clone = [...this.state.passports];
+            clone[passport] = res.data;
+            this.setState({passports: clone})
+          })
+        }
+      }
+    }
+  }
+
+  _toggleIdentityModal = (identity) => {
+    const { showIdentityModal } = this.state;
+    if (showIdentityModal[0]) {
+      this.setState({showIdentityModal: [!showIdentityModal[0], {}]})
+    } else {
+      this.setState({showIdentityModal: [!showIdentityModal[0], identity]})
+    }
+  }
+
+  _togglePassportModal = (passport) => {
+    const { showPassportModal } = this.state;
+    if (showPassportModal[0]) {
+      this.setState({showPassportModal: [!showPassportModal[0], {}]})
+    } else {
+      this.setState({showPassportModal: [!showPassportModal[0], passport]})
+    }
+  }
+
   render() {
     const { data } = this.props.bookingDetails;
-    const { paymentStatus, persons } = this.state;
+    const { paymentStatus, persons, passports, showIdentityModal, showPassportModal } = this.state;
+    console.log(passports)
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -170,199 +221,185 @@ class BookingDetails extends Component {
         return <div>Product not found</div>
       } else {
         return (
-          <div className="container margin_60">
-            <div className="row">
-              <div className="col-12 add_bottom_15">
-                <div className="form_title">
-                  <h3>
-                    <strong>
-                      <i className="icon-bookmark" />
-                    </strong>
-                    Produk Yang Dipilih
-                  </h3>
-                  <p>
-                    Spesifikasi produk yang Anda pilih.
-                  </p>
-                </div>
-                <div className="step">
-                  <div className="row">
-                    <div className="col-lg-8">
-                      <div className='strip_all_tour_list'>
-                        <div className='row'>
-                          <div className='col-lg-4 col-md-4'>
-                            <div className='img_list'>
-                              <img src={BASE_URL + data.product.image.url} alt="Turki" />
-                              <div className='short_info'>
-                                <i className='icon_set_1_icon-4'></i>
-                                Islamic Tour
+          <Fragment>
+            <div className="container margin_60">
+              <div className="row">
+                <div className="col-12 add_bottom_15">
+                  <div className="form_title">
+                    <h3>
+                      <strong>
+                        <i className="icon-bookmark" />
+                      </strong>
+                      Produk Yang Dipilih
+                    </h3>
+                    <p>
+                      Spesifikasi produk yang Anda pilih.
+                    </p>
+                  </div>
+                  <div className="step">
+                    <div className="row">
+                      <div className="col-lg-8">
+                        <div className='strip_all_tour_list'>
+                          <div className='row'>
+                            <div className='col-lg-4 col-md-4'>
+                              <div className='img_list'>
+                                <img src={BASE_URL + data.product.image.url} alt="Turki" />
+                                <div className='short_info'>
+                                  <i className='icon_set_1_icon-4'></i>
+                                  Islamic Tour
+                                </div>
+                              </div>
+                            </div>
+                            <div className='col-lg-8 col-md-8'>
+                              <div className='tour_list_desc'>
+                                <h3>{data.product.name}</h3>
+                                <p dangerouslySetInnerHTML={{ __html: data.product.description }} />
+                                <ul className='add_info'>
+                                  <li>
+                                    <div className='tooltip-1' data-placement='top' title='Free Wifi'><i className='icon_set_1_icon-86' /></div>
+                                  </li>
+                                  <li>
+                                    <div className='tooltip-1' data-placement='top' title='Plasma TV with cable channels'><i className='icon_set_2_icon-116' /></div>
+                                  </li>
+                                  <li>
+                                    <div className='tooltip-1' data-placement='top' title='Swimming pool'><i className='icon_set_2_icon-110' /></div>
+                                  </li>
+                                  <li>
+                                    <div className='tooltip-1' data-placement='top' title='Fitness Center'><i className='icon_set_2_icon-117' /></div>
+                                  </li>
+                                  <li>
+                                    <div className='tooltip-1' data-placement='top' title='Restaurant'><i className='icon_set_1_icon-58' /></div>
+                                  </li>
+                                </ul>
+                                <Link to={`/product/${data.package.product_id}`} target="_blank" className="mt-4">
+                                  <p>
+                                    <span className='btn_1'>Lihat Detail Paket</span>
+                                  </p>
+                                </Link>
                               </div>
                             </div>
                           </div>
-                          <div className='col-lg-8 col-md-8'>
-                            <div className='tour_list_desc'>
-                              <h3>{data.product.name}</h3>
-                              <p dangerouslySetInnerHTML={{ __html: data.product.description }} />
-                              <ul className='add_info'>
-                                <li>
-                                  <div className='tooltip-1' data-placement='top' title='Free Wifi'><i className='icon_set_1_icon-86' /></div>
-                                </li>
-                                <li>
-                                  <div className='tooltip-1' data-placement='top' title='Plasma TV with cable channels'><i className='icon_set_2_icon-116' /></div>
-                                </li>
-                                <li>
-                                  <div className='tooltip-1' data-placement='top' title='Swimming pool'><i className='icon_set_2_icon-110' /></div>
-                                </li>
-                                <li>
-                                  <div className='tooltip-1' data-placement='top' title='Fitness Center'><i className='icon_set_2_icon-117' /></div>
-                                </li>
-                                <li>
-                                  <div className='tooltip-1' data-placement='top' title='Restaurant'><i className='icon_set_1_icon-58' /></div>
-                                </li>
-                              </ul>
-                              <Link to={`/product/${data.package.product_id}`} target="_blank" className="mt-4">
-                                <p>
-                                  <span className='btn_1'>Lihat Detail Paket</span>
-                                </p>
-                              </Link>
-                            </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-4">
+                        <div className="box_style_3">
+                          <h3 className="inner">Status Pemesanan</h3>
+                          <p>
+                            {paymentStatus}
+                          </p>
+                          {paymentStatus === "Menunggu Pembayaran" &&
+                            <Fragment>
+                              <hr />
+                              <button
+                                className="btn_full_outline"
+                                onClick={this._pay}
+                                disabled={this.state.openPayment}
+                                >
+                                Bayar Sekarang
+                              </button>
+                            </Fragment>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form_title">
+                    <h3><strong><i className="icon-tag-1" /></strong>Rincian Pemesanan</h3>
+                    <p>
+                      Rincian data-data pesanan.
+                    </p>
+                  </div>
+                  <div className="step">
+                    <div className="row">
+                      <div className="col-lg-8">
+                        <table className="table table-striped confirm">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <strong>Nama Paket</strong>
+                              </td>
+                              <td>{data.package.name}</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Harga Paket</strong>
+                              </td>
+                              <td>RP {parseFloat(data.price).toLocaleString()}/pax</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Jumlah Orang</strong>
+                              </td>
+                              <td>{data.person} orang</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Hari Keberangkatan</strong>
+                              </td>
+                              <td>{dateFormatter(data.departure_date)}</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Lama Hari</strong>
+                              </td>
+                              <td>{data.package.duration_trip} hari</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Rincian Perjalanan</strong>
+                              </td>
+                              <td>
+                                <Link to={`/product/${data.package.product_id}`} target="_blank">
+                                  Lihat Rincian Perjalanan di Detail Paket
+                                </Link>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Status Pembayaran</strong>
+                              </td>
+                              <td>
+                                {paymentStatus}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form_title">
+                    <h3><strong><i className="icon-users-3" /></strong>Data Penumpang Keberangkatan</h3>
+                    <p>Input identitas data KTP dan Passport.</p>
+                  </div>
+                  <div className="step">
+                    <div className="row">
+                      {persons.length > 0 && persons.map((person, index) =>
+                        <div className="col-lg-4" key={index}>
+                          <div className="identity-item box_style_1">
+                            <h3 className="inner">Penumpang {index + 1}</h3>
+                            {person && typeof(person) === "object" ? (
+                              <Fragment>
+                                <button className="btn_full" onClick={() => this._toggleIdentityModal(person)}>LIHAT KTP</button>
+                                <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>LIHAT PASSPORT</button>
+                              </Fragment>
+                            ) : (
+                              <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>
+                            )}
                           </div>
                         </div>
-                      </div>
+                      )}
                     </div>
-                    <div className="col-lg-4">
-                      <div className="box_style_3">
-                        <h3 className="inner">Status Pemesanan</h3>
-                        <p>
-                          {paymentStatus}
-                        </p>
-                        {paymentStatus === "Menunggu Pembayaran" &&
-                          <Fragment>
-                            <hr />
-                            <button
-                              className="btn_full_outline"
-                              onClick={this._pay}
-                              disabled={this.state.openPayment}
-                              >
-                              Bayar Sekarang
-                            </button>
-                          </Fragment>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="form_title">
-                  <h3><strong><i className="icon-tag-1" /></strong>Rincian Pemesanan</h3>
-                  <p>
-                    Rincian data-data pesanan.
-                  </p>
-                </div>
-                <div className="step">
-                  <div className="row">
-                    <div className="col-lg-8">
-                      <table className="table table-striped confirm">
-                        <tbody>
-                          <tr>
-                            <td>
-                              <strong>Nama Paket</strong>
-                            </td>
-                            <td>{data.package.name}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>Harga Paket</strong>
-                            </td>
-                            <td>RP {parseFloat(data.price).toLocaleString()}/pax</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>Jumlah Orang</strong>
-                            </td>
-                            <td>{data.person} orang</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>Hari Keberangkatan</strong>
-                            </td>
-                            <td>{dateFormatter(data.departure_date)}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>Lama Hari</strong>
-                            </td>
-                            <td>{data.package.duration_trip} hari</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>Rincian Perjalanan</strong>
-                            </td>
-                            <td>
-                              <Link to={`/product/${data.package.product_id}`} target="_blank">
-                                Lihat Rincian Perjalanan di Detail Paket
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>Status Pembayaran</strong>
-                            </td>
-                            <td>
-                              {paymentStatus}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div className="form_title">
-                  <h3><strong><i className="icon-users-3" /></strong>Data Penumpang Keberangkatan</h3>
-                  <p>Input identitas data KTP dan Passport.</p>
-                </div>
-                <div className="step">
-                  <div className="row">
-                    {persons.length > 0 && persons.map((person, index) =>
-                      <div className="col-lg-4" key={index}>
-                        <div className="identity-item box_style_1">
-                          <h3 className="inner">Penumpang {index + 1}</h3>
-                          {person && typeof(person) === "object" ? (
-                            <dl>
-                              <p className="text-center">PROVINSI {person.province_name}</p>
-                              <p className="text-center">{person.city_name}</p>
-                              <dt>NIK</dt>
-                              <dd>{person.nik}</dd>
-                              <dt>Nama</dt>
-                              <dd>{person.name}</dd>
-                              <dt>Tempat/Tgl Lahir</dt>
-                              <dd>{person.birth_place}, {moment(person.birth_date).format("DD MMMM YYYY")}</dd>
-                              <dt>Jenis Kelamin</dt>
-                              <dd>{person.gender}</dd>
-                              <dt>Alamat</dt>
-                              <dd>{person.address}</dd>
-                              <dt>RT/RW</dt>
-                              <dd>{person.rt} / {person.rw}</dd>
-                              <dt>Kel/Desa</dt>
-                              <dd>{person.vilage_name}</dd>
-                              <dt>Kecamatan</dt>
-                              <dd>{person.district_name}</dd>
-                              <dt>Agama</dt>
-                              <dd>{person.religion}</dd>
-                              <dt>Status Perkawinan</dt>
-                              <dd>{person.martial_status}</dd>
-                              <dt>Pekerjaan</dt>
-                              <dd>{person.occupation}</dd>
-                            </dl>
-                          ) : (
-                            <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>
-                          )}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+            {showIdentityModal[0] &&
+              <IdentityModal toggle={() => this._toggleIdentityModal()} identity={showIdentityModal[1]} />
+            }
+            {showPassportModal[0] &&
+              <PassportModal toggle={() => this._togglePassportModal()} passport={showPassportModal[1]} />
+            }
+          </Fragment>
         )
       }
     }
