@@ -41,6 +41,15 @@ export const ROUTE = [
   },
   {
     private: true,
+    path: "/booking/:product_id/modify",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/pages/BookingModify"),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: true,
     path: "/booking-list",
     exact: true,
     component: Loadable({

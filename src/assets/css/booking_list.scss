@@ -1,8 +1,10 @@
-a.btn_full_outline {
-  font-size: 9px;
-  border: 1px solid #008489;
+a.btn_1 {
+  font-size: 12px;
   font-weight: normal;
   padding: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: center;
   &:hover {
     border-width: 1px;
   }

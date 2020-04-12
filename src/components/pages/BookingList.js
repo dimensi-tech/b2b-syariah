@@ -7,6 +7,8 @@ import { GET_BOOKING_LIST_REQUEST } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
 import moment from "moment";
 
+const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
+
 class BookingList extends Component {
   componentDidMount() {
     this._getData();
@@ -29,7 +31,6 @@ class BookingList extends Component {
 
   render() {
     const { data } = this.props.bookingList;
-    console.log(data)
     return (
       <div className="container margin_60">
         <div className="row">
@@ -68,13 +69,22 @@ class BookingList extends Component {
                       <div className="col-lg-2 col-md-2">
                         <div className="date">
                           <span className="month">{moment(value.departure_date).format("MMM")}</span>
-                          <span className="day"><strong>{moment(value.departure_date).format("DD")}</strong>{moment(value.departure_date).format("YYYY")}</span>
+                          <span className="day">
+                            <strong>{moment(value.departure_date).format("DD")}</strong>
+                            {moment(value.departure_date).format("YYYY")}
+                          </span>
                         </div>
                       </div>
-                      <div className="col-md-4">
-                        <h3 className="tours_booking">{value.product.name}<span>{value.package.name}</span></h3>
+                      <div className="col-md-2">
+                        <img src={BASE_URL + value.product.image.url} alt={value.product.name} width="100%" />
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
+                        <h3 className="tours_booking">
+                          {value.product.name}
+                          <span>{value.package.name}</span>
+                        </h3>
+                      </div>
+                      <div className="col-md-3">
                         <ul className="info_booking">
                           <li><strong>ID Pesanan</strong> <p>{value.id}</p></li>
                           <li><strong>Status Pesanan</strong>
@@ -86,8 +96,11 @@ class BookingList extends Component {
                       </div>
                       <div className="col-lg-2 col-md-2">
                         <div className="booking_buttons">
-                          <Link to={`booking/${value.id}`} target="_blank" className="btn_full_outline">
+                          <Link to={`booking/${value.id}`} target="_blank" className="btn_1">
                             Lihat detail pesanan
+                          </Link>
+                          <Link to={`booking/${value.id}/modify`} target="_blank" className="btn_1 white">
+                            Reschedule
                           </Link>
                         </div>
                       </div>

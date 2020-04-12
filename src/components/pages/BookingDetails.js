@@ -44,6 +44,7 @@ class BookingDetails extends Component {
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0)
     const id = this.props.match.params.product_id;
     const { data } = this.props.bookingDetails;
     if (Object.keys(data).length === 0 || Object.keys(data).includes("message") || id !== data.id) {
@@ -213,7 +214,6 @@ class BookingDetails extends Component {
   render() {
     const { data } = this.props.bookingDetails;
     const { paymentStatus, persons, passports, showIdentityModal, showPassportModal } = this.state;
-    console.log(passports)
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -336,7 +336,11 @@ class BookingDetails extends Component {
                               <td>
                                 <strong>Hari Keberangkatan</strong>
                               </td>
-                              <td>{dateFormatter(data.departure_date)}</td>
+                              <td>
+                                {dateFormatter(data.departure_date)}
+                                &nbsp;
+                                <Link to={`/booking/${data.id}/modify`}>(Reschedule Tanggal)</Link>
+                              </td>
                             </tr>
                             <tr>
                               <td>

@@ -1,0 +1,16 @@
+.tour_list_desc {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  span {
+    display: block;
+    margin-bottom: 15px;
+  }
+  button {
+    margin-top: auto;
+  }
+}
+.back-link {
+  margin-bottom: 30px;
+  display: inline-block;
+}
