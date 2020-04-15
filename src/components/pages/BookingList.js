@@ -6,8 +6,11 @@ import { connect } from "react-redux";
 import { GET_BOOKING_LIST_REQUEST } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
 import moment from "moment";
+import Swal from "sweetalert2";
+import Axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
+const API_URL = process.env.REACT_APP_API_V1_URL;
 
 class BookingList extends Component {
   componentDidMount() {
@@ -28,6 +31,34 @@ class BookingList extends Component {
       path: "/bookings/list_bookings"
     });
   };
+
+  _cancelBooking = (id) => {
+    const token = Authorization().getAuthUser();
+    Swal.fire({
+      title: 'Apakah kamu yakin?',
+      text: "Cancel booking",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#f44336',
+      confirmButtonText: 'Yes, cancel!'
+    }).then((result) => {
+      if (result.value) {
+        Axios.post(`${API_URL}/bookings/cancel_booking?booking_id=${id}`, {}, {
+          headers: {
+            "Authorization": token
+          }
+        }).then(res => {
+          this._getData();
+          Swal.fire(
+            'Cancelled!',
+            'Order kamu telah dicancel',
+            'success'
+          )
+        })
+      }
+    })
+  }
 
   render() {
     const { data } = this.props.bookingList;
@@ -88,7 +119,7 @@ class BookingList extends Component {
                         <ul className="info_booking">
                           <li><strong>ID Pesanan</strong> <p>{value.id}</p></li>
                           <li><strong>Status Pesanan</strong>
-                          <p>Menunggu Pembayaran</p></li>
+                          <p>{value.booking_status}</p></li>
                           <li>
                             <h4>RP {parseFloat(value.price).toLocaleString("id")}</h4>
                           </li>
@@ -99,9 +130,16 @@ class BookingList extends Component {
                           <Link to={`booking/${value.id}`} target="_blank" className="btn_1">
                             Lihat detail pesanan
                           </Link>
-                          <Link to={`booking/${value.id}/modify`} target="_blank" className="btn_1 white">
-                            Reschedule
-                          </Link>
+                          {value.booking_status !== "cancelled" &&
+                            <Link to={`booking/${value.id}/modify`} target="_blank" className="btn_1 white">
+                              Reschedule
+                            </Link>
+                          }
+                          {value.booking_status !== "cancelled" &&
+                            <a href="#!" onClick={() => this._cancelBooking(value.id)} className="btn_1 red">
+                              Cancel Booking
+                            </a>
+                          }
                         </div>
                       </div>
                     </div>

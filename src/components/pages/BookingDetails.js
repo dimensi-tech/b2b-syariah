@@ -284,21 +284,27 @@ class BookingDetails extends Component {
                       <div className="col-lg-4">
                         <div className="box_style_3">
                           <h3 className="inner">Status Pemesanan</h3>
-                          <p>
-                            {paymentStatus}
-                          </p>
-                          {paymentStatus === "Menunggu Pembayaran" &&
+                          {data.booking_status !== "cancelled" ? (
                             <Fragment>
-                              <hr />
-                              <button
-                                className="btn_full_outline"
-                                onClick={this._pay}
-                                disabled={this.state.openPayment}
-                                >
-                                Bayar Sekarang
-                              </button>
+                              <p>
+                                {paymentStatus}
+                              </p>
+                              {paymentStatus === "Menunggu Pembayaran" &&
+                                <Fragment>
+                                  <hr />
+                                  <button
+                                    className="btn_full_outline"
+                                    onClick={this._pay}
+                                    disabled={this.state.openPayment}
+                                    >
+                                    Bayar Sekarang
+                                  </button>
+                                </Fragment>
+                              }
                             </Fragment>
-                          }
+                          ) : (
+                            <p>Cancelled</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -338,8 +344,12 @@ class BookingDetails extends Component {
                               </td>
                               <td>
                                 {dateFormatter(data.departure_date)}
-                                &nbsp;
-                                <Link to={`/booking/${data.id}/modify`}>(Reschedule Tanggal)</Link>
+                                {data.booking_status !== "cancelled" &&
+                                  <Fragment>
+                                    &nbsp;
+                                    <Link to={`/booking/${data.id}/modify`}>(Reschedule Tanggal)</Link>
+                                  </Fragment>
+                                }
                               </td>
                             </tr>
                             <tr>
@@ -371,29 +381,33 @@ class BookingDetails extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="form_title">
-                    <h3><strong><i className="icon-users-3" /></strong>Data Penumpang Keberangkatan</h3>
-                    <p>Input identitas data KTP dan Passport.</p>
-                  </div>
-                  <div className="step">
-                    <div className="row">
-                      {persons.length > 0 && persons.map((person, index) =>
-                        <div className="col-lg-4" key={index}>
-                          <div className="identity-item box_style_1">
-                            <h3 className="inner">Penumpang {index + 1}</h3>
-                            {person && typeof(person) === "object" ? (
-                              <Fragment>
-                                <button className="btn_full" onClick={() => this._toggleIdentityModal(person)}>LIHAT KTP</button>
-                                <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>LIHAT PASSPORT</button>
-                              </Fragment>
-                            ) : (
-                              <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>
-                            )}
-                          </div>
+                  {data.booking_status !== "cancelled" &&
+                    <Fragment>
+                      <div className="form_title">
+                        <h3><strong><i className="icon-users-3" /></strong>Data Penumpang Keberangkatan</h3>
+                        <p>Input identitas data KTP dan Passport.</p>
+                      </div>
+                      <div className="step">
+                        <div className="row">
+                          {persons.length > 0 && persons.map((person, index) =>
+                            <div className="col-lg-4" key={index}>
+                              <div className="identity-item box_style_1">
+                                <h3 className="inner">Penumpang {index + 1}</h3>
+                                {person && typeof(person) === "object" ? (
+                                  <Fragment>
+                                    <button className="btn_full" onClick={() => this._toggleIdentityModal(person)}>LIHAT KTP</button>
+                                    <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>LIHAT PASSPORT</button>
+                                  </Fragment>
+                                ) : (
+                                  <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>
+                                )}
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </div>
+                      </div>
+                    </Fragment>
+                  }
                 </div>
               </div>
             </div>

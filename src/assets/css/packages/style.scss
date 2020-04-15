@@ -212,6 +212,16 @@ a.btn_1.white, .btn_1.white {
   color: #ff7f5c;
 }
 
+a.btn_1.red, .btn_1.red {
+  background: #f44336;
+  color: #fff;
+}
+
+a.btn_1.red:hover, .btn_1.red a:hover {
+  background:#d50000;
+  color: #fff;
+}
+
 a.btn_1.white:hover, .btn_1.white a:hover {
   background: #333;
   color: #fff;
