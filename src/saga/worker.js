@@ -162,6 +162,8 @@ export function* _booking(payload) {
   formData.append("booking[departure_date]", payload.data.departure_date);
   formData.append("booking[voucher_id]", payload.data.voucher_id);
   formData.append("booking[price]", payload.data.price);
+  formData.append("booking[booking_type]", payload.data.booking_type);
+  formData.append("booking[saving_package_id]", payload.data.saving_package_id);
   const config = {
     ...payload.config,
     url: BACKEND_URL + payload.path,

@@ -15,7 +15,7 @@
 
 .mfp-bg, .mfp-wrap {
   position: fixed;
-  z-index: 999999;
+  z-index: 100;
 }
 
 .mfp-bg, .mfp-container, .mfp-wrap {
@@ -14197,6 +14197,9 @@
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &:before {
     content: '';

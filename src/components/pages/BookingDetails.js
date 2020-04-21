@@ -10,6 +10,7 @@ import moment from "moment";
 import _ from "lodash";
 import IdentityModal from "../shared/IdentityModal";
 import PassportModal from "../shared/PassportModal";
+import SavingModal from "../shared/SavingModal";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
@@ -39,7 +40,8 @@ class BookingDetails extends Component {
       persons: [],
       passports: [],
       showIdentityModal: [false, {}],
-      showPassportModal: [false, {}]
+      showPassportModal: [false, {}],
+      showSavingModal: [false, {}]
     }
   };
 
@@ -211,9 +213,19 @@ class BookingDetails extends Component {
     }
   }
 
+  _toggleSavingModal = (identity_id) => {
+    const { showSavingModal } = this.state;
+    const id = this.props.match.params.product_id;
+    if (showSavingModal[0]) {
+      this.setState({showSavingModal: [!showSavingModal[0], {}]})
+    } else {
+      this.setState({showSavingModal: [!showSavingModal[0], {booking_id: id, identity_id: identity_id}]})
+    }
+  }
+
   render() {
     const { data } = this.props.bookingDetails;
-    const { paymentStatus, persons, passports, showIdentityModal, showPassportModal } = this.state;
+    const { paymentStatus, persons, passports, showIdentityModal, showPassportModal, showSavingModal } = this.state;
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -284,26 +296,30 @@ class BookingDetails extends Component {
                       <div className="col-lg-4">
                         <div className="box_style_3">
                           <h3 className="inner">Status Pemesanan</h3>
-                          {data.booking_status !== "cancelled" ? (
-                            <Fragment>
-                              <p>
-                                {paymentStatus}
-                              </p>
-                              {paymentStatus === "Menunggu Pembayaran" &&
-                                <Fragment>
-                                  <hr />
-                                  <button
-                                    className="btn_full_outline"
-                                    onClick={this._pay}
-                                    disabled={this.state.openPayment}
-                                    >
-                                    Bayar Sekarang
-                                  </button>
-                                </Fragment>
-                              }
-                            </Fragment>
+                          {data.booking_type === "full" ? (
+                            data.booking_status !== "cancelled" ? (
+                              <Fragment>
+                                <p>
+                                  {paymentStatus}
+                                </p>
+                                {paymentStatus === "Menunggu Pembayaran" &&
+                                  <Fragment>
+                                    <hr />
+                                    <button
+                                      className="btn_full_outline"
+                                      onClick={this._pay}
+                                      disabled={this.state.openPayment}
+                                      >
+                                      Bayar Sekarang
+                                    </button>
+                                  </Fragment>
+                                }
+                              </Fragment>
+                            ) : (
+                              <p>Cancelled</p>
+                            )
                           ) : (
-                            <p>Cancelled</p>
+                            <p>Pengisian Data</p>
                           )}
                         </div>
                       </div>
@@ -397,6 +413,9 @@ class BookingDetails extends Component {
                                   <Fragment>
                                     <button className="btn_full" onClick={() => this._toggleIdentityModal(person)}>LIHAT KTP</button>
                                     <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>LIHAT PASSPORT</button>
+                                    {data.booking_type === "savings" &&
+                                      <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index])}>LIHAT TABUNGAN</button>
+                                    }
                                   </Fragment>
                                 ) : (
                                   <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>
@@ -416,6 +435,9 @@ class BookingDetails extends Component {
             }
             {showPassportModal[0] &&
               <PassportModal toggle={() => this._togglePassportModal()} passport={showPassportModal[1]} />
+            }
+            {showSavingModal[0] &&
+              <SavingModal toggle={() => this._toggleSavingModal()} saving={showSavingModal[1]} />
             }
           </Fragment>
         )

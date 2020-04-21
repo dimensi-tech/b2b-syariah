@@ -46,46 +46,46 @@ class Home extends Component {
     const { products, ads } = this.props
     return (
       <Fragment>
-        <div id='search_container_2'>
-          <div id='search_2'>
-            <div className='ads-collections'>
-              <Slider
-                data={ads}
-                options={{
-                  autoPlay: 5000,
-                  pauseAutoPlayOnHover: true,
-                  pageDots: false,
-                  contain: isMobile ? true : false
-                }}>
-                {
-                  ads.data.length > 0 &&
-                  ads.data.map((ad, index) => (
-                    <div key={index}
-                         style={{
-                           height: isMobileOnly ? 150 : 450,
-                           width: isMobile ? '100%' : 'calc(70% + 20px)'
-                          }}
-                         className='ads-item'
-                    >
-                      <div className='ads-content'>
-                        <span>{ad.name}</span>
-                        <img src={ad.image_path} alt={ad.name} />
+        <main className="with-bg">
+          <div id='search_container_2'>
+            <div id='search_2'>
+              <div className='banners-collections'>
+                <Slider
+                  data={ads}
+                  options={{
+                    autoPlay: 5000,
+                    pauseAutoPlayOnHover: true,
+                    pageDots: false,
+                    contain: isMobile ? true : false
+                  }}>
+                  {
+                    ads.data.length > 0 &&
+                    ads.data.map((ad, index) => (
+                      <div key={index}
+                          style={{
+                            height: isMobileOnly ? 150 : 450,
+                            width: isMobile ? '100%' : 'calc(70% + 20px)'
+                            }}
+                          className='ads-item'
+                      >
+                        <div className='ads-content'>
+                          <span>{ad.name}</span>
+                          <img src={ad.image_path} alt={ad.name} />
+                        </div>
                       </div>
-                    </div>
-                  ))
-                }
-              </Slider>
-            </div>
-            <h1>Cari tujuan travelmu</h1>
-            <div className='tab-content'>
-              <div className='tab-pane fade active show' id='tours'>
-                <Search history={this.props.history}/>
+                    ))
+                  }
+                </Slider>
+              </div>
+              <h1>Cari tujuan travelmu</h1>
+              <div className='tab-content'>
+                <div className='tab-pane fade active show' id='tours'>
+                  <Search history={this.props.history}/>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <main className="with-bg">
-          <div className='white_bg'>
+          <div>
             <div className='container margin_60'>
               <div className='row small-gutters categories_grid'>
                 <div className='col-sm-12 col-md-4'>

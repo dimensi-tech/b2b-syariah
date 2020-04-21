@@ -18,7 +18,9 @@ const initialState = {
   price: "",
   person: "1",
   departure_date: "",
-  voucher_id: ""
+  voucher_id: "",
+  booking_type: "1",
+  saving_package_id: ""
 };
 
 class ProductDetails extends Component {
@@ -39,32 +41,45 @@ class ProductDetails extends Component {
   _onChange = evt => {
     const { name, value } = evt.target;
     const { packages } = this.props.productDetails.data;
+    const { formControl } = this.state;
     if (name === "package_id") {
       const id = value.split("@")[0];
       const index = value.split("@")[1];
       if (id === "") {
         this.setState({
-          formControl: Object.assign({}, this.state.formControl, {
+          formControl: Object.assign({}, formControl, {
             package_id: id,
           }),
           selected_index: null
         });
-      }else{
+      } else {
         this.setState({
-          formControl: Object.assign({}, this.state.formControl, {
+          formControl: Object.assign({}, formControl, {
             package_id: id,
             departure_date: moment(new Date(packages[index].available_date[0])).format("DD-MM-YYYY"),
-            price: packages[index].normal_price
+            price: packages[index].normal_price,
+            booking_type: parseInt(packages[index].booking_options[0]),
+            saving_package_id: 1
           }),
           selected_index: index
         });
       }
-    }else{
-      this.setState({
-        formControl: Object.assign({}, this.state.formControl, {
-          [name]: value
+    } else {
+      if (name === "booking_type" && value === "2") {
+        const selectedPackage = packages.filter(x => x.id === parseInt(formControl.package_id))[0];
+        this.setState({
+          formControl: Object.assign({}, formControl, {
+            [name]: value,
+            saving_package_id: selectedPackage.saving_packages[0].id
+          })
         })
-      });
+      } else {
+        this.setState({
+          formControl: Object.assign({}, formControl, {
+            [name]: value
+          })
+        });
+      }
     }
   };
 
@@ -238,7 +253,6 @@ class ProductDetails extends Component {
                                                 alt: package_detail.day
                                               }}
                                             />
-                                            {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcToT-aCXNqcYDwgEk0n9TljwgjNLPVDBomczRMLoFf1Em1zUrml" alt={package_detail.day} className="img-fluid" /> */}
                                           </div>
                                         </div>
                                       </div>

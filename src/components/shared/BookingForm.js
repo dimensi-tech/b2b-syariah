@@ -31,6 +31,9 @@ class BookingForm extends Component {
   render() {
     const { formControl, data, index } = this.props;
     const { invalid } = this.state;
+    const minPerson = index ? data[index].min_person : 1;
+    const { person } = formControl;
+    const personValue = (person < minPerson) ? minPerson : person;
     return (
       <div className="box_style_1 expose">
         <h3 className="inner">Formulir Pemesanan</h3>
@@ -57,16 +60,16 @@ class BookingForm extends Component {
             <div className="form-group">
               <label>
                 <i className="icon-users-1 mr-2" />
-                Jumlah Orang {index && `(${data[index].min_person} - ${data[index].max_person} orang)`}
+                Jumlah Orang {index && `(${minPerson} - ${data[index].max_person} orang)`}
               </label>
               <input
                 className="time-pick form-control"
                 type="number"
                 name="person"
                 onChange={this._onChange}
-                value={formControl.person}
+                value={personValue}
                 disabled={!index}
-                min={index ? data[index].min_person : 1}
+                min={minPerson}
                 max={index ? data[index].max_person : 1}
                 ref={input => this.personCount = input}
                 onFocus={this._blurThis}
@@ -89,6 +92,43 @@ class BookingForm extends Component {
               </select>
             </div>
           </div>
+          <div className="col-12">
+            <div className="form-group">
+              <label>
+                <i className="icon-docs-1 mr-2" />
+                Tipe Pembayaran
+              </label>
+              <select name="booking_type" value={formControl.booking_type} onChange={this._onChange} disabled={index === null} className="form-control">
+                {
+                  index &&
+                  data[index].booking_options.map((value, i) => (
+                    <option value={value} key={i}>{value === 1 ? "Bayar Langsung" : "Bayar Nabung"}</option>
+                  ))
+                }
+              </select>
+            </div>
+          </div>
+          {
+            parseInt(formControl.booking_type) === 2 &&
+            <div className="col-12">
+              <div className="form-group">
+                <label>
+                  <i className="icon-magic mr-2" />
+                  Durasi Tabungan
+                </label>
+                <select name="saving_package_id" value={formControl.saving} onChange={this._onChange} disabled={index === null} className="form-control">
+                  {
+                    index &&
+                    data[index].saving_packages.map((saving, i) => (
+                      <option value={saving.id} key={i}>
+                        {`${saving.sort} bulan`}
+                      </option>
+                    ))
+                  }
+                </select>
+              </div>
+            </div>
+          }
           <div className="col-12">
             <div className="form-group">
               <label>
