@@ -5,17 +5,36 @@ import Swal from "sweetalert2";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const TOKEN = Authorization().getAuthUser();
+const MIDTRANS_SERVER = process.env.REACT_APP_MIDTRANS_SERVER;
+const PROXY = "https://cors-anywhere.herokuapp.com";
+const HEADERS = {
+  headers: {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+  auth: {
+    username: MIDTRANS_SERVER,
+    password: ""
+  }
+};
 
 class SavingModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      savings: []
+      savings: [],
+      paymentStatus: '',
+      openPayment: false,
+      midtransStatus: {},
     }
   };
 
   componentDidMount() {
     this._getSavings();
+    const script = document.createElement("script");
+    script.src = "https://app.sandbox.midtrans.com/snap/snap.js"
+    script.setAttribute("data-client-key", "SB-Mid-server-YAxhhaXZP5u3MJchUadi296f")
+    document.body.appendChild(script);
   }
 
   _getSavings = () => {
@@ -34,20 +53,33 @@ class SavingModal extends Component {
     })
   }
 
-  _pay = (savingId) => {
-    Axios.post(`${API_URL}/bookings/saving_paid`, {
-      id: savingId
-    }, {
-      headers: {
-        "Authorization": TOKEN
+  _pay = (data) => {
+    this.setState({ openPayment: true })
+    const grossAmount = data.amount
+    let parameter = {
+      "transaction_details": {
+        "order_id": `${data.id}${Date.now()}`,
+        "gross_amount": grossAmount
+      }, "credit_card":{
+        "secure" : true
       }
-    }).then(() => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Tabungan telah disimpan'
-      }).then(() => {
-        this._getSavings();
-      })
+    };
+  
+    Axios.post(`${PROXY}/https://app.sandbox.midtrans.com/snap/v1/transactions`, parameter, HEADERS).then(res => {
+      Axios.post(`${API_URL}/bookings/saving_paid`, {
+        id: data.id
+      }, {
+        headers: {
+          "Authorization": TOKEN
+        }
+      });
+      window.snap.pay(`${res.data.token}`, {
+        onSuccess: function(result){console.log('success');console.log(result);},
+        onPending: function(result){console.log('pending');console.log(result);},
+        onError: function(result){console.log('error');console.log(result);},
+        onClose: function(){console.log('customer closed the popup without finishing the payment');}
+      });
+      this.setState({ openPayment: false })
     })
   }
 
@@ -89,7 +121,13 @@ class SavingModal extends Component {
                             </td>
                             <td>
                               {saving.status === "unpaid" &&
-                                <button onClick={() => this._pay(saving.id)} className="btn_1">Bayar</button>
+                                <button
+                                  onClick={() => this._pay(saving)}
+                                  className="btn_1"
+                                  disabled={this.state.openPayment}
+                                >
+                                  Bayar
+                                </button>
                               }
                             </td>
                           </tr>
