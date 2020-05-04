@@ -67,6 +67,15 @@ export const ROUTE = [
     })
   },
   {
+    private: false,
+    path: "/assign_passport/:product_id/:index",
+    exact: true,
+    component: Loadable({
+      loader: () => import("./components/pages/BookingUpdatePassport"),
+      loading: () => <Preloader />
+    })
+  },
+  {
     private: true,
     path: "/payment-success",
     exact: true,

@@ -28,12 +28,18 @@ class BookingForm extends Component {
     }
   };
 
+  currency = (amount) => {
+    return parseFloat(amount).toLocaleString('id');
+  }
+
   render() {
     const { formControl, data, index } = this.props;
     const { invalid } = this.state;
-    const minPerson = index ? data[index].min_person : 1;
-    const { person } = formControl;
-    const personValue = (person < minPerson) ? minPerson : person;
+    const minPerson = index ? data[index].min_adult : 1;
+    const minChild = index ? data[index].min_child : 1;
+    const { adult, child } = formControl;
+    const personValue = (adult < minPerson) ? minPerson : adult;
+    const childValue = (child < minChild) ? minChild : child;
     return (
       <div className="box_style_1 expose">
         <h3 className="inner">Formulir Pemesanan</h3>
@@ -59,23 +65,55 @@ class BookingForm extends Component {
           <div className="col-12">
             <div className="form-group">
               <label>
-                <i className="icon-users-1 mr-2" />
-                Jumlah Orang {index && `(${minPerson} - ${data[index].max_person} orang)`}
+                <i className="icon-adult mr-2" />
+                Dewasa {index && `(${minPerson} - ${data[index].max_adult} orang)`}
               </label>
               <input
                 className="time-pick form-control"
                 type="number"
-                name="person"
+                name="adult"
                 onChange={this._onChange}
                 value={personValue}
                 disabled={!index}
                 min={minPerson}
-                max={index ? data[index].max_person : 1}
+                max={index ? data[index].max_adult : 1}
                 ref={input => this.personCount = input}
                 onFocus={this._blurThis}
-                />
+              />
+              {index && personValue >= minPerson &&
+                <small className="mt-1">
+                  Harga per pax : Rp {`${index && parseInt(data[index].adult_price, 10).toLocaleString()}`}
+                </small>
+              }
             </div>
           </div>
+          {index && data[index].min_child &&
+            <div className="col-12">
+              <div className="form-group">
+                <label>
+                  <i className="icon-child mr-2" />
+                  Anak {index && `(${minChild} - ${data[index].max_child} orang)`}
+                </label>
+                <input
+                  className="time-pick form-control"
+                  type="number"
+                  name="child"
+                  onChange={this._onChange}
+                  value={childValue}
+                  disabled={!index}
+                  min={minChild}
+                  max={index ? data[index].max_child : 1}
+                  ref={input => this.personCount = input}
+                  onFocus={this._blurThis}
+                />
+                {childValue >= minChild &&
+                  <small className="mt-1">
+                    Harga per pax : Rp {`${index && parseInt(data[index].child_price, 10).toLocaleString()}`}
+                  </small>
+                }
+              </div>
+            </div>
+          }
           <div className="col-12">
             <div className="form-group">
               <label>
@@ -108,8 +146,7 @@ class BookingForm extends Component {
               </select>
             </div>
           </div>
-          {
-            parseInt(formControl.booking_type) === 2 &&
+          {parseInt(formControl.booking_type) === 2 &&
             <div className="col-12">
               <div className="form-group">
                 <label>
@@ -154,23 +191,25 @@ class BookingForm extends Component {
               </tr>
               <tr>
                 <td>
-                  {`${index && data[index].name}`}
-                </td>
-                <td className="text-right nowrap">
-                  Rp {`${index && parseInt(data[index].normal_price, 10).toLocaleString()}`}/pax
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Jumlah Orang
+                  Dewasa ({`${formControl.adult}`} pax)
                 </td>
                 <td className="text-right">
-                  {`${formControl.person}`}x
+                  Rp {`${index && parseFloat(data[index].adult_price * formControl.adult).toLocaleString('id')}`}
                 </td>
               </tr>
+              {formControl.child >= 1 &&
+                <tr>
+                  <td>
+                    Anak ({`${formControl.child}`} pax)
+                  </td>
+                  <td className="text-right">
+                    Rp {`${index && parseFloat(data[index].child_price * formControl.child).toLocaleString('id')}`}
+                  </td>
+                </tr>
+              }
               <tr>
                 <td>
-                  VOUCHER
+                  Voucher
                 </td>
                 <td className="text-right">
                   -
@@ -179,7 +218,11 @@ class BookingForm extends Component {
               <tr className="total">
                 <td colSpan="2" className="text-right">
                   <p>
-                    Rp {`${index && parseFloat(data[index].normal_price * formControl.person).toLocaleString('id')}`}
+                    Rp&nbsp;
+                    {formControl.child >= 1
+                      ? this.currency((data[index].adult_price * formControl.adult) + (data[index].child_price * formControl.child))
+                      : this.currency(data[index].adult_price * formControl.adult)
+                    }
                   </p>
                 </td>
               </tr>

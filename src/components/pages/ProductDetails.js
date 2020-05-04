@@ -16,11 +16,13 @@ import Preloader from "../static/Preloader";
 const initialState = {
   package_id: "",
   price: "",
-  person: "1",
+  person: "",
   departure_date: "",
   voucher_id: "",
   booking_type: "1",
-  saving_package_id: ""
+  saving_package_id: "",
+  adult: "1",
+  child: "",
 };
 
 class ProductDetails extends Component {
@@ -59,7 +61,9 @@ class ProductDetails extends Component {
             departure_date: moment(new Date(packages[index].available_date[0])).format("DD-MM-YYYY"),
             price: packages[index].normal_price,
             booking_type: parseInt(packages[index].booking_options[0]),
-            saving_package_id: 1
+            saving_package_id: 1,
+            adult: packages[index].min_adult,
+            child: packages[index].min_child
           }),
           selected_index: index
         });
@@ -204,7 +208,7 @@ class ProductDetails extends Component {
                             </div>
                             <div className="col-lg-9">
                               <h4>RP {parseFloat(pack.normal_price).toLocaleString('id')}/pax</h4>
-                              <p>Down Payment = RP {parseFloat(pack.down_payment).toLocaleString('id')}</p>
+                              <p>DP Starting From RP {parseFloat(pack.down_payment).toLocaleString('id')}</p>
                             </div>
                           </div>
 

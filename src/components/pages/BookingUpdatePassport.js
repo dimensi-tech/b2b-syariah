@@ -9,7 +9,7 @@ const querySearch = require("stringquery");
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const TOKEN = Authorization().getAuthUser();
 
-class BookingUpdateIdenity extends React.Component {
+class BookingUpdatePassport extends React.Component {
   componentDidMount() {
     const id = this.props.match.params.product_id;
     const { data } = this.props.bookingDetails;
@@ -23,18 +23,18 @@ class BookingUpdateIdenity extends React.Component {
     const parameters = querySearch(location.search)
     const { data } = this.props.bookingDetails;
     if (!_.isEmpty(data)) {
-      let identities = [];
-      if (data.identity_ids.length > 0) {
-        identities = [...Array(data.adult).keys()].map((index) => data.identity_ids[index] !== null ? data.identity_ids[index] : "");
-        identities[match.params.index] = parameters.identity_callback;
+      let passports = [];
+      if (data.child_passport_ids.length > 0) {
+        passports = [...Array(data.child).keys()].map((index) => data.child_passport_ids[index] !== null ? data.child_passport_ids[index] : "");
+        passports[match.params.index] = parameters.identity_callback;
       } else {
-        identities = [...Array(data.adult).keys()].map(() => "");
-        identities[match.params.index] = parameters.identity_callback;
+        passports = [...Array(data.child).keys()].map(() => "");
+        passports[match.params.index] = parameters.identity_callback;
       }
-      Axios.post(`${API_URL}/bookings/assign_identities`, {
+      Axios.post(`${API_URL}/bookings/assign_child_passports`, {
         booking_id: match.params.product_id,
         booking: {
-          identity_ids: identities
+          child_passport_ids: passports
         }
       }, {
         headers: {
@@ -72,4 +72,4 @@ export default connect(
   state => ({
     bookingDetails: state.bookingDetails
   })
-)(BookingUpdateIdenity);
+)(BookingUpdatePassport);

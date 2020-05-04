@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Authorization from "../../helpers/Authorization";
 import Axios from "axios";
-import Swal from "sweetalert2";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const TOKEN = Authorization().getAuthUser();

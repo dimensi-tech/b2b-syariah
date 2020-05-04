@@ -174,7 +174,14 @@ class BookingModify extends Component {
                               <td>
                                 <strong>Jumlah Orang</strong>
                               </td>
-                              <td>{data.person} orang</td>
+                              <td>
+                                <ul className="mb-0" style={{paddingLeft: '15px'}}>
+                                  <li>
+                                    Dewasa {data.adult} orang
+                                  </li>
+                                  {data.child ? <li>Anak {data.child} orang</li> : null}
+                                </ul>
+                              </td>
                             </tr>
                             <tr>
                               <td>

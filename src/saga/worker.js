@@ -155,6 +155,50 @@ export function* _getAds(payload) {
   });
 };
 
+export function* _biodata(payload) {
+  let formData = new FormData();
+  formData.append("biodata[name]", payload.data.name);
+  formData.append("biodata[email]", payload.data.email);
+  formData.append("biodata[phone]", payload.data.phone);
+  const config = {
+    ...payload.config,
+    url: BACKEND_URL + payload.path,
+    data: formData
+  };
+  try {
+    const response = yield call(async () => {
+      const res = await axios(config);
+      return res;
+    });
+    yield put({
+      type: actionTypes.CREATE_BIODATA_SUCCESS,
+      biodataId: response.data.id
+    });
+  }catch (error) {
+    if (error.response) {
+      if (error.response.status === 500) {
+        yield put({
+          type: actionTypes.CREATE_BIODATA_ERROR,
+          message: "Sesi anda telah berakhir, silahkan login kembali."
+        });
+      }else{
+        yield put({
+          type: actionTypes.CREATE_BIODATA_ERROR,
+          message: "Server sedang sibuk!"
+        });
+      }
+    }else{
+      yield put({
+        type: actionTypes.CREATE_BIODATA_ERROR,
+        message: "Tidak dapat terhubung ke server!"
+      })
+    }
+  }
+  yield put({
+    type: actionTypes.CREATE_BIODATA_RESET
+  });
+}
+
 export function* _booking(payload) {
   let formData = new FormData();
   formData.append("booking[package_id]", payload.data.package_id);
@@ -164,6 +208,8 @@ export function* _booking(payload) {
   formData.append("booking[price]", payload.data.price);
   formData.append("booking[booking_type]", payload.data.booking_type);
   formData.append("booking[saving_package_id]", payload.data.saving_package_id);
+  formData.append("booking[adult]", payload.data.adult);
+  formData.append("booking[child]", payload.data.child);
   const config = {
     ...payload.config,
     url: BACKEND_URL + payload.path,

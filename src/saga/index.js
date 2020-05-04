@@ -7,7 +7,8 @@ import {
     register,
     booking,
     bookingDetails,
-    bookingList
+    bookingList,
+    biodata
 } from "./watcher";
 
 export default function* rootSaga() {
@@ -19,6 +20,7 @@ export default function* rootSaga() {
         register(),
         booking(),
         bookingDetails(),
-        bookingList()
+        bookingList(),
+        biodata()
     ]);
 };

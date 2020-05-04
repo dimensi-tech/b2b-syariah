@@ -38,5 +38,10 @@ export const GET_ADS_RESET = "GET_ADS_RESET";
 export const CREATE_BOOKING_RESET = "CREATE_BOOKING_RESET";
 export const GET_BOOKING_LIST_RESET = "GET_BOOKING_LIST_RESET";
 export const GET_BOOKING_DETAILS_RESET = "GET_BOOKING_DETAILS_RESET";
+export const CREATE_BIODATA_RESET = "CREATE_BIODATA_RESET";
 
 export const ID_MONTH = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+export const CREATE_BIODATA_REQUEST = "CREATE_BIODATA_REQUEST";
+export const CREATE_BIODATA_SUCCESS = "CREATE_BIODATA_SUCCESS";
+export const CREATE_BIODATA_ERROR = "CREATE_BIODATA_ERROR";

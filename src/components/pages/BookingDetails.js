@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import "../../assets/css/booking_details.scss";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { GET_BOOKING_DETAILS_REQUEST, ID_MONTH } from "../../helpers/constant";
+import { GET_BOOKING_DETAILS_REQUEST, ID_MONTH, CREATE_BIODATA_REQUEST } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
 import Preloader from "../static/Preloader";
 import Axios from "axios";
@@ -11,8 +11,11 @@ import _ from "lodash";
 import IdentityModal from "../shared/IdentityModal";
 import PassportModal from "../shared/PassportModal";
 import SavingModal from "../shared/SavingModal";
+import CreateBioModal from "../shared/CreateBioModal";
+import BiodataModal from "../shared/BiodataModal";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
+const HOST_URL = process.env.REACT_APP_HOST;
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
 const MIDTRANS_SERVER = process.env.REACT_APP_MIDTRANS_SERVER;
 const KYC_URL = process.env.REACT_APP_KYC_URL;
@@ -30,6 +33,14 @@ const HEADERS = {
   }
 };
 
+const biodataState = {
+  bioIndex: "",
+  name: "",
+  email: "",
+  phone: "",
+  type: "adult"
+};
+
 class BookingDetails extends Component {
   constructor(props) {
     super(props)
@@ -37,11 +48,17 @@ class BookingDetails extends Component {
       openPayment: false,
       paymentStatus: 'Loading...',
       midtransStatus: {},
-      persons: [],
+      adults: [],
+      childs: [],
       passports: [],
       showIdentityModal: [false, {}],
       showPassportModal: [false, {}],
-      showSavingModal: [false, {}]
+      showSavingModal: [false, {}],
+      showBiodataModal: [false, ''],
+      createBioModal: [false, '', 'adult'],
+      formBiodata: {
+        ...biodataState
+      }
     }
   };
 
@@ -61,29 +78,93 @@ class BookingDetails extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props.bookingDetails;
-    const { midtransStatus } = this.state;
-    if (!_.isEmpty(data) && _.isEmpty(this.state.persons)) {
-      if (data.identity_ids.length > 0) {
-        this.setState({persons: data.identity_ids});
-        [...Array(data.person).keys()].map(person =>
-          data.identity_ids[person] !== null ? this._showDataPerson(person) : null
-        )
-      } else {
-        const persons = [...Array(data.person).keys()].map(person => null)
-        this.setState({persons: persons});
+    const { midtransStatus, formBiodata } = this.state;
+    const { biodata } = this.props;
+
+    if (prevProps.biodata.error !== biodata.error) {
+      if (biodata.error) {
+        document.getElementsByName("logout-label-clickable")[0].click();
+        setTimeout(() => {
+          document.getElementsByName("login-label-clickable")[0].click();
+        }, 500)
       }
     }
+    if (prevProps.biodata.success !== biodata.success) {
+      if (biodata.success) {
+        let bioCollection = [];
+        const isAdult = formBiodata.type === "adult"
+        const ids = isAdult ? "adult_bio_ids" : "child_bio_ids"
+        const endpoint = isAdult ? "assign_adult_bio" : "assign_child_bio"
+
+        if (data[ids].length > 0) {
+          bioCollection = [...Array(data[formBiodata.type]).keys()].map((index) => data[ids][index] !== null ? data[ids][index] : "");
+          bioCollection[formBiodata.index] = biodata.biodataId;
+        } else {
+          bioCollection = [...Array(data[formBiodata.type]).keys()].map(() => "");
+          bioCollection[formBiodata.index] = biodata.biodataId;
+        }
+
+        Axios.post(`${API_URL}/bookings/${endpoint}`, {
+          booking_id: data.id,
+          booking: {
+            [ids]: bioCollection
+          }
+        }, {
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          }
+        }).then(res =>
+          this._getData(res.data.id)
+        )
+
+        this.setState({
+          formBiodata: {
+            ...biodataState
+          },
+          createBioModal: [false, '']
+        });
+      }
+    }
+
+    if (!_.isEmpty(data) && _.isEmpty(this.state.adults)) {
+      if (data.identity_ids.length > 0) {
+        this.setState({adults: data.identity_ids});
+        [...Array(data.adult).keys()].map(adult =>
+          data.identity_ids[adult] !== null ? this._showDataadult(adult) : null
+        )
+      } else {
+        const adults = [...Array(data.adult).keys()].map(adult => null)
+        this.setState({adults});
+      }
+    }
+
+    if (!_.isEmpty(data) && _.isEmpty(this.state.childs)) {
+      if (data.child) {
+        if (data.child_passport_ids.length > 0) {
+          this.setState({childs: data.child_passport_ids});
+          [...Array(data.child).keys()].map(child =>
+            data.child_passport_ids[child] !== null ? this._showDatachild(child) : null
+          )
+        } else {
+          const childs = [...Array(data.child).keys()].map(child => null)
+          this.setState({childs});
+        }
+      }
+    }
+
     if (!_.isEmpty(data) && _.isEmpty(this.state.passports)) {
       if (data.identity_ids.length > 0) {
         this.setState({passports: data.identity_ids});
-        [...Array(data.person).keys()].map(person =>
-          data.identity_ids[person] !== null ? this._showDataPassport(person) : null
+        [...Array(data.adult).keys()].map(adult =>
+          data.identity_ids[adult] !== null ? this._showDataPassport(adult) : null
         )
       } else {
-        const passports = [...Array(data.person).keys()].map(person => null)
+        const passports = [...Array(data.adult).keys()].map(adult => null)
         this.setState({passports: passports});
       }
     }
+
     if (data.midtrans_id && Object.keys(midtransStatus).length === 0) {
       Axios
       .get(`${PROXY}/https://api.sandbox.midtrans.com/v2/${data.midtrans_id}/status`, HEADERS)
@@ -134,7 +215,7 @@ class BookingDetails extends Component {
       openPayment: true
     })
     const { data } = this.props.bookingDetails;
-    const grossAmount = data.price * data.person
+    const grossAmount = data.price * data.adult
     let parameter = {
       "transaction_details": {
         "order_id": `${data.id}${Date.now()}`,
@@ -161,17 +242,36 @@ class BookingDetails extends Component {
     })
   }
 
-  _showDataPerson = (person) => {
+  _showDataadult = (adult) => {
     const { data } = this.props.bookingDetails;
     if (!_.isEmpty(data)) {
       if (data.identity_ids.length > 0) {
-        const identity = data.identity_ids[person];
+        const identity = data.identity_ids[adult];
         if (identity) {
           Axios.get(`${KYC_API_V1}/identities/find_identity?id=${identity}`).then(res => {
-            let clone = [...this.state.persons];
-            clone[person] = res.data;
+            let clone = [...this.state.adults];
+            clone[adult] = res.data;
             this.setState({
-              persons: clone
+              adults: clone
+            })
+          })
+        }
+      }
+    }
+  }
+
+  _showDatachild = (child) => {
+    const { data } = this.props.bookingDetails;
+    if (!_.isEmpty(data)) {
+      if (data.child_passport_ids.length > 0) {
+        const passport = data.child_passport_ids[child];
+        if (passport) {
+          Axios.get(`${KYC_API_V1}/passports/find_passport?id=${passport}&child=true`)
+               .then(res => {
+            let clone = [...this.state.childs];
+            clone[child] = res.data;
+            this.setState({
+              childs: clone
             })
           })
         }
@@ -223,9 +323,72 @@ class BookingDetails extends Component {
     }
   }
 
+  _toggleBiodataModal = (id) => {
+    const { showBiodataModal } = this.state;
+    if (showBiodataModal[0]) {
+      this.setState({showBiodataModal: [!showBiodataModal[0], '']})
+    } else {
+      this.setState({showBiodataModal: [!showBiodataModal[0], id]})
+    }
+  }
+
+  _toggleCreateBioModal = (index, type) => {
+    const { createBioModal, formBiodata } = this.state;
+    if (createBioModal[0]) {
+      this.setState({
+        createBioModal: [!createBioModal[0] ,'', type],
+        formBiodata: {...biodataState}
+      })
+    } else {
+      this.setState({
+        createBioModal: [!createBioModal[0], index, type],
+        formBiodata: Object.assign({}, formBiodata, {
+          index: index,
+          type: type
+        })
+      })
+    }
+  }
+
+  _onChangeBiodata = evt => {
+    const { name, value } = evt.target;
+    const { formBiodata } = this.state;
+    this.setState({
+      formBiodata: Object.assign({}, formBiodata, {
+        [name]: value
+      })
+    });
+  };
+
+  _submitBiodata = async () => {
+    const token = Authorization().getAuthUser();
+    const { dispatch } = this.props;
+    const { formBiodata } = this.state;
+
+    if (typeof token === "string") {
+      dispatch({
+        type: CREATE_BIODATA_REQUEST,
+        config: {
+          method: "post",
+          headers: {
+            "Authorization": token,
+            "Content-Type": "multipart/form-data"
+          }
+        },
+        path: "/biodatas/create_biodata",
+        data: formBiodata
+      });
+    } else {
+      document.getElementsByName("login-label-clickable")[0].click();
+    }
+  };
+
   render() {
     const { data } = this.props.bookingDetails;
-    const { paymentStatus, persons, passports, showIdentityModal, showPassportModal, showSavingModal } = this.state;
+    const {
+      paymentStatus, adults, childs, passports, showIdentityModal,
+      showPassportModal, showSavingModal, createBioModal, formBiodata, showBiodataModal
+    } = this.state;
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -352,7 +515,14 @@ class BookingDetails extends Component {
                               <td>
                                 <strong>Jumlah Orang</strong>
                               </td>
-                              <td>{data.person} orang</td>
+                              <td>
+                                <ul className="mb-0" style={{paddingLeft: '15px'}}>
+                                  <li>
+                                    Dewasa {data.adult} orang
+                                  </li>
+                                  {data.child ? <li>Anak {data.child} orang</li> : null}
+                                </ul>
+                              </td>
                             </tr>
                             <tr>
                               <td>
@@ -405,26 +575,93 @@ class BookingDetails extends Component {
                       </div>
                       <div className="step">
                         <div className="row">
-                          {persons.length > 0 && persons.map((person, index) =>
+                          {adults.length > 0 && adults.map((adult, index) =>
                             <div className="col-lg-4" key={index}>
                               <div className="identity-item box_style_1">
                                 <h3 className="inner">Penumpang {index + 1}</h3>
-                                {person && typeof(person) === "object" ? (
+                                {adult && typeof(adult) === "object" ? (
                                   <Fragment>
-                                    <button className="btn_full" onClick={() => this._toggleIdentityModal(person)}>LIHAT KTP</button>
+                                    <button className="btn_full" onClick={() => this._toggleIdentityModal(adult)}>LIHAT KTP</button>
                                     <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>LIHAT PASSPORT</button>
                                     {data.booking_type === "savings" &&
                                       <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index])}>LIHAT TABUNGAN</button>
                                     }
                                   </Fragment>
                                 ) : (
-                                  <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`} className="btn_full_outline">Isi Data</a>
+                                  <a
+                                    href={`${KYC_URL}?referrer=${window.location.href}/${index}`}
+                                    className="btn_full_outline"
+                                    style={{marginBottom: '10px'}}
+                                  >
+                                      Isi KTP & Passport
+                                    </a>
+                                )}
+                                {data.adult_bio_ids[index] ? (
+                                  <button className="btn_full" onClick={() => this._toggleBiodataModal(data.adult_bio_ids[index])}>
+                                    Lihat Biodata
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="btn_full_outline"
+                                    style={{width: '100%', marginBottom: '10px'}}
+                                    onClick={() => this._toggleCreateBioModal(index, "adult")}
+                                  >
+                                    Isi Biodata
+                                  </button>
                                 )}
                               </div>
                             </div>
                           )}
                         </div>
                       </div>
+
+                      {data.child >= 1 && (
+                        <Fragment>
+                          <div className="form_title">
+                            <h3><strong><i className="icon-users-3" /></strong>Data Penumpang Keberangkatan (Anak)</h3>
+                            <p>Input identitas data Passport.</p>
+                          </div>
+                          <div className="step">
+                            <div className="row">
+                              {childs.length > 0 && childs.map((child, index) =>
+                                <div className="col-lg-4" key={index}>
+                                  <div className="identity-item box_style_1">
+                                    <h3 className="inner">Penumpang {index + 1}</h3>
+                                    {child && typeof(child) === "object" ? (
+                                      <Fragment>
+                                        <button className="btn_full" onClick={() => this._togglePassportModal(childs[index])}>LIHAT PASSPORT</button>
+                                        {data.booking_type === "savings" &&
+                                          <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index])}>LIHAT TABUNGAN</button>
+                                        }
+                                      </Fragment>
+                                    ) : (
+                                      <a
+                                        href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${data.id}/${index}&passport_only=true`}
+                                        className="btn_full_outline"
+                                      >
+                                        Isi Passport
+                                      </a>
+                                    )}
+                                    {data.child_bio_ids[index] ? (
+                                      <button className="btn_full" onClick={() => this._toggleBiodataModal(data.child_bio_ids[index])}>
+                                        Lihat Biodata
+                                      </button>
+                                    ) : (
+                                      <button
+                                        className="btn_full_outline"
+                                        style={{width: '100%', marginBottom: '10px'}}
+                                        onClick={() => this._toggleCreateBioModal(index, "child")}
+                                      >
+                                        Isi Biodata
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </Fragment>
+                      )}
                     </Fragment>
                   }
                 </div>
@@ -438,6 +675,17 @@ class BookingDetails extends Component {
             }
             {showSavingModal[0] &&
               <SavingModal toggle={() => this._toggleSavingModal()} saving={showSavingModal[1]} />
+            }
+            {showBiodataModal[0] &&
+              <BiodataModal toggle={() => this._toggleBiodataModal()} id={showBiodataModal[1]} />
+            }
+            {createBioModal[0] &&
+              <CreateBioModal
+                toggle={() => this._toggleCreateBioModal()}
+                formControl={formBiodata}
+                onChange={this._onChangeBiodata}
+                submitBiodata={this._submitBiodata}
+              />
             }
           </Fragment>
         )
@@ -453,6 +701,7 @@ const dateFormatter = (data) => {
 
 export default connect(
   state => ({
-    bookingDetails: state.bookingDetails
+    bookingDetails: state.bookingDetails,
+    biodata: state.biodata
   })
 )(BookingDetails);
