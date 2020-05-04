@@ -55,11 +55,17 @@ class ProductDetails extends Component {
           selected_index: null
         });
       } else {
+        let defaultPrice = packages[index].adult_price * packages[index].min_adult
+        if (packages[index].min_child) {
+          defaultPrice = defaultPrice + (packages[index].child_price * packages[index].min_child)
+        }
+        console.log(defaultPrice)
+
         this.setState({
           formControl: Object.assign({}, formControl, {
             package_id: id,
             departure_date: moment(new Date(packages[index].available_date[0])).format("DD-MM-YYYY"),
-            price: packages[index].normal_price,
+            price: defaultPrice,
             booking_type: parseInt(packages[index].booking_options[0]),
             saving_package_id: 1,
             adult: packages[index].min_adult,
@@ -78,9 +84,18 @@ class ProductDetails extends Component {
           })
         })
       } else {
+        const { selected_index, formControl } = this.state;
+        const adultCount = name === "adult" ? value : formControl.adult
+        const childCount = name === "child" ? value : formControl.child
+
+        let price = packages[selected_index].adult_price * adultCount
+        if (packages[selected_index].min_adult) {
+          price = price + (packages[selected_index].child_price * childCount)
+        }
         this.setState({
           formControl: Object.assign({}, formControl, {
-            [name]: value
+            [name]: value,
+            price: price
           })
         });
       }

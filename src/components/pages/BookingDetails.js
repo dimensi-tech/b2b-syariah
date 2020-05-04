@@ -215,7 +215,7 @@ class BookingDetails extends Component {
       openPayment: true
     })
     const { data } = this.props.bookingDetails;
-    const grossAmount = data.price * data.adult
+    const grossAmount = data.price
     let parameter = {
       "transaction_details": {
         "order_id": `${data.id}${Date.now()}`,
@@ -385,6 +385,7 @@ class BookingDetails extends Component {
 
   render() {
     const { data } = this.props.bookingDetails;
+    console.log(data)
     const {
       paymentStatus, adults, childs, passports, showIdentityModal,
       showPassportModal, showSavingModal, createBioModal, formBiodata, showBiodataModal
@@ -638,6 +639,7 @@ class BookingDetails extends Component {
                                       <a
                                         href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${data.id}/${index}&passport_only=true`}
                                         className="btn_full_outline"
+                                        style={{marginBottom: '10px'}}
                                       >
                                         Isi Passport
                                       </a>
