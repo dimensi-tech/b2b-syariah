@@ -38,11 +38,13 @@ class SavingModal extends Component {
 
   _getSavings = () => {
     const { saving } = this.props;
+    const config = {
+      booking_id: saving.booking_id
+    }
+    config[saving.type === "adult" ? "identity_id" : "passport_id"] = saving.identity_id
+
     Axios.get(`${API_URL}/bookings/savings_customer`, {
-      params: {
-        booking_id: saving.booking_id,
-        identity_id: saving.identity_id
-      },
+      params: config,
       headers: {
         "Authorization": TOKEN
       }

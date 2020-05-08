@@ -38,7 +38,9 @@ const biodataState = {
   name: "",
   email: "",
   phone: "",
-  type: "adult"
+  type: "adult",
+  heir_name: "",
+  heir_contact: ""
 };
 
 class BookingDetails extends Component {
@@ -313,13 +315,13 @@ class BookingDetails extends Component {
     }
   }
 
-  _toggleSavingModal = (identity_id) => {
+  _toggleSavingModal = (identity_id, type) => {
     const { showSavingModal } = this.state;
     const id = this.props.match.params.product_id;
     if (showSavingModal[0]) {
       this.setState({showSavingModal: [!showSavingModal[0], {}]})
     } else {
-      this.setState({showSavingModal: [!showSavingModal[0], {booking_id: id, identity_id: identity_id}]})
+      this.setState({showSavingModal: [!showSavingModal[0], {booking_id: id, identity_id: identity_id, type: type}]})
     }
   }
 
@@ -385,7 +387,6 @@ class BookingDetails extends Component {
 
   render() {
     const { data } = this.props.bookingDetails;
-    console.log(data)
     const {
       paymentStatus, adults, childs, passports, showIdentityModal,
       showPassportModal, showSavingModal, createBioModal, formBiodata, showBiodataModal
@@ -585,7 +586,9 @@ class BookingDetails extends Component {
                                     <button className="btn_full" onClick={() => this._toggleIdentityModal(adult)}>LIHAT KTP</button>
                                     <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>LIHAT PASSPORT</button>
                                     {data.booking_type === "savings" &&
-                                      <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index])}>LIHAT TABUNGAN</button>
+                                      <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index], 'adult')}>
+                                        LIHAT TABUNGAN
+                                      </button>
                                     }
                                   </Fragment>
                                 ) : (
@@ -632,7 +635,9 @@ class BookingDetails extends Component {
                                       <Fragment>
                                         <button className="btn_full" onClick={() => this._togglePassportModal(childs[index])}>LIHAT PASSPORT</button>
                                         {data.booking_type === "savings" &&
-                                          <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index])}>LIHAT TABUNGAN</button>
+                                          <button className="btn_full" onClick={() => this._toggleSavingModal(data.child_passport_ids[index], 'child')}>
+                                            LIHAT TABUNGAN
+                                          </button>
                                         }
                                       </Fragment>
                                     ) : (

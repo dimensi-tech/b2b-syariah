@@ -55,6 +55,10 @@ class BiodataModal extends Component {
                           <dd>{biodata.email}</dd>
                           <dt>No. HP</dt>
                           <dd>{biodata.phone}</dd>
+                          <dt>Ahli Waris</dt>
+                          <dd>{biodata.heir_name}</dd>
+                          <dt>Kontak Ahli Waris</dt>
+                          <dd>{biodata.heir_contact}</dd>
                         </dl>
                       </div>
                     </form>

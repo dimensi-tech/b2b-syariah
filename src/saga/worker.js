@@ -160,6 +160,8 @@ export function* _biodata(payload) {
   formData.append("biodata[name]", payload.data.name);
   formData.append("biodata[email]", payload.data.email);
   formData.append("biodata[phone]", payload.data.phone);
+  formData.append("biodata[heir_name]", payload.data.heir_name);
+  formData.append("biodata[heir_contact]", payload.data.heir_contact);
   const config = {
     ...payload.config,
     url: BACKEND_URL + payload.path,

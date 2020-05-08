@@ -61,6 +61,30 @@ class CreateBioModal extends Component {
                         value={formControl.phone}
                       />
                     </div>
+                    <div className="form-group">
+                      <label>
+                        Nama Ahli Waris
+                      </label>
+                      <input
+                        className="form-control"
+                        style={{paddingLeft: '0.75rem'}}
+                        name="heir_name"
+                        onChange={this._onChange}
+                        value={formControl.heir_name}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>
+                        Kontak Ahli Waris
+                      </label>
+                      <input
+                        className="form-control"
+                        style={{paddingLeft: '0.75rem'}}
+                        name="heir_contact"
+                        onChange={this._onChange}
+                        value={formControl.heir_contact}
+                      />
+                    </div>
                   </div>
                   <div className="col-12">
                     <button className="btn_full" onClick={this._submitBiodata}>Simpan Biodata</button>
