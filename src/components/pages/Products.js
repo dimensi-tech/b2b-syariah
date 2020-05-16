@@ -5,8 +5,8 @@ import { GET_PRODUCTS_REQUEST } from "../../helpers/constant";
 import { Link } from "react-router-dom";
 import Filter from "../shared/Filter";
 import Breadcrumb from "../shared/Breadcrumb";
-import Sort from "../shared/Sort";
 import CustomerCare from "../shared/CustomerCare";
+import { withTranslation } from 'react-i18next';
 
 class Products extends Component {
   componentDidMount() {
@@ -30,6 +30,7 @@ class Products extends Component {
 
   render() {
     const { data } = this.props.products;
+    const { t } = this.props;
     return(
       <Fragment>
         <main className="with-bg">
@@ -58,7 +59,7 @@ class Products extends Component {
                             <div className='tooltip_flip tooltip-effect-1'>
                               +
                               <span className='tooltip-content-flip'>
-                                <span className='tooltip-back'>Add to wishlist</span>
+                                <span className='tooltip-back'>{t('add_to_wishlist')}</span>
                               </span>
                             </div>
                           </div>
@@ -66,8 +67,8 @@ class Products extends Component {
                             <Link to={`/product/${product.id}`}>
                               <img src={product.image_path} alt={product.name} />
                               <div className='short_info'>
-                                <i className='icon_set_1_icon-4'></i>
-                                Museums
+                                <i className='icon_set_1_icon-1'></i>
+                                Travel
                               </div>
                             </Link>
                           </div>
@@ -75,11 +76,11 @@ class Products extends Component {
                         <div className='col-lg-5 col-md-5'>
                           <div className='tour_list_desc'>
                             <div className='rating'>
-                              <i className='icon-smile voted'></i>
-                              <i className='icon-smile voted'></i>
-                              <i className='icon-smile voted'></i>
-                              <i className='icon-smile voted'></i>
-                              <i className='icon-smile'></i>
+                              <i className='icon-star voted'></i>
+                              <i className='icon-star voted'></i>
+                              <i className='icon-star voted'></i>
+                              <i className='icon-star voted'></i>
+                              <i className='icon-star'></i>
                               <small>(75)</small>
                             </div>
                             <h3>{product.name}</h3>
@@ -87,7 +88,7 @@ class Products extends Component {
                               product.package &&
                               <p dangerouslySetInnerHTML={{ __html: product.package.description }} />
                             }
-                            <ul className='add_info'>
+                            {/* <ul className='add_info'>
                               <li>
                                 <div className='tooltip-1' data-placement='top' title='Free Wifi'><i className='icon_set_1_icon-86' /></div>
                               </li>
@@ -103,7 +104,7 @@ class Products extends Component {
                               <li>
                                 <div className='tooltip-1' data-placement='top' title='Restaurant'><i className='icon_set_1_icon-58' /></div>
                               </li>
-                            </ul>
+                            </ul> */}
                           </div>
                         </div>
                         <div className='col-lg-3 col-md-3'>
@@ -115,7 +116,9 @@ class Products extends Component {
                               <small>Per pax</small>
                               <Link to={`/product/${product.id}`}>
                                 <p>
-                                  <span className='btn_1'>Lihat Detail & Paket Lainnya</span>
+                                  <span className='btn_1'>
+                                    {t('products.see_detail_and_packages')}
+                                  </span>
                                 </p>
                               </Link>
                             </div>
@@ -128,17 +131,17 @@ class Products extends Component {
                 <nav aria-label='Page navigation'>
                   <ul className='pagination justify-content-center'>
                     <li className='page-item'>
-                      <a className='page-link' href='#' aria-label='Previous'>
+                      <a className='page-link' href='#!' aria-label='Previous'>
                         <span aria-hidden='true'>«</span>
                         <span className='sr-only'>Previous</span>
                       </a>
                     </li>
                     <li className='page-item active'><span className='page-link'>1<span className='sr-only'>(current)</span></span>
                     </li>
-                    <li className='page-item'><a className='page-link' href='#'>2</a></li>
-                    <li className='page-item'><a className='page-link' href='#'>3</a></li>
+                    <li className='page-item'><a className='page-link' href='#!'>2</a></li>
+                    <li className='page-item'><a className='page-link' href='#!'>3</a></li>
                     <li className='page-item'>
-                      <a className='page-link' href='#' aria-label='Next'>
+                      <a className='page-link' href='#!' aria-label='Next'>
                         <span aria-hidden='true'>»</span>
                         <span className='sr-only'>Next</span>
                       </a>
@@ -153,8 +156,10 @@ class Products extends Component {
     )
   }
 }
-export default connect(
-  state => ({
-    products: state.products
-  })
-)(Products);
+export default withTranslation('common')(
+  connect(
+    state => ({
+      products: state.products
+    })
+  )(Products)
+);

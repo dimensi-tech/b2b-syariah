@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next';
 
 class Search extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class Search extends Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <form>
         <div className='row no-gutters custom-search-input-2'>
@@ -32,7 +34,7 @@ class Search extends Component {
             </div>
           </div>
           <div className='col-lg-2'>
-            <input type='submit' className='btn_search' value='Cari' onClick={this._handleSubmit} />
+            <input type='submit' className='btn_search' value={t('search.search_button')} onClick={this._handleSubmit} />
           </div>
         </div>
       </form>
@@ -40,4 +42,4 @@ class Search extends Component {
   }
 }
 
-export default Search
+export default withTranslation('common')(Search);

@@ -1,0 +1,112 @@
+{
+  "header": {
+    "login": "Masuk",
+    "logout": "Keluar",
+    "home": "Beranda",
+    "categories": "Kategori",
+    "savings": "Nabung",
+    "help": "Bantuan",
+    "booking_history": "Riwayat Pesanan"
+  },
+  "login": {
+    "title": "Masuk",
+    "password": "Kata Sandi",
+    "remember_me": "Ingatkan Saya",
+    "forgot_password": "Lupa Password",
+    "dont_have_an_account_yet": "Belum Punya Akun?",
+    "register_here": "Daftar Disini",
+    "login_button": "Masuk"
+  },
+  "register": {
+    "title": "Buat Akun",
+    "password": "Kata Sandi",
+    "password_confirmation": "Ulangi Kata Sandi",
+    "already_have_an_account": "Sudah Punya Akun?",
+    "login_here": "Masuk Disini",
+    "register_button": "Buat Akun"
+  },
+  "home": {
+      "search_label": "Cari tujuanmu travelmu",
+      "promo_description": "Penawaran promo istimewa hanya untuk Anda!"
+  },
+  "products": {
+    "see_detail_and_packages": "Lihat Detail & Paket Lainnya"
+  },
+  "product_details": {
+    "day": "Hari",
+    "person": "Orang",
+    "likes": "Suka",
+    "recommended": "Direkomendasikan",
+    "help_service": "Servis Bantuan",
+    "price": "Harga",
+    "starting_from": "Mulai Dari",
+    "description": "Deskripsi",
+    "itinerary": "Rencana Perjalanan",
+    "day_th": "Hari ke"
+  },
+  "booking_form": {
+    "title": "Formulir Pesanan",
+    "select_package": "Pilih Paket",
+    "package_alert": "Anda belum memilih paket!",
+    "adult": "Dewasa",
+    "child": "Anak",
+    "person": "orang",
+    "price": "Harga",
+    "select_departure_date": "Pilih Tanggal Berangkat",
+    "payment_type": "Tipe Pembayaran",
+    "direct": "Bayar Langsung",
+    "saving": "Bayar Nabung",
+    "saving_duration": "Durasi Nabung",
+    "month": "bulan",
+    "voucher_code": "Kode Voucher",
+    "use_button": "Gunakan",
+    "total_payment": "Total Pembayaran",
+    "book_button": "Pesan"
+  },
+  "booking_details": {
+    "product_not_found": "Product tidak ditemukan",
+    "selected_product": "Product Yang Dipilih",
+    "selected_product_description": "Spesifikasi produk yang Anda pilih.",
+    "detail_package_button": "Lihat Detail Paket",
+    "book_status": "Status Pemesanan",
+    "pay_now": "Bayar Sekarang",
+    "cancelled": "Dibatalkan",
+    "data_filling": "Pengisian Data",
+    "book_details": "Rincian Pemesanan",
+    "book_details_description": "Rincian data-data pemesanan.",
+    "package_name": "Nama Paket",
+    "package_price": "Harga Paket",
+    "person_number": "Jumlah Orang",
+    "departure_date": "Tanggal Keberangkatan",
+    "modify_date": "Ubah Tanggal",
+    "duration_trip": "Lama Hari",
+    "see_itinerary_on_package_detail": "Lihat Rencana Perjalanan di Detail Paket",
+    "payment_status": "Status Pembayaran",
+    "data_passenger": "Data Penumpang Keberangkatan",
+    "data_passenger_description": "Input identitas data KTP dan Paspor.",
+    "passenger": "Penumpang",
+    "see_identity_button": "LIHAT KTP",
+    "see_passport_button": "LIHAT Paspor",
+    "see_saving_button": "LIHAT TABUNGAN",
+    "see_biodata_button": "LIHAT BIODATA",
+    "fill_identity_and_passport": "Isi KTP & Paspor",
+    "fill_biodata": "Isi Biodata",
+    "fill_passport": "Isi Paspor",
+    "data_passenger_child": "Data Penumpang Keberangkatan (Anak)",
+    "data_passenger_child_description": "Input identitas Paspor"
+  },
+  "saving_modal": {
+    "data_saving": "Data Tabungan",
+    "amount_saved": "Jumlah yang ditabungkan",
+    "pay": "Bayar"
+  },
+  "search": {
+    "search_button": "Cari"
+  },
+  "add_to_wishlist": "Tambahkan ke wishlist",
+  "itinerary": "Rencana Perjalanan",
+  "adult": "Dewasa",
+  "child": "Anak",
+  "person": "orang",
+  "day": "hari"
+}

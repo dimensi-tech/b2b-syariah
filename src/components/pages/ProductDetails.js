@@ -12,6 +12,7 @@ import BookingForm from "../shared/BookingForm";
 import CustomerCare from "../shared/CustomerCare";
 import Breadcrumb from "../shared/Breadcrumb";
 import Preloader from "../static/Preloader";
+import { withTranslation } from 'react-i18next';
 
 const initialState = {
   package_id: "",
@@ -38,6 +39,7 @@ class ProductDetails extends Component {
 
   componentDidMount() {
     this._getProductDetails();
+    window.scrollTo(0, 0);
   };
 
   _onChange = evt => {
@@ -59,7 +61,6 @@ class ProductDetails extends Component {
         if (packages[index].min_child) {
           defaultPrice = defaultPrice + (packages[index].child_price * packages[index].min_child)
         }
-        console.log(defaultPrice)
 
         this.setState({
           formControl: Object.assign({}, formControl, {
@@ -161,6 +162,7 @@ class ProductDetails extends Component {
   render() {
     const { data } = this.props.productDetails;
     const { formControl, selected_index } = this.state;
+    const { t } = this.props;
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -196,34 +198,34 @@ class ProductDetails extends Component {
                               </li>
                               <li>
                                 <i className="icon_set_1_icon-83" />
-                                {pack.duration_trip} Hari
+                                {pack.duration_trip} {t('product_details.day')}
                               </li>
                               <li>
                                 <i className="icon_set_1_icon-30" />
-                                Min. {pack.min_person} orang
+                                Min. {pack.min_person} {t('product_details.person')}
                               </li>
                               <li>
                                 <i className="icon_set_1_icon-82" />
-                                144 Likes
+                                144 {t('product_details.likes')}
                               </li>
                               <li>
                                 <i className="icon_set_1_icon-18" />
-                                Recommended
+                                {t('product_details.recommended')}
                               </li>
                               <li>
                                 <i className="icon_set_1_icon-89" />
-                                24/7 Servis Bantuan
+                                24/7 {t('product_details.help_service')}
                               </li>
                             </ul>
                           </div>
 
                           <div className="row">
                             <div className="col-lg-3">
-                              <h3>Harga</h3>
+                              <h3>{t('product_details.price')}</h3>
                             </div>
                             <div className="col-lg-9">
                               <h4>RP {parseFloat(pack.normal_price).toLocaleString('id')}/pax</h4>
-                              <p>DP Starting From RP {parseFloat(pack.down_payment).toLocaleString('id')}</p>
+                              <p>DP {t('product_details.starting_from')} RP {parseFloat(pack.down_payment).toLocaleString('id')}</p>
                             </div>
                           </div>
 
@@ -231,7 +233,7 @@ class ProductDetails extends Component {
 
                           <div className="row">
                             <div className="col-lg-3">
-                              <h3>Deskripsi</h3>
+                              <h3>{t('product_details.description')}</h3>
                             </div>
                             <div className="col-lg-9"
                                  dangerouslySetInnerHTML={{ __html: pack.description }}
@@ -242,7 +244,7 @@ class ProductDetails extends Component {
 
                           <div className="row">
                             <div className="col-lg-3">
-                              <h3>Rencana Perjalanan</h3>
+                              <h3>{t('product_details.itinerary')}</h3>
                             </div>
                             <div className="col-lg-9">
                               <ul className="cbp_tmtimeline">
@@ -255,7 +257,7 @@ class ProductDetails extends Component {
                                         <div className="row">
                                           <div className="col-lg-6">
                                             <h2>
-                                              <span>Hari ke</span>
+                                              <span>{t('product_details.day_th')}</span>
                                               {package_detail.day}
                                             </h2>
                                             <p dangerouslySetInnerHTML={{ __html: package_detail.description }} />
@@ -306,9 +308,11 @@ class ProductDetails extends Component {
   }
 };
 
-export default connect(
-  state => ({
-    productDetails: state.productDetails,
-    booking: state.booking
-  })
-)(ProductDetails);
+export default withTranslation('common')(
+  connect(
+    state => ({
+      productDetails: state.productDetails,
+      booking: state.booking
+    })
+  )(ProductDetails)
+);

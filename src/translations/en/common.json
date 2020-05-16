@@ -1,0 +1,107 @@
+{
+  "header": {
+    "login": "Login",
+    "logout": "Logout",
+    "home": "Home",
+    "categories": "Categories",
+    "savings": "Saving",
+    "help": "Help",
+    "booking_history": "Booking History"
+  },
+  "login": {
+    "title": "Login",
+    "password": "Password",
+    "remember_me": "Remember Me",
+    "forgot_password": "Forgot Password",
+    "dont_have_an_account_yet": "Don't have an account?",
+    "register_here": "Register Here",
+    "login_button": "Login"
+  },
+  "register": {
+    "title": "Create an Account",
+    "password": "Password",
+    "password_confirmation": "Password Confirmation",
+    "already_have_an_account": "Already have an account?",
+    "login_here": "Login Here",
+    "register_button": "Register"
+  },
+  "home": {
+      "search_label": "Find your travel destination",
+      "promo_description": "Special promo deals just for you!"
+  },
+  "products": {
+    "see_detail_and_packages": "See Details & Packages"
+  },
+  "product_details": {
+    "day": "Day",
+    "person": "Person",
+    "likes": "Likes",
+    "recommended": "Recommended",
+    "help_service": "Help Service",
+    "price": "Price",
+    "starting_from": "Starting From",
+    "description": "Description",
+    "itinerary": "Itinerary",
+    "day_th": "Day"
+  },
+  "booking_form": {
+    "title": "Booking Form",
+    "select_package": "Select Package",
+    "package_alert": "You haven't selected a package yet!",
+    "adult": "Adult",
+    "child": "Child",
+    "person": "person",
+    "price": "Price",
+    "select_departure_date": "Select Departure Date",
+    "payment_type": "Payment Type",
+    "direct": "Pay Direct",
+    "saving": "Pay Saving",
+    "saving_duration": "Saving Duration",
+    "month": "month",
+    "voucher_code": "Voucher Code",
+    "use_button": "Apply",
+    "total_payment": "Total Payment",
+    "book_button": "Book"
+  },
+  "booking_details": {
+    "product_not_found": "Product not found",
+    "selected_product": "Selected Product",
+    "selected_product_description": "The product specifications you choose.",
+    "detail_package_button": "See Detail Package",
+    "book_status": "Book Status",
+    "pay_now": "Pay Now",
+    "cancelled": "Cancelled",
+    "data_filling": "Fill Data",
+    "book_details": "Book Details",
+    "book_details_description": "Details of order data.",
+    "package_name": "Package name",
+    "package_price": "Package price",
+    "person_number": "Number of people",
+    "departure_date": "Departure date",
+    "modify_date": "Modify date",
+    "duration_trip": "Duration trip",
+    "see_itinerary_on_package_detail": "See Itinerary on Package Detail",
+    "payment_status": "Payment Status",
+    "data_passenger": "Departure Passenger Data",
+    "data_passenger_description": "Input ID and Passport data identity.",
+    "passenger": "Passenger",
+    "see_identity_button": "SEE ID",
+    "see_passport_button": "SEE PASSPORT",
+    "see_saving_button": "SEE SAVING",
+    "see_biodata_button": "SEE BIODATA",
+    "fill_identity_and_passport": "Fill KTP & Passport",
+    "fill_biodata": "Fill Biodata",
+    "fill_passport": "Fill Passport",
+    "data_passenger_child": "Departure Passenger Data (Children)",
+    "data_passenger_child_description": "Input Passport identity"
+  },
+  "search": {
+    "search_button": "Search"
+  },
+  "add_to_wishlist": "Add to wishlist",
+  "itinerary": "Itinerary",
+  "adult": "Adult",
+  "child": "Child",
+  "person": "person",
+  "day": "day"
+}

@@ -613,7 +613,7 @@ ul#top_tools li {
   opacity: 1;
   margin-bottom: 5px;
   position: relative;
-  z-index: 999999;
+  z-index: 1;
 }
 
 ul#top_links {
@@ -8885,6 +8885,33 @@ a.box_news {
     .nav-tabs > li > a {
       font-size: 11px;
       padding: 5px 8px;
+    }
+  }
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  & > div {
+    margin-right: 20px;
+    button {
+      background: transparent;
+      padding: 0;
+      -webkit-appearance: none;
+      border: 0;
+      margin-right: 10px;
+      svg {
+        width: auto;
+        height: 20px;
+      }
+      &:active, &:hover, &:focus {
+        border: 0;
+        box-shadow: none;
+        outline: 0;
+      }
+      &:hover {
+        opacity: 0.9;
+      }
     }
   }
 }

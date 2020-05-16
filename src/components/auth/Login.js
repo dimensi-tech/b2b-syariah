@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+import { withTranslation } from 'react-i18next';
 
 class Login extends Component {
   constructor(props) {
@@ -34,11 +35,11 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state;
-    const { errors, success, bookingError } = this.props;
+    const { errors, success, bookingError, t } = this.props;
     return (
       <div id='sign-in-dialog' className='zoom-anim-dialog'>
         <div className='small-dialog-header'>
-          <h3>Masuk</h3>
+          <h3>{t('login.title')}</h3>
           <div className="mfp-close" onClick={this._closeModal} />
         </div>
         {errors.map(x => x.type).includes("LOGIN") && <div className="alert-error">{errors.filter(x => x.type === "LOGIN")[0].message}</div>}
@@ -55,22 +56,24 @@ class Login extends Component {
               <i className='icon_mail_alt' />
             </div>
             <div className='form-group'>
-              <label htmlFor='password'>Password</label>
+              <label htmlFor='password'>{t('login.password')}</label>
               <input type='password' id='password' name='password' value={password} className='form-control' onChange={this._onChange} />
               <i className='icon_lock_alt' />
             </div>
             <div className='clearfix add_bottom_15'>
               <div className='checkboxes float-left'>
                 <input id='remember-me' type='checkbox' name='check' />
-                <label htmlFor='remember-me'>Ingatkan Saya</label>
+                <label htmlFor='remember-me'>{t('login.remember_me')}</label>
               </div>
-              <div className='float-right'><a id='forgot' href='#'>Lupa Password?</a></div>
+              {/* <div className='float-right'><a id='forgot' href='#!'>{t('login.forgot_password')}</a></div> */}
             </div>
             <div className='text-center'>
-              <input type='submit' defaultValue='Log In' className='btn_login' />
+              <button type='submit' className='btn_login'>
+                {t('login.login_button')}
+              </button>
             </div>
             <div className='text-center'>
-              Belum punya akun? <a href="#" onClick={this._switchView}>Daftar disini</a>
+              {t('login.dont_have_an_account_yet')} <a href="#!" onClick={this._switchView}>{t('login.register_here')}</a>
             </div>
             <div id='forgot_pw'>
               <div className='form-group'>
@@ -88,4 +91,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default withTranslation('common')(Login);

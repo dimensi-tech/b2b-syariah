@@ -14,6 +14,8 @@ import { isMobileOnly, isMobile } from 'react-device-detect';
 import { connect } from 'react-redux'
 import { GET_PRODUCTS_REQUEST, GET_ADS_REQUEST } from '../../helpers/constant'
 
+import { withTranslation } from 'react-i18next';
+
 class Home extends Component {
   componentDidMount() {
     this._getProducts();
@@ -43,7 +45,7 @@ class Home extends Component {
   };
 
   render() {
-    const { products, ads } = this.props
+    const { products, ads, t } = this.props
     return (
       <Fragment>
         <main className="with-bg">
@@ -77,7 +79,9 @@ class Home extends Component {
                   }
                 </Slider>
               </div>
-              <h1>Cari tujuan travelmu</h1>
+              <h1>
+                {t('home.search_label')}
+              </h1>
               <div className='tab-content'>
                 <div className='tab-pane fade active show' id='tours'>
                   <Search history={this.props.history}/>
@@ -142,9 +146,6 @@ class Home extends Component {
     )
   }
 }
-export default connect(
-  state => ({
-    products: state.products,
-    ads: state.ads
-  })
-)(Home);
+export default withTranslation('common')(
+  connect(state => ({products: state.products, ads: state.ads}))(Home)
+)

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Authorization from "../../helpers/Authorization";
 import Axios from "axios";
+import { withTranslation } from "react-i18next";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const TOKEN = Authorization().getAuthUser();
@@ -86,6 +87,7 @@ class SavingModal extends Component {
 
   render() {
     const { savings } = this.state;
+    const { t } = this.props;
     return (
       <Fragment>
         <div className="mfp-bg my-mfp-zoom-in mfp-ready" />
@@ -94,7 +96,7 @@ class SavingModal extends Component {
             <div className="mfp-content">
               <div id='sign-in-dialog' className='zoom-anim-dialog'>
                 <div className='small-dialog-header'>
-                  <h3>DATA TABUNGAN</h3>
+                  <h3>{t("saving_modal.data_saving")}</h3>
                   <button className="mfp-close" onClick={this.props.toggle} />
                 </div>
                 <div className='sign-in-wrapper'>
@@ -102,7 +104,7 @@ class SavingModal extends Component {
                     <thead>
                       <tr>
                         <th>No.</th>
-                        <th colSpan="3">Jumlah yang ditabungkan</th>
+                        <th colSpan="3">{t("saving_modal.amount_saved")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -127,7 +129,7 @@ class SavingModal extends Component {
                                   className="btn_1"
                                   disabled={this.state.openPayment}
                                 >
-                                  Bayar
+                                  {t("saving_modal.pay")}
                                 </button>
                               }
                             </td>
@@ -146,4 +148,4 @@ class SavingModal extends Component {
   }
 }
 
-export default SavingModal;
+export default withTranslation('common')(SavingModal);

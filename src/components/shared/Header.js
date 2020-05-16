@@ -7,6 +7,9 @@ import { LOGIN_REQUEST, REGISTER_REQUEST } from "../../helpers/constant";
 import Authorization from "../../helpers/Authorization";
 import jwtDecode from "jwt-decode";
 import { loginSuccessToast, logoutSuccessToast } from '../static/Toast';
+import { ReactComponent as IdLogo } from '../../assets/img/svg/id.svg';
+import { ReactComponent as EnLogo } from '../../assets/img/svg/en.svg';
+import { withTranslation } from 'react-i18next';
 
 class Header extends Component {
   constructor(props) {
@@ -147,9 +150,16 @@ class Header extends Component {
     });
   };
 
+  _changeLanguage = (language) => {
+    const { i18n } = this.props;
+    i18n.changeLanguage(language);
+    localStorage.setItem('language', language);
+  }
+
   render() {
     const { isLoggedIn, showModal, displayLogin, success, errors, bookingError } = this.state;
     const token = Authorization().getAuthUser();
+    const { t } = this.props;
     return (
       <header id='plain'>
         {
@@ -186,7 +196,20 @@ class Header extends Component {
         <div id="top_line">
           <div className="container">
             <div className="row">
-              <div className="col-6"><i className="icon-phone" /><strong>0045 043204434</strong></div>
+              <div className="col-6 header-info">
+                <div>
+                  <i className="icon-phone" />
+                  <strong>022 043204434</strong>
+                </div>
+                <div>
+                  <button onClick={() => this._changeLanguage('id')}>
+                    <IdLogo />
+                  </button>
+                  <button onClick={() => this._changeLanguage('en')}>
+                    <EnLogo />
+                  </button>
+                </div>
+              </div>
               <div className="col-6">
                 <ul id="top_links">
                   {
@@ -198,12 +221,12 @@ class Header extends Component {
                         <li><i className="icon-user-3"></i>{jwtDecode(token).customer_email}</li>
                       }
                       <li name="logout-label-clickable" onClick={this._logout}>
-                        <a href="#">Logout</a>
+                        <a href="#!">{t('header.logout')}</a>
                       </li>
                     </Fragment>
                     :
                     <li name="login-label-clickable" onClick={this._showModal}>
-                      <a href="#">Login</a>
+                      <a href="#!">{t('header.login')}</a>
                     </li>
                   }
                 </ul>
@@ -217,27 +240,27 @@ class Header extends Component {
               <div id="logo_home">
                 <h1>
                   <Link to="/">
-                    City Tours travel template
+                    Majreha
                   </Link>
                 </h1>
               </div>
             </div>
             <nav className="col-9">
-              <a className="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="#"><span>Menu mobile</span></a>
+              <a href="#!" className="cmn-toggle-switch cmn-toggle-switch__htx open_close"><span>Menu mobile</span></a>
               <div className="main-menu">
                 <div id="header_menu">
                   <img src="img/logo_sticky.png" width={160} height={34} alt="City tours" data-retina="true" />
                 </div>
-                <a href="#" className="open_close" id="close_in"><i className="icon_set_1_icon-77" /></a>
+                <a href="#!" className="open_close" id="close_in"><i className="icon_set_1_icon-77" /></a>
                 <ul>
                   <li>
                     <Link to="/">
-                      Beranda&nbsp;
+                      {t('header.home')}&nbsp;
                     </Link>
                   </li>
                   <li className="submenu">
                     <Link to="#" className="show-submenu">
-                      Kategori
+                      {t('header.categories')}
                       <i className="icon-down-open-mini" />
                     </Link>
                     <ul>
@@ -248,12 +271,12 @@ class Header extends Component {
                   </li>
                   <li>
                     <Link to="/">
-                      Savings&nbsp;
+                      {t('header.savings')}&nbsp;
                     </Link>
                   </li>
                   <li>
                     <Link to="/">
-                      Bantuan&nbsp;
+                      {t('header.help')}&nbsp;
                     </Link>
                   </li>
                 </ul>
@@ -262,7 +285,7 @@ class Header extends Component {
                 <li>
                  {
                   isLoggedIn &&
-                    <Link to="/booking-list">Booking History</Link>
+                    <Link to="/booking-list">{t('header.booking_history')}</Link>
                   }
                 </li>
               </ul>
@@ -274,10 +297,12 @@ class Header extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    login: state.login,
-    register: state.register,
-    booking: state.booking
-  })
-)(Header);
+export default withTranslation('common')(
+  connect(
+    state => ({
+      login: state.login,
+      register: state.register,
+      booking: state.booking
+    })
+  )(Header)
+);

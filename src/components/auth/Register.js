@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { registerValidation } from "../../helpers/Validation";
+import { withTranslation } from 'react-i18next';
 
 class Register extends Component {
   constructor(props) {
@@ -42,11 +43,11 @@ class Register extends Component {
 
   render() {
     const { email, password, retypePassword, invalid } = this.state;
-    const { errors } = this.props;
+    const { errors, t } = this.props;
     return (
       <div id="sign-in-dialog" className="zoom-anim-dialog">
         <div className="small-dialog-header">
-          <h3>Buat Akun</h3>
+          <h3>{t('register.title')}</h3>
           <div className="mfp-close" onClick={this._closeModal} />
         </div>
         {errors.map(x => x.type).includes("REGISTER") && <div className="alert-error">{errors.filter(x => x.type === "REGISTER")[0].message}</div>}
@@ -62,22 +63,25 @@ class Register extends Component {
               <i className="icon_mail_alt" />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('register.password')}</label>
               <input type="password" id="password" name="password" autoComplete="off" value={password} className="form-control" onChange={this._onChange} />
               {invalid.map(x => x.type).includes("PASSWORD") && <span className="err-message">{invalid.filter(x => x.type === "PASSWORD")[0].message}</span>}
               <i className="icon_lock_alt" />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Ulangi Password</label>
+              <label htmlFor="password">{t('register.password_confirmation')}</label>
               <input type="password" id="retype-password" name="retypePassword" autoComplete="off" value={retypePassword} className="form-control" onChange={this._onChange} />
               {invalid.map(x => x.type).includes("RETYPE_PASSWORD") && <span className="err-message">{invalid.filter(x => x.type === "RETYPE_PASSWORD")[0].message}</span>}
               <i className="icon_lock_alt" />
             </div>
             <div className="text-center">
-              <input type="submit" defaultValue="Log In" className="btn_login" />
+              <button type="submit" className="btn_login">
+                {t('register.register_button')}
+              </button>
             </div>
             <div className="text-center">
-              Sudah punya akun? <a href="#" onClick={this._switchView}>Masuk disini</a>
+             {t('register.already_have_and_account')}
+             <a href="#!" onClick={this._switchView}>{t('register.login_here')}</a>
             </div>
             <div id="forgot_pw">
               <div className="form-group">
@@ -95,4 +99,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default withTranslation('common')(Register);

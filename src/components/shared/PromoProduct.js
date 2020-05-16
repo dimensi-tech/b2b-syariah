@@ -1,14 +1,15 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class PromoProduct extends Component {
   render() {
-    const { products } = this.props;
+    const { products, t } = this.props;
     return (
       <Fragment>
         <div className='main_title'>
           <h2>Special <span>Promo</span></h2>
-          <p>Penawaran promo istimewa hanya untuk Anda!</p>
+          <p>{t('home.promo_description')}</p>
         </div>
         <div className='add_bottom_30 special-promo-section'>
           <div className="row">
@@ -41,7 +42,12 @@ class PromoProduct extends Component {
                           <small>(75)</small>
                         </div>
                         <div className='wishlist'>
-                          <a className='tooltip_flip tooltip-effect-1' href='#!'>+<span className='tooltip-content-flip'><span className='tooltip-back'>Add to wishlist</span></span></a>
+                          <a className='tooltip_flip tooltip-effect-1' href='#!'>
+                            +
+                            <span className='tooltip-content-flip'>
+                              <span className='tooltip-back'>{t('add_to_wishlist')}</span>
+                            </span>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -56,4 +62,4 @@ class PromoProduct extends Component {
   }
 }
 
-export default PromoProduct;
+export default withTranslation('common')(PromoProduct);

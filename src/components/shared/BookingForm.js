@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
+import { withTranslation } from 'react-i18next';
 
 class BookingForm extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class BookingForm extends Component {
   }
 
   render() {
-    const { formControl, data, index } = this.props;
+    const { formControl, data, index, t } = this.props;
     const { invalid } = this.state;
     const minPerson = index ? data[index].min_adult : 1;
     const minChild = index ? data[index].min_child : 1;
@@ -42,16 +43,16 @@ class BookingForm extends Component {
     const childValue = (child < minChild) ? minChild : child;
     return (
       <div className="box_style_1 expose">
-        <h3 className="inner">Formulir Pemesanan</h3>
+        <h3 className="inner">{t("booking_form.title")}</h3>
         <div className="row">
           <div className="col-12">
             <div className="form-group">
               <label>
                 <i className="icon-location-2 mr-2" />
-                Pilih Paket
+                {t("booking_form.select_package")}
               </label>
               <select onChange={this._onChange} name="package_id" value={formControl.package_id + "@" + index} className="form-control">
-                <option value="">Pilih Paket</option>
+                <option value="">{t("booking_form.title")}</option>
                 {
                   data &&
                   data.map((value, i) => (
@@ -59,14 +60,18 @@ class BookingForm extends Component {
                   ))
                 }
               </select>
-              {invalid && <span style={{fontSize: 11, color: "red"}}>Anda belum memilih paket!</span>}
+              {invalid &&
+                <span style={{fontSize: 11, color: "red"}}>
+                  {t("booking_form.package_alert")}
+                </span>
+              }
             </div>
           </div>
           <div className="col-12">
             <div className="form-group">
               <label>
                 <i className="icon-adult mr-2" />
-                Dewasa {index && `(${minPerson} - ${data[index].max_adult} orang)`}
+                {t("booking_form.adult")} {index && `(${minPerson} - ${data[index].max_adult} ${t("booking_form.person")})`}
               </label>
               <input
                 className="time-pick form-control"
@@ -82,7 +87,7 @@ class BookingForm extends Component {
               />
               {index && personValue >= minPerson &&
                 <small className="mt-1">
-                  Harga per pax : Rp {`${index && parseInt(data[index].adult_price, 10).toLocaleString()}`}
+                  {t("booking_form.price")} per pax : Rp {`${index && parseInt(data[index].adult_price, 10).toLocaleString()}`}
                 </small>
               }
             </div>
@@ -92,7 +97,7 @@ class BookingForm extends Component {
               <div className="form-group">
                 <label>
                   <i className="icon-child mr-2" />
-                  Anak {index && `(${minChild} - ${data[index].max_child} orang)`}
+                  {t("booking_form.child")} {index && `(${minChild} - ${data[index].max_child} orang)`}
                 </label>
                 <input
                   className="time-pick form-control"
@@ -108,7 +113,7 @@ class BookingForm extends Component {
                 />
                 {childValue >= minChild &&
                   <small className="mt-1">
-                    Harga per pax : Rp {`${index && parseInt(data[index].child_price, 10).toLocaleString()}`}
+                    {t("booking_form.price")} per pax : Rp {`${index && parseInt(data[index].child_price, 10).toLocaleString()}`}
                   </small>
                 }
               </div>
@@ -118,7 +123,7 @@ class BookingForm extends Component {
             <div className="form-group">
               <label>
                 <i className="icon-calendar-1 mr-2" />
-                Pilih Tanggal Berangkat
+                {t("booking_form.select_departure_date")}
               </label>
               <select name="departure_date" value={formControl.departure_date} onChange={this._onChange} disabled={index === null} className="form-control">
                 {
@@ -134,13 +139,13 @@ class BookingForm extends Component {
             <div className="form-group">
               <label>
                 <i className="icon-docs-1 mr-2" />
-                Tipe Pembayaran
+                {t("booking_form.payment_type")}
               </label>
               <select name="booking_type" value={formControl.booking_type} onChange={this._onChange} disabled={index === null} className="form-control">
                 {
                   index &&
                   data[index].booking_options.map((value, i) => (
-                    <option value={value} key={i}>{value === 1 ? "Bayar Langsung" : "Bayar Nabung"}</option>
+                    <option value={value} key={i}>{value === 1 ? t("booking_form.direct") : t("booking_form.saving")}</option>
                   ))
                 }
               </select>
@@ -151,14 +156,14 @@ class BookingForm extends Component {
               <div className="form-group">
                 <label>
                   <i className="icon-magic mr-2" />
-                  Durasi Tabungan
+                  {t("booking_form.saving_duration")}
                 </label>
                 <select name="saving_package_id" value={formControl.saving} onChange={this._onChange} disabled={index === null} className="form-control">
                   {
                     index &&
                     data[index].saving_packages.map((saving, i) => (
                       <option value={saving.id} key={i}>
-                        {`${saving.sort} bulan`}
+                        {`${saving.sort} ${t("booking_form.month")}`}
                       </option>
                     ))
                   }
@@ -170,11 +175,11 @@ class BookingForm extends Component {
             <div className="form-group">
               <label>
                 <i className="icon-ticket-2 mr-2" />
-                Kode Voucher
+                {t("booking_form.voucher_code")}
               </label>
               <div className="d-flex align-items-center">
                 <input className="form-control mr-2" type="text" />
-                <button className="btn_full_outline" style={{padding: '8px'}}>Gunakan</button>
+                <button className="btn_full_outline" style={{padding: '8px'}}>{t("booking_form.use_button")}</button>
               </div>
             </div>
           </div>
@@ -186,12 +191,12 @@ class BookingForm extends Component {
             <tbody>
               <tr className="total text-center">
                 <td colSpan="2">
-                  Total Pembayaran
+                  {t("booking_form.total_payment")}
                 </td>
               </tr>
               <tr>
                 <td>
-                  Dewasa ({`${formControl.adult}`} pax)
+                  {t("booking_form.adult")} ({`${formControl.adult}`} pax)
                 </td>
                 <td className="text-right">
                   Rp {`${index && parseFloat(data[index].adult_price * formControl.adult).toLocaleString('id')}`}
@@ -200,7 +205,7 @@ class BookingForm extends Component {
               {formControl.child >= 1 &&
                 <tr>
                   <td>
-                    Anak ({`${formControl.child}`} pax)
+                   {t("booking_form.child")} ({`${formControl.child}`} pax)
                   </td>
                   <td className="text-right">
                     Rp {`${index && parseFloat(data[index].child_price * formControl.child).toLocaleString('id')}`}
@@ -229,10 +234,12 @@ class BookingForm extends Component {
             </tbody>
           </table>
         }
-        <button className="btn_full" onClick={this._submitBooking}>Pesan</button>
+        <button className="btn_full" onClick={this._submitBooking}>
+          {t("booking_form.book_button")}
+        </button>
       </div>
     )
   }
 }
 
-export default BookingForm;
+export default withTranslation('common')(BookingForm);

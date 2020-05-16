@@ -13,6 +13,7 @@ import PassportModal from "../shared/PassportModal";
 import SavingModal from "../shared/SavingModal";
 import CreateBioModal from "../shared/CreateBioModal";
 import BiodataModal from "../shared/BiodataModal";
+import { withTranslation } from "react-i18next";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const HOST_URL = process.env.REACT_APP_HOST;
@@ -387,6 +388,7 @@ class BookingDetails extends Component {
 
   render() {
     const { data } = this.props.bookingDetails;
+    const { t } = this.props;
     const {
       paymentStatus, adults, childs, passports, showIdentityModal,
       showPassportModal, showSavingModal, createBioModal, formBiodata, showBiodataModal
@@ -395,7 +397,7 @@ class BookingDetails extends Component {
       return <Preloader />
     } else {
       if (data.success === false) {
-        return <div>Product not found</div>
+        return <div>{t("booking_details.product_not_found")}</div>
       } else {
         return (
           <Fragment>
@@ -407,10 +409,10 @@ class BookingDetails extends Component {
                       <strong>
                         <i className="icon-bookmark" />
                       </strong>
-                      Produk Yang Dipilih
+                      {t("booking_details.selected_product")}
                     </h3>
                     <p>
-                      Spesifikasi produk yang Anda pilih.
+                      {t("booking_details.selected_product_description")}
                     </p>
                   </div>
                   <div className="step">
@@ -422,8 +424,8 @@ class BookingDetails extends Component {
                               <div className='img_list'>
                                 <img src={BASE_URL + data.product.image.url} alt="Turki" />
                                 <div className='short_info'>
-                                  <i className='icon_set_1_icon-4'></i>
-                                  Islamic Tour
+                                  <i className='icon_set_1_icon-1'></i>
+                                  Travel
                                 </div>
                               </div>
                             </div>
@@ -450,7 +452,7 @@ class BookingDetails extends Component {
                                 </ul>
                                 <Link to={`/product/${data.package.product_id}`} target="_blank" className="mt-4">
                                   <p>
-                                    <span className='btn_1'>Lihat Detail Paket</span>
+                                    <span className='btn_1'>{t("booking_details.detail_package_button")}</span>
                                   </p>
                                 </Link>
                               </div>
@@ -460,7 +462,7 @@ class BookingDetails extends Component {
                       </div>
                       <div className="col-lg-4">
                         <div className="box_style_3">
-                          <h3 className="inner">Status Pemesanan</h3>
+                          <h3 className="inner">{t("booking_details.book_status")}</h3>
                           {data.booking_type === "full" ? (
                             data.booking_status !== "cancelled" ? (
                               <Fragment>
@@ -475,25 +477,28 @@ class BookingDetails extends Component {
                                       onClick={this._pay}
                                       disabled={this.state.openPayment}
                                       >
-                                      Bayar Sekarang
+                                      {t("booking_details.pay_now")}
                                     </button>
                                   </Fragment>
                                 }
                               </Fragment>
                             ) : (
-                              <p>Cancelled</p>
+                              <p>{t("booking_details.cancelled")}</p>
                             )
                           ) : (
-                            <p>Pengisian Data</p>
+                            <p>{t("booking_details.data_filling")}</p>
                           )}
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="form_title">
-                    <h3><strong><i className="icon-tag-1" /></strong>Rincian Pemesanan</h3>
+                    <h3>
+                      <strong><i className="icon-tag-1" /></strong>
+                      {t("booking_details.book_details")}
+                    </h3>
                     <p>
-                      Rincian data-data pesanan.
+                      {t("booking_details.book_details_description")}
                     </p>
                   </div>
                   <div className="step">
@@ -503,62 +508,64 @@ class BookingDetails extends Component {
                           <tbody>
                             <tr>
                               <td>
-                                <strong>Nama Paket</strong>
+                                <strong>{t("booking_details.package_name")}</strong>
                               </td>
                               <td>{data.package.name}</td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Harga Paket</strong>
+                                <strong>{t("booking_details.package_price")}</strong>
                               </td>
                               <td>RP {parseFloat(data.price).toLocaleString()}/pax</td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Jumlah Orang</strong>
+                                <strong>{t("booking_details.person_number")}</strong>
                               </td>
                               <td>
                                 <ul className="mb-0" style={{paddingLeft: '15px'}}>
                                   <li>
-                                    Dewasa {data.adult} orang
+                                  {t("adult")} {data.adult} {t("person")}
                                   </li>
-                                  {data.child ? <li>Anak {data.child} orang</li> : null}
+                                  {data.child ? <li>{t("child")} {data.child} {t("person")}</li> : null}
                                 </ul>
                               </td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Hari Keberangkatan</strong>
+                                <strong>{t("booking_details.departure_date")}</strong>
                               </td>
                               <td>
                                 {dateFormatter(data.departure_date)}
                                 {data.booking_status !== "cancelled" &&
                                   <Fragment>
                                     &nbsp;
-                                    <Link to={`/booking/${data.id}/modify`}>(Reschedule Tanggal)</Link>
+                                    <Link to={`/booking/${data.id}/modify`}>
+                                      ({t("booking_details.modify_date")})
+                                    </Link>
                                   </Fragment>
                                 }
                               </td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Lama Hari</strong>
+                                <strong>{t("booking_details.duration_trip")}</strong>
                               </td>
-                              <td>{data.package.duration_trip} hari</td>
+                              <td>{data.package.duration_trip} {t("day")}</td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Rincian Perjalanan</strong>
+                                <strong>{t("itinerary")}</strong>
                               </td>
                               <td>
                                 <Link to={`/product/${data.package.product_id}`} target="_blank">
-                                  Lihat Rincian Perjalanan di Detail Paket
+                                  {t("booking_details.see_itinerary_on_package_detail")}
                                 </Link>
                               </td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Status Pembayaran</strong>
+                                <strong>{t("booking_details.payment_status")}</strong>
                               </td>
                               <td>
                                 {paymentStatus}
@@ -572,22 +579,29 @@ class BookingDetails extends Component {
                   {data.booking_status !== "cancelled" &&
                     <Fragment>
                       <div className="form_title">
-                        <h3><strong><i className="icon-users-3" /></strong>Data Penumpang Keberangkatan</h3>
-                        <p>Input identitas data KTP dan Passport.</p>
+                        <h3>
+                          <strong><i className="icon-users-3" /></strong>
+                          {t("booking_details.data_passenger")}
+                        </h3>
+                        <p>{t("booking_details.data_passenger_description")}</p>
                       </div>
                       <div className="step">
                         <div className="row">
                           {adults.length > 0 && adults.map((adult, index) =>
                             <div className="col-lg-4" key={index}>
                               <div className="identity-item box_style_1">
-                                <h3 className="inner">Penumpang {index + 1}</h3>
+                                <h3 className="inner">{t("booking_details.passenger")} {index + 1}</h3>
                                 {adult && typeof(adult) === "object" ? (
                                   <Fragment>
-                                    <button className="btn_full" onClick={() => this._toggleIdentityModal(adult)}>LIHAT KTP</button>
-                                    <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>LIHAT PASSPORT</button>
+                                    <button className="btn_full" onClick={() => this._toggleIdentityModal(adult)}>
+                                      {t("booking_details.see_identity_button")}
+                                    </button>
+                                    <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>
+                                      {t("booking_details.see_passport_button")}
+                                    </button>
                                     {data.booking_type === "savings" &&
                                       <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index], 'adult')}>
-                                        LIHAT TABUNGAN
+                                        {t("booking_details.see_saving_button")}
                                       </button>
                                     }
                                   </Fragment>
@@ -597,12 +611,12 @@ class BookingDetails extends Component {
                                     className="btn_full_outline"
                                     style={{marginBottom: '10px'}}
                                   >
-                                      Isi KTP & Passport
+                                      {t("booking_details.fill_identity_and_passport")}
                                     </a>
                                 )}
                                 {data.adult_bio_ids[index] ? (
                                   <button className="btn_full" onClick={() => this._toggleBiodataModal(data.adult_bio_ids[index])}>
-                                    Lihat Biodata
+                                    {t("booking_details.see_biodata_button")}
                                   </button>
                                 ) : (
                                   <button
@@ -610,7 +624,7 @@ class BookingDetails extends Component {
                                     style={{width: '100%', marginBottom: '10px'}}
                                     onClick={() => this._toggleCreateBioModal(index, "adult")}
                                   >
-                                    Isi Biodata
+                                    {t("booking_details.fill_biodata")}
                                   </button>
                                 )}
                               </div>
@@ -622,8 +636,11 @@ class BookingDetails extends Component {
                       {data.child >= 1 && (
                         <Fragment>
                           <div className="form_title">
-                            <h3><strong><i className="icon-users-3" /></strong>Data Penumpang Keberangkatan (Anak)</h3>
-                            <p>Input identitas data Passport.</p>
+                            <h3>
+                              <strong><i className="icon-users-3" /></strong>
+                              {t("booking_details.data_passenger_child")}
+                            </h3>
+                            <p>{t("booking_details.data_passenger_child_description")}</p>
                           </div>
                           <div className="step">
                             <div className="row">
@@ -633,10 +650,12 @@ class BookingDetails extends Component {
                                     <h3 className="inner">Penumpang {index + 1}</h3>
                                     {child && typeof(child) === "object" ? (
                                       <Fragment>
-                                        <button className="btn_full" onClick={() => this._togglePassportModal(childs[index])}>LIHAT PASSPORT</button>
+                                        <button className="btn_full" onClick={() => this._togglePassportModal(childs[index])}>
+                                        {t("booking_details.see_passport_button")}
+                                        </button>
                                         {data.booking_type === "savings" &&
                                           <button className="btn_full" onClick={() => this._toggleSavingModal(data.child_passport_ids[index], 'child')}>
-                                            LIHAT TABUNGAN
+                                            {t("booking_details.see_saving_button")}
                                           </button>
                                         }
                                       </Fragment>
@@ -646,12 +665,12 @@ class BookingDetails extends Component {
                                         className="btn_full_outline"
                                         style={{marginBottom: '10px'}}
                                       >
-                                        Isi Passport
+                                        {t("booking_details.fill_passport")}
                                       </a>
                                     )}
                                     {data.child_bio_ids[index] ? (
                                       <button className="btn_full" onClick={() => this._toggleBiodataModal(data.child_bio_ids[index])}>
-                                        Lihat Biodata
+                                        {t("booking_details.see_biodata_button")}
                                       </button>
                                     ) : (
                                       <button
@@ -659,7 +678,7 @@ class BookingDetails extends Component {
                                         style={{width: '100%', marginBottom: '10px'}}
                                         onClick={() => this._toggleCreateBioModal(index, "child")}
                                       >
-                                        Isi Biodata
+                                        {t("booking_details.fill_biodata")}
                                       </button>
                                     )}
                                   </div>
@@ -706,9 +725,11 @@ const dateFormatter = (data) => {
   return `${raw[2]}-${ID_MONTH[raw[1] -1]}-${raw[0]}`;
 };
 
-export default connect(
-  state => ({
-    bookingDetails: state.bookingDetails,
-    biodata: state.biodata
-  })
-)(BookingDetails);
+export default withTranslation('common')(
+  connect(
+    state => ({
+      bookingDetails: state.bookingDetails,
+      biodata: state.biodata
+    })
+  )(BookingDetails)
+);
