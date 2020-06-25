@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import Authorization from "../../helpers/Authorization";
 import Axios from "axios";
+import { withTranslation } from "react-i18next";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const TOKEN = Authorization().getAuthUser();
@@ -34,6 +35,7 @@ class BiodataModal extends Component {
 
   render() {
     const { biodata } = this.state;
+    const { t } = this.props;
     return (
       <Fragment>
         <div className="mfp-bg my-mfp-zoom-in mfp-ready" />
@@ -42,23 +44,25 @@ class BiodataModal extends Component {
             <div className="mfp-content">
               <div id='sign-in-dialog' className='zoom-anim-dialog'>
                 <div className='small-dialog-header'>
-                  <h3>BIODATA PENUMPANG</h3>
+                  <h3>{t("biodata_modal.passenger_biodata")}</h3>
                   <button className="mfp-close" onClick={this.props.toggle} />
                 </div>
                   {biodata &&
                     <form>
                       <div className='sign-in-wrapper'>
                         <dl>
-                          <dt>Nama</dt>
+                          <dt>{t("biodata_modal.name")}</dt>
                           <dd>{biodata.name}</dd>
-                          <dt>Email</dt>
+                          <dt>{t("biodata_modal.email")}</dt>
                           <dd>{biodata.email}</dd>
-                          <dt>No. HP</dt>
+                          <dt>{t("biodata_modal.phone")}</dt>
                           <dd>{biodata.phone}</dd>
-                          <dt>Ahli Waris</dt>
+                          <dt>{t("biodata_modal.heir_name")}</dt>
                           <dd>{biodata.heir_name}</dd>
-                          <dt>Kontak Ahli Waris</dt>
+                          <dt>{t("biodata_modal.heir_contact")}</dt>
                           <dd>{biodata.heir_contact}</dd>
+                          <dt>{t("biodata_modal.family_relation")}</dt>
+                          <dd>{biodata.family_relation}</dd>
                         </dl>
                       </div>
                     </form>
@@ -72,4 +76,4 @@ class BiodataModal extends Component {
   }
 }
 
-export default BiodataModal;
+export default withTranslation('common')(BiodataModal);

@@ -162,6 +162,7 @@ export function* _biodata(payload) {
   formData.append("biodata[phone]", payload.data.phone);
   formData.append("biodata[heir_name]", payload.data.heir_name);
   formData.append("biodata[heir_contact]", payload.data.heir_contact);
+  formData.append("biodata[family_relation]", payload.data.family_relation);
   const config = {
     ...payload.config,
     url: BACKEND_URL + payload.path,

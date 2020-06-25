@@ -8,6 +8,7 @@ import Authorization from "../../helpers/Authorization";
 import moment from "moment";
 import Swal from "sweetalert2";
 import Axios from "axios";
+import { withTranslation } from "react-i18next";
 
 const BASE_URL = process.env.REACT_APP_STATIC_FILE_URL;
 const API_URL = process.env.REACT_APP_API_V1_URL;
@@ -62,12 +63,13 @@ class BookingList extends Component {
 
   render() {
     const { data } = this.props.bookingList;
+    const { t } = this.props;
     return (
       <div className="container margin_60">
         <div className="row">
           <div className="col-12 add_bottom_15">
             <section id="section-1">
-              <div id="tools">
+              {/* <div id="tools">
                 <div className="row">
                   <div className="col-lg-3 col-md-3 col-6">
                     <div className="styled-select-filters">
@@ -89,7 +91,7 @@ class BookingList extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {data.length === 0 && <div>Loading..</div>}
               {data.success === false && <div>Data not found!</div>}
               {
@@ -117,9 +119,14 @@ class BookingList extends Component {
                       </div>
                       <div className="col-md-3">
                         <ul className="info_booking">
-                          <li><strong>ID Pesanan</strong> <p>{value.id}</p></li>
-                          <li><strong>Status Pesanan</strong>
-                          <p>{value.booking_status}</p></li>
+                          <li>
+                            <strong>{t("booking_list.order_id")}</strong>
+                            <p>{value.id}</p>
+                          </li>
+                          <li>
+                            <strong>{t("booking_list.order_status")}</strong>
+                            <p>{value.booking_status}</p>
+                          </li>
                           <li>
                             <h4>RP {parseFloat(value.price).toLocaleString("id")}</h4>
                           </li>
@@ -128,16 +135,16 @@ class BookingList extends Component {
                       <div className="col-lg-2 col-md-2">
                         <div className="booking_buttons">
                           <Link to={`booking/${value.id}`} target="_blank" className="btn_1">
-                            Lihat detail pesanan
+                            {t("booking_list.see_detail_order")}
                           </Link>
                           {value.booking_status !== "cancelled" &&
                             <Link to={`booking/${value.id}/modify`} target="_blank" className="btn_1 white">
-                              Reschedule
+                              {t("booking_list.reschedule")}
                             </Link>
                           }
                           {value.booking_status !== "cancelled" &&
                             <a href="#!" onClick={() => this._cancelBooking(value.id)} className="btn_1 red">
-                              Cancel Booking
+                              {t("booking_list.cancel_booking")}
                             </a>
                           }
                         </div>
@@ -154,8 +161,10 @@ class BookingList extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    bookingList: state.bookingList
-  })
-)(BookingList);
+export default withTranslation('common')(
+  connect(
+    state => ({
+      bookingList: state.bookingList
+    })
+  )(BookingList)
+);

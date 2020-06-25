@@ -41,7 +41,8 @@ const biodataState = {
   phone: "",
   type: "adult",
   heir_name: "",
-  heir_contact: ""
+  heir_contact: "",
+  family_relation: ""
 };
 
 class BookingDetails extends Component {

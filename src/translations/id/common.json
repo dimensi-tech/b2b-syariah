@@ -100,6 +100,43 @@
     "amount_saved": "Jumlah yang ditabungkan",
     "pay": "Bayar"
   },
+  "biodata_modal_create": {
+    "fill_biodata": "Isi Biodata",
+    "name": "Nama",
+    "email": "Email",
+    "phone": "Nomor HP",
+    "heir_name": "Nama Ahli Waris",
+    "heir_contact": "Kontak Ahli Waris",
+    "family_relation": "Hubungan Ahli Waris",
+    "save_button": "Simpan Biodata"
+  },
+  "biodata_modal": {
+    "passenger_biodata": "Biodata Penumpang",
+    "name": "Nama",
+    "email": "Email",
+    "phone": "Nomor HP",
+    "heir_name": "Nama Ahli Waris",
+    "heir_contact": "Kontak Ahli Waris",
+    "family_relation": "Hubungan Ahli Waris"
+  },
+  "booking_list": {
+    "order_id": "ID Pesanan",
+    "order_status": "Status Pemesanan",
+    "see_detail_order": "Lihat Detail Pesanan",
+    "reschedule": "Atur Ulang Jadwal",
+    "cancel_booking": "Batalkan Pesanan"
+  },
+  "booking_modify": {
+    "back_url": "Kembali ke halaman sebelumnya",
+    "title": "Pergantian Tanggal Keberangkatan",
+    "title_description": "Pastikan tanggal yang dipilih sesuai.",
+    "current_departure_date": "Tanggal Keberangkatan Saat Ini",
+    "departure_date": "Tanggal Keberangkatan",
+    "select_date": "Pilih Tanggal",
+    "submit_reschedule": "Simpan Perubahan Tanggal",
+    "current_order": "Rincian Pemesanan Saat Ini",
+    "current_order_description": "Rincian data-data pemesanan."
+  },
   "search": {
     "search_button": "Cari"
   },

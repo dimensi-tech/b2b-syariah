@@ -95,6 +95,48 @@
     "data_passenger_child": "Departure Passenger Data (Children)",
     "data_passenger_child_description": "Input Passport identity"
   },
+  "saving_modal": {
+    "data_saving": "Savings Data",
+    "amount_saved": "Amount saved",
+    "pay": "Pay"
+  },
+  "biodata_modal_create": {
+    "fill_biodata": "Fill Biodata",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "heir_name": "Heir Name",
+    "heir_contact": "Heir Contact",
+    "family_relation": "Heir Relationship",
+    "save_button": "Save Biodata"
+  },
+  "biodata_modal": {
+    "passenger_biodata": "Passenger Biodata",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "heir_name": "Heir Name",
+    "heir_contact": "Heir Contact",
+    "family_relation": "Heir Relationship"
+  },
+  "booking_list": {
+    "order_id": "Booking ID",
+    "order_status": "Booking Status",
+    "see_detail_order": "Booking Detail",
+    "reschedule": "Reschedule",
+    "cancel_booking": "Cancel Booking"
+  },
+  "booking_modify": {
+    "back_url": "Back",
+    "title": "Modify Departure Date",
+    "title_description": "Make sure the selected date matches.",
+    "current_departure_date": "Current Departure Date",
+    "departure_date": "Departure Date",
+    "select_date": "Select Date",
+    "submit_reschedule": "Update Departure Date",
+    "current_order": "Current Booking Details",
+    "current_order_description": "Details of booking data"
+  },
   "search": {
     "search_button": "Search"
   },

@@ -8,6 +8,7 @@ import Authorization from "../../helpers/Authorization";
 import Preloader from "../static/Preloader";
 import Axios from "axios";
 import moment from "moment";
+import { withTranslation } from "react-i18next";
 
 const API_URL = process.env.REACT_APP_API_V1_URL;
 const TOKEN = Authorization().getAuthUser();
@@ -71,6 +72,7 @@ class BookingModify extends Component {
   render() {
     const { data } = this.props.bookingDetails;
     const { departure_date } = this.state;
+    const { t } = this.props;
     if (!Object.keys(data).length) {
       return <Preloader />
     } else {
@@ -84,7 +86,7 @@ class BookingModify extends Component {
                 <div className="col-12">
                   <Link className="back-link" to={`/booking/${data.id}`}>
                     <i className="icon-left-open" />
-                    Kembali ke halaman sebelumnya
+                    {t("booking_modify.back_url")}
                   </Link>
                 </div>
                 <div className="col-12 add_bottom_15">
@@ -93,10 +95,10 @@ class BookingModify extends Component {
                       <strong>
                         <i className="icon-bookmark" />
                       </strong>
-                      Pergantian Tanggal Keberangkatan
+                      {t("booking_modify.title")}
                     </h3>
                     <p>
-                      Pastikan tanggal yang dipilih sesuai.
+                      {t("booking_modify.title_description")}
                     </p>
                   </div>
                   <div className="step">
@@ -106,7 +108,7 @@ class BookingModify extends Component {
                           <div className='row'>
                             <div className='col-md-12'>
                               <div className='tour_list_desc'>
-                                <span>Tanggal Keberangkatan Saat Ini</span>
+                                <span>{t("booking_modify.current_departure_date")}</span>
                                 <select name="departure_date" className="form-control" disabled={true}>
                                   <option>{dateFormatter(data.departure_date)}</option>
                                 </select>
@@ -120,9 +122,9 @@ class BookingModify extends Component {
                           <div className='row'>
                             <div className='col-md-12'>
                               <div className='tour_list_desc'>
-                                <span>Tanggal Keberangkatan</span>
+                                <span>{t("booking_modify.departure_date")}</span>
                                 <select name="departure_date" value={departure_date} onChange={this._onChange} className="form-control">
-                                  <option value="">Pilih Tanggal</option>
+                                  <option value="">{t("booking_modify.select_date")}</option>
                                   {
                                     data &&
                                     data.package.available_date.map((value, i) => (
@@ -137,7 +139,7 @@ class BookingModify extends Component {
                                 </select>
                                 {departure_date &&
                                   <button onClick={() => this._submitModify()} className="btn_1">
-                                    Submit Reschedule
+                                    {t("booking_modify.submit_reschedule")}
                                   </button>
                                 }
                               </div>
@@ -148,9 +150,9 @@ class BookingModify extends Component {
                     </div>
                   </div>
                   <div className="form_title">
-                    <h3><strong><i className="icon-tag-1" /></strong>Rincian Pemesanan Saat Ini</h3>
+                    <h3><strong><i className="icon-tag-1" /></strong>{t("booking_modify.current_order")}</h3>
                     <p>
-                      Rincian data-data pesanan.
+                    {t("booking_modify.current_order_description")}
                     </p>
                   </div>
                   <div className="step">
@@ -160,48 +162,58 @@ class BookingModify extends Component {
                           <tbody>
                             <tr>
                               <td>
-                                <strong>Nama Paket</strong>
+                                <strong>{t("booking_details.package_name")}</strong>
                               </td>
                               <td>{data.package.name}</td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Harga Paket</strong>
+                                <strong>{t("booking_details.package_price")}</strong>
                               </td>
                               <td>RP {parseFloat(data.price).toLocaleString()}/pax</td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Jumlah Orang</strong>
+                                <strong>{t("booking_details.person_number")}</strong>
                               </td>
                               <td>
                                 <ul className="mb-0" style={{paddingLeft: '15px'}}>
                                   <li>
-                                    Dewasa {data.adult} orang
+                                  {t("adult")} {data.adult} {t("person")}
                                   </li>
-                                  {data.child ? <li>Anak {data.child} orang</li> : null}
+                                  {data.child ? <li>{t("child")} {data.child} {t("person")}</li> : null}
                                 </ul>
                               </td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Hari Keberangkatan</strong>
+                                <strong>{t("booking_details.departure_date")}</strong>
                               </td>
-                              <td>{dateFormatter(data.departure_date)}</td>
+                              <td>
+                                {dateFormatter(data.departure_date)}
+                                {data.booking_status !== "cancelled" &&
+                                  <Fragment>
+                                    &nbsp;
+                                    <Link to={`/booking/${data.id}/modify`}>
+                                      ({t("booking_details.modify_date")})
+                                    </Link>
+                                  </Fragment>
+                                }
+                              </td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Lama Hari</strong>
+                                <strong>{t("booking_details.duration_trip")}</strong>
                               </td>
-                              <td>{data.package.duration_trip} hari</td>
+                              <td>{data.package.duration_trip} {t("day")}</td>
                             </tr>
                             <tr>
                               <td>
-                                <strong>Rincian Perjalanan</strong>
+                                <strong>{t("itinerary")}</strong>
                               </td>
                               <td>
                                 <Link to={`/product/${data.package.product_id}`} target="_blank">
-                                  Lihat Rincian Perjalanan di Detail Paket
+                                  {t("booking_details.see_itinerary_on_package_detail")}
                                 </Link>
                               </td>
                             </tr>
@@ -225,8 +237,10 @@ const dateFormatter = (data) => {
   return `${raw[2]}-${ID_MONTH[raw[1] -1]}-${raw[0]}`;
 };
 
-export default connect(
-  state => ({
-    bookingDetails: state.bookingDetails
-  })
-)(BookingModify);
+export default withTranslation('common')(
+  connect(
+    state => ({
+      bookingDetails: state.bookingDetails
+    })
+  )(BookingModify)
+);
