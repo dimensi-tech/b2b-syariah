@@ -24,6 +24,8 @@ function PassportModal(props) {
                     <dd>{props.passport.birth_place}</dd>
                     <dt>Tanggal Lahir</dt>
                     <dd>{moment(props.passport.birth_date).format("DD MMMM YYYY")}</dd>
+                    <dt>Jenis Kelamin</dt>
+                    <dd>{props.passport.gender}</dd>
                     <dt>Nama Ibu</dt>
                     <dd>{props.passport.mother_name}</dd>
                     <dt>Nama Ayah</dt>
