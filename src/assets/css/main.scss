@@ -20,3 +20,31 @@ header {
   padding: 30px;
   min-height: 50vh;
 }
+
+.login-button {
+  background: #017233;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 3px;
+  img {
+    width: 15px;
+    height: 15px;
+    filter: invert(1);
+    margin-right: 0.5rem;
+  }
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.logout-button {
+  padding: 3px 8px;
+  background: orangered;
+  border-radius: 3px;
+  color: #fff !important;
+  &:hover {
+    opacity: 0.8;
+  }
+}

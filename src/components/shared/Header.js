@@ -9,6 +9,7 @@ import jwtDecode from "jwt-decode";
 import { loginSuccessToast, logoutSuccessToast } from '../static/Toast';
 import { ReactComponent as IdLogo } from '../../assets/img/svg/id.svg';
 import { ReactComponent as EnLogo } from '../../assets/img/svg/en.svg';
+import LoginIcon from '../../assets/img/login-rounded-right.png'
 import { withTranslation } from 'react-i18next';
 
 class Header extends Component {
@@ -221,12 +222,15 @@ class Header extends Component {
                         <li><i className="icon-user-3"></i>{jwtDecode(token).customer_email}</li>
                       }
                       <li name="logout-label-clickable" onClick={this._logout}>
-                        <a href="#!">{t('header.logout')}</a>
+                        <a href="#!" className="logout-button">{t('header.logout')}</a>
                       </li>
                     </Fragment>
                     :
                     <li name="login-label-clickable" onClick={this._showModal}>
-                      <a href="#!">{t('header.login')}</a>
+                      <a href="#!" className="login-button">
+                        <img src={LoginIcon} alt="login" />
+                        {t('header.login')}
+                      </a>
                     </li>
                   }
                 </ul>

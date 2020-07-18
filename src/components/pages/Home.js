@@ -48,37 +48,38 @@ class Home extends Component {
     const { products, ads, t } = this.props
     return (
       <Fragment>
-        <main className="with-bg">
+        <main>
+          <div className='banners-collections'>
+            <Slider
+              data={ads}
+              options={{
+                autoPlay: 5000,
+                pauseAutoPlayOnHover: true,
+                pageDots: false,
+                wrapAround: true,
+                contain: true
+              }}>
+              {
+                ads.data.length > 0 &&
+                ads.data.map((ad, index) => (
+                  <div key={index}
+                      style={{
+                        height: isMobileOnly ? 150 : 450,
+                        width: isMobile ? '100%' : '100%'
+                        }}
+                      className='ads-item'
+                  >
+                    <div className='ads-content'>
+                      {/* <span>{ad.name}</span> */}
+                      <img src={ad.image_path} alt={ad.name} />
+                    </div>
+                  </div>
+                ))
+              }
+            </Slider>
+          </div>
           <div id='search_container_2'>
             <div id='search_2'>
-              <div className='banners-collections'>
-                <Slider
-                  data={ads}
-                  options={{
-                    autoPlay: 5000,
-                    pauseAutoPlayOnHover: true,
-                    pageDots: false,
-                    contain: isMobile ? true : false
-                  }}>
-                  {
-                    ads.data.length > 0 &&
-                    ads.data.map((ad, index) => (
-                      <div key={index}
-                          style={{
-                            height: isMobileOnly ? 150 : 450,
-                            width: isMobile ? '100%' : 'calc(70% + 20px)'
-                            }}
-                          className='ads-item'
-                      >
-                        <div className='ads-content'>
-                          <span>{ad.name}</span>
-                          <img src={ad.image_path} alt={ad.name} />
-                        </div>
-                      </div>
-                    ))
-                  }
-                </Slider>
-              </div>
               <h1>
                 {t('home.search_label')}
               </h1>
@@ -89,7 +90,7 @@ class Home extends Component {
               </div>
             </div>
           </div>
-          <div>
+          <div className="with-bg">
             <div className='container margin_60'>
               <div className='row small-gutters categories_grid'>
                 <div className='col-sm-12 col-md-4'>
@@ -134,12 +135,12 @@ class Home extends Component {
                 </div>
               </div>
             </div>
-          </div>
-          <div className='container margin_60'>
-            {
-              products.data &&
-              <PromoProduct products={products.data} />
-            }
+            <div className='container margin_60'>
+              {
+                products.data &&
+                <PromoProduct products={products.data} />
+              }
+            </div>
           </div>
         </main>
       </Fragment>

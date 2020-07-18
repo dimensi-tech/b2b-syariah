@@ -464,7 +464,7 @@ header {
 
 #logo_home h1 {
   margin: 10px 0 0 0;
-  padding: 0;
+  padding-bottom: 1rem;
 
   a {
     width: 160px;
@@ -557,7 +557,7 @@ header {
 }
 
 nav {
-  margin-top: 20px;
+  margin-top: 1rem;
   position: relative;
 }
 
@@ -607,7 +607,7 @@ ul#top_tools li {
   color: #fff;
   height: 28px;
   font-size: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  // border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 11px;
   visibility: visible;
   opacity: 1;
@@ -708,7 +708,7 @@ header#plain {
 
   #top_line {
     color: #888;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   ul {
@@ -1055,7 +1055,7 @@ a {
   > ul > li > a {
     color: #fff;
     padding: 0 8px 15px 8px;
-    font-size: 13px;
+    font-size: 1rem;
   }
 }
 
@@ -5832,11 +5832,21 @@ main {
   position: relative;
   &.with-bg {
     background-color: #FFF;
-    // background-image: url("https://www8.lunapic.com/do-not-link-here-use-hosting-instead/158087486590757652?276816");
     background-image: url("../../img/main-background.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100% auto;
+    background-position: center;
+    position: relative;
+  }
+  .with-bg {
+    background-color: #FFF;
+    background-image: url("../../img/main-background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% auto;
+    background-position: center;
+    position: relative;
   }
 }
 
@@ -7608,7 +7618,7 @@ a.box_news {
     height: 50px;
     cursor: pointer;
     outline: none;
-    width: 100%;
+    width: calc(100% + 1px);
     -webkit-border-radius: 0 3px 3px 0;
     -moz-border-radius: 0 3px 3px 0;
     -ms-border-radius: 0 3px 3px 0;
