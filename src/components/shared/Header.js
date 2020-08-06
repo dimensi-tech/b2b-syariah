@@ -11,6 +11,7 @@ import { ReactComponent as IdLogo } from '../../assets/img/svg/id.svg';
 import { ReactComponent as EnLogo } from '../../assets/img/svg/en.svg';
 import LoginIcon from '../../assets/img/login-rounded-right.png'
 import { withTranslation } from 'react-i18next';
+import Swal from "sweetalert2";
 
 class Header extends Component {
   constructor(props) {
@@ -272,6 +273,19 @@ class Header extends Component {
                         <Link to="/" href="#">Umroh</Link>
                       </li>
                     </ul>
+                  </li>
+                  <li>
+                    <Link to="#" onClick={() =>
+                      Swal.fire({
+                        imageUrl: 'https://static.thenounproject.com/png/21053-200.png',
+                        imageAlt: 'Souvenir',
+                        title: 'Souvenir',
+                        text: 'Coming Soon'
+                      })
+                    }>
+                      {/* {t('header.home')}&nbsp; */}
+                      Souvenir
+                    </Link>
                   </li>
                   <li>
                     <Link to="/">
