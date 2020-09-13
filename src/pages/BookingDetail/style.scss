@@ -1,0 +1,122 @@
+.booking-detail-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  .booking-body {
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+    width: 100%;
+    & > .ant-space-item {
+      &:first-child {
+        width: 100%;
+        padding-right: 2rem;
+      }
+    }
+    .booking-detail-wrapper {
+      border: 1px solid rgb(221, 221, 221);
+      border-radius: 12px;
+      padding: 1.5rem;
+      .ant-space {
+        width: 100%;
+      }
+      .booking-header {
+        display: flex;
+        align-items: center;
+        & > span {
+          font-size: 1.5rem;
+          margin-right: 1rem;
+        }
+      }
+      h5 {
+        overflow: hidden;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 1.5715;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: 20px;
+      }
+      .person-information {
+      }
+    }
+    .ant-affix {
+      width: auto !important;
+      transition: width 0.5s ease;
+      min-width: 350px;
+    }
+    .selected-packages {
+      border: 1px solid rgb(221, 221, 221);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+      min-width: 414px;
+      overflow: hidden;
+      .package-info {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        .ant-btn-link {
+          padding: 0;
+        }
+        h5 {
+          p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: normal;
+          }
+        }
+        & > div {
+          display: flex;
+          align-items: flex-end;
+          * {
+            margin: 0;
+          }
+        }
+        & > * {
+          margin: 0;
+          &:first-child {
+            padding-right: 4rem;
+          }
+        }
+      }
+      dl {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgb(221, 221, 221);
+        margin: 0 -1.5rem;
+        padding: 1rem 1.5rem;
+        &:first-child {
+          border-top: 1px solid rgb(221, 221, 221);
+        }
+        &:last-child {
+          margin-bottom: -1.5rem;
+          border-bottom: 0;
+          background: rgb(82, 196, 26);
+          color: #fff;
+          dt {
+            font-weight: 500;
+            font-size: 1.125rem;
+          }
+          dd {
+            font-size: 1.25rem;
+          }
+        }
+        dt {
+          font-weight: 400;
+        }
+        dd {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+.ant-form-item-explain {
+  margin-bottom: 0.5rem;
+}

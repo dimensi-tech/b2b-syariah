@@ -7,11 +7,11 @@ export const PrivateRoute = ({ component: Component, path, ...rest }) => {
     <Route
       {...rest}
       render={props => {
-        if (isLoggedIn) {
+        if (isLoggedIn()) {
           return (
             <Route
               {...props}
-              isLoggedIn={isLoggedIn}
+              isLoggedIn={isLoggedIn()}
               component={Component}
               path={path}
             />
@@ -32,7 +32,7 @@ export const PublicRoute = ({ component: Component, path, ...rest }) => {
         return (
           <Route
             {...props}
-            isLoggedIn={isLoggedIn}
+            isLoggedIn={isLoggedIn()}
             component={Component}
             path={path}
           />

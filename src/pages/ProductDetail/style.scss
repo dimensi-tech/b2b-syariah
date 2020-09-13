@@ -1,0 +1,187 @@
+.product-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  .product-header {
+    margin-bottom: 1.5rem;
+    a {
+      text-decoration: underline;
+    }
+    p {
+      margin: 0;
+    }
+    & > h2 {
+      margin: 0;
+    }
+    .product-rate {
+      display: flex;
+      align-items: center;
+      .rate-score {
+        margin-left: 0.5rem;
+      }
+    }
+    .product-header-info {
+      display: flex;
+      align-items: flex-end;
+      & > * {
+        display: flex;
+        &:not(:last-child) {
+          &:after {
+            content: '·';
+            display: inline-block;
+            margin-left: 8px;
+          }
+        }
+      }
+      .product-destination {
+        display: flex;
+        align-items: center;
+        svg {
+          margin-right: 0.25rem;
+        }
+      }
+      .ant-rate {
+        font-size: 1rem;
+        .ant-rate-star:not(:last-child) {
+          margin-right: 0.25rem;
+        }
+      }
+    }
+  }
+  .product-gallery {
+    position: relative;
+    width: 100%;
+    background: #333;
+    border-radius: 12px;
+    overflow: hidden;
+    height: calc(60vh - 64px);
+    margin-bottom: 2rem;
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 2;
+      -moz-box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.15);
+      -webkit-box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.15);
+      box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.15);
+    }
+    & > img {
+      position: absolute;
+      width: 100%;
+      height: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.95;
+      z-index: 1;
+    }
+  }
+  .product-body {
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+    .ant-space-item {
+      &:first-child {
+        padding-right: 2rem;
+      }
+    }
+    .ant-tabs-tabpane {
+      & > .ant-row {
+        margin-bottom: -1rem;
+      }
+      .product-info {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        .anticon {
+          font-size: 1.25rem;
+          line-height: 35px;
+          margin-right: 0.5rem;
+        }
+        h5 {
+          margin-bottom: 0;
+        }
+      }
+    }
+    .ant-timeline {
+      margin-left: 1rem;
+      .anticon-environment {
+        font-size: 1.5rem;
+      }
+      .ant-timeline-item {
+        padding-left: 1.5rem;
+        h3 {
+          margin: 0;
+        }
+        .ant-space {
+          img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+          }
+        }
+      }
+    }
+    .ant-affix {
+      width: auto !important;
+      transition: width 0.5s ease;
+      min-width: 350px;
+    }
+    .select-packages {
+      border: 1px solid rgb(221, 221, 221);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+      min-width: 414px;
+      .package-price {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        white-space: nowrap;
+        margin-bottom: 1.5rem;
+        & > div {
+          display: flex;
+          align-items: flex-end;
+          * {
+            margin: 0;
+          }
+        }
+        & > * {
+          margin: 0;
+          &:first-child {
+            padding-right: 4rem;
+          }
+        }
+      }
+      .ant-select {
+        width: 100%;
+        margin-bottom: 1rem;
+        .ant-select-selector {
+          height: auto;
+          padding-top: 1.25rem;
+          border-radius: 8px;
+          &:before {
+            content: 'Paket';
+            position: absolute;
+            top: 0.25rem;
+            font-size: 0.825rem;
+            font-weight: 500;
+          }
+        }
+      }
+      button {
+        width: 100%;
+        font-weight: 500;
+        border: none;
+        line-height: 20px;
+        padding: 0.825rem;
+        height: auto;
+        border-radius: 8px;
+      }
+    }
+  }
+}

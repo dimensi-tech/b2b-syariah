@@ -1,0 +1,72 @@
+.search-form {
+  position: relative;
+  .anticon-environment {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: #4fd15a;
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+  .ant-select {
+    .ant-select-selector {
+      position: relative;
+      border-radius: 100px;
+      padding: 0;
+      border: 2px solid #4fd15a;
+      height: fit-content;
+      .ant-select-selection-search {
+        position: static;
+        & > input {
+          padding: 1rem 1rem 1rem 3rem;
+          font-size: 1.25rem;
+          height: auto;
+          line-height: normal;
+        }
+      }
+      .ant-select-selection-placeholder,
+      .ant-select-selection-item {
+        line-height: normal;
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 1rem 1rem 1rem 3rem;
+        font-size: 1.25rem;
+      }
+    }
+  }
+  .ant-btn {
+    position: absolute;
+    right: 0;
+    border-radius: 100px;
+    height: 100%;
+    width: auto;
+    padding: 0 2.5rem;
+    background: #4fd15a;
+    border: 0;
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: bold;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.search-dropdown {
+  padding: 0;
+  box-shadow: none;
+  .rc-virtual-list-holder {
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid #4fd15a;
+    margin-top: 1rem;
+    .ant-select-item-option {
+      padding: 0.5rem 3rem;
+    }
+  }
+}

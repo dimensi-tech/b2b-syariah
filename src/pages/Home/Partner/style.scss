@@ -1,0 +1,21 @@
+.partner-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .partner-info {
+    max-width: 450px;
+  }
+  .partner-logos {
+    max-width: 768px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: -0.75rem;
+    .partner-logo {
+      margin: 0.75rem;
+      img {
+        height: 4.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "header": {
+    "home": "Beranda",
+    "souvenir": "Souvenir",
+    "voucher": "Voucher",
+    "saving": "Tabungan",
+    "login": "Masuk",
+    "register": "Daftar"
+  },
+  "login": {
+    "title": "Masuk",
+    "password": "Kata Sandi",
+    "rememberMe": "Ingat Saya",
+    "submit": "Masuk",
+    "registerLink": "Daftar Sekarang",
+    "error": {
+      "email": "Email tidak boleh kosong",
+      "password": "Kata Sandi tidak boleh kosong"
+    },
+    "notification": {
+      "success": {
+        "title": "Berhasil Masuk",
+        "description": "Selamat datang di Majreha.com"
+      },
+      "error": {
+        "title": "Gagal Masuk",
+        "description": "Email / Password salah"
+      }
+    }
+  },
+  "logout": {
+    "notification": {
+      "title": "Berhasil Keluar",
+      "description": "Terimakasih telah berkunjung di Majreha.com"
+    }
+  },
+  "register": {
+    "title": "Daftar",
+    "password": "Kata Sandi",
+    "passwordConfirmation": "Konfirmasi Kata Sandi",
+    "submit": "Daftar",
+    "loginLink": "Masuk",
+    "error": {
+      "email": {
+        "type": "Format email salah",
+        "required": "Email tidak boleh kosong"
+      },
+      "password": "Kata Sandi tidak boleh kosong",
+      "passwordConfirmation": {
+        "match": "Konfirmasi Password tidak sama",
+        "required": "Konfirmasi Password tidak boleh kosong"
+      }
+    },
+    "notification": {
+      "success": {
+        "title": "Berhasil Daftar",
+        "description": "Anda sekarang sudah bisa masuk"
+      },
+      "error": {
+        "title": "Daftar Gagal",
+        "description": "Email telah digunakan"
+      }
+    }
+  },
+  "home": {
+    "search": {
+      "title": "Cari Paket Perjalanan Halalmu"
+    }
+  },
+  "search": {
+    "submit": "Cari"
+  },
+  "products": {
+    "result": "Hasil Pencarian"
+  },
+  "booking_details": {
+    "see_identity_button": "Lihat KTP",
+    "see_passport_button": "Lihat Passport",
+    "see_saving_button": "Lihat Tabungan",
+    "see_biodata_button": "Lihat Biodata",
+    "fill_identity_and_passport": "Isi KTP & Passport",
+    "fill_biodata": "Isi Biodata",
+    "biodata": {
+      "title": "Biodata"
+    }
+  }
+}
