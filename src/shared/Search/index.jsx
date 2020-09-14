@@ -12,7 +12,6 @@ function Search(props) {
   const [data, setData] = useState([])
   const [value, setValue] = useState()
   const [fetching, setFetching] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
   const { t, history, location } = props
   const params = queryString.parse(location.search)
@@ -41,8 +40,6 @@ function Search(props) {
   const onFinish = () => {
     value && history.push(`/products?search=${value}`)
   }
-
-  console.log(value)
 
   return (
     <Form
@@ -73,7 +70,7 @@ function Search(props) {
           )}
         </Select>
       </Form.Item>
-      <Button type="default" loading={loading} htmlType="submit" icon={<SearchOutlined />}>
+      <Button type="default" htmlType="submit" icon={<SearchOutlined />}>
         {t('search.submit')}
       </Button>
     </Form>

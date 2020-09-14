@@ -3,13 +3,10 @@ footer {
   overflow: hidden;
   border-top: 4px solid #4fd15a;
   & > img {
-    position: absolute;
-    left: 0;
-    bottom: 3rem;
-    max-width: 100%;
-    height: calc(100% - 3rem);
+    max-width: 50%;
     opacity: 0.2;
     filter: grayscale(100);
+    margin-top: -5rem;
   }
   .footer-content {
     max-width: 1920px;

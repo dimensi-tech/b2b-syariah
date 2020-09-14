@@ -10,7 +10,6 @@ const { Title } = Typography
 function Footer() {
   return (
     <footer>
-      <img src={Vector} alt="Footer Vector" />
       <div className="footer-content">
         <Row>
           <Col span={8}>
@@ -71,6 +70,7 @@ function Footer() {
           </Col>
         </Row>
       </div>
+      <img src={Vector} alt="Footer Vector" />
       <p className="copyright">© 2020 PT. Majreha Halal Travel. All rights reserved</p>
     </footer>
   )

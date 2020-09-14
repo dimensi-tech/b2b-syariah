@@ -30,7 +30,6 @@ function ProductDetail({ t, ...props }) {
       const result = await getData(`/product/${match.params.id}`)
       setProduct(result.data)
       setSelectedPackage(result.data.packages[0])
-      console.log(result.data)
     } catch(e) {
       console.log(e)
     }

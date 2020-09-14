@@ -17,7 +17,6 @@ function Popular(props) {
     try {
       const result = await getData('/products/list_products')
       setPopular(result.data)
-      console.log(result.data)
     } catch(e) {
       console.log(e)
     }

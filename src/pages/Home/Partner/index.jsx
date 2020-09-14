@@ -9,7 +9,7 @@ const { Title } = Typography
 
 function Partner() {
   return (
-    <Space direction="vertical" style={{ width: '100%', padding: '0 2rem 2rem' }}>
+    <Space direction="vertical" style={{ width: '100%', padding: '4rem 2rem 8rem' }}>
       <Title level={2}>Partner Travel</Title>
       <div className="partner-content">
         <div className="partner-info">

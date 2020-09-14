@@ -80,6 +80,9 @@
     "see_biodata_button": "Lihat Biodata",
     "fill_identity_and_passport": "Isi KTP & Passport",
     "fill_biodata": "Isi Biodata",
+    "pay_now": "Bayar Sekarang",
+    "cancelled": "Pesanan telah dibatalkan",
+    "data_filling": "Isilah data peserta",
     "biodata": {
       "title": "Biodata"
     }

@@ -10,21 +10,27 @@ import axios from 'axios'
 import MainPage from 'services/MainPage'
 import { thousandFormat } from 'services/TextFormat'
 import { getData } from 'helpers/FetchData'
-import { KYC_API_V1 } from 'helpers/Environment'
-import { isLoggedIn } from 'helpers/Authorization'
+import { KYC_API_V1, B2B_API_V1, MIDTRANS_SERVER } from 'helpers/Environment'
 import Biodata from './Biodata'
 import './style.scss'
 
 const { Title } = Typography
-const { TabPane } = Tabs
-const { Option } = Select
+const PROXY = 'https://cors-anywhere.herokuapp.com'
 
 function ProductDetail({ t, ...props }) {
   const [booking, setBooking] = useState()
   const [adults, setAdults] = useState([])
+  const [childs, setChilds] = useState([])
+  const [paymentStatus, setPaymentStatus] = useState('Loading...')
+  const [midtrans, setMidtrans] = useState({})
+  const [openPayment, setOpenPayment] = useState(false)
   const biodataRef = useRef(null)
 
   useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://app.sandbox.midtrans.com/snap/snap.js'
+    script.setAttribute('data-client-key', "SB-Mid-server-YAxhhaXZP5u3MJchUadi296f")
+    document.body.appendChild(script)
     getBooking()
   }, [])
 
@@ -42,12 +48,56 @@ function ProductDetail({ t, ...props }) {
     }
   }, [booking, adults])
 
+  useEffect(() => {
+    if (!_.isEmpty(booking) && _.isEmpty(childs)) {
+      if (booking.identity_ids.length > 0) {
+        setChilds(booking.identity_ids);
+        [...Array(booking.child).keys()].map(child =>
+          booking.identity_ids[child] !== null ? showDatachild(child) : null
+        )
+      } else {
+        const childs = [...Array(booking.child).keys()].map(child => null)
+        setChilds(childs)
+      }
+    }
+  }, [booking, childs])
+
+  useEffect(() => {
+    if (booking?.midtrans_id && Object.keys(midtrans).length === 0) {
+      axios.get(`${PROXY}/https://api.sandbox.midtrans.com/v2/${booking.midtrans_id}/status`, {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }).then(res => {
+        setMidtrans(res)
+        const expireDate = moment(res.data.transacation_time).add(1, 'days').format('DD MMMM YYYY, h:mm:ss a')
+        switch (res.data?.transaction_status) {
+          case 'pending':
+            setPaymentStatus(`Status pembayaran pending, mohon bayar sebelum tanggal ${expireDate}`)
+            break
+          case 'settlement':
+            setPaymentStatus('Pembayaran telah selesai')
+            break
+          case 'deny':
+            setPaymentStatus('Menunggu Pembayaran')
+            break
+          case '404':
+            setPaymentStatus('404')
+            break
+          default:
+            setPaymentStatus('Menunggu Pembayaran')
+            break
+        }
+      })
+    } else if (booking?.midtrans_id === null) {
+      setPaymentStatus('Menunggu Pembayaran')
+    }
+  }, [booking, midtrans])
+
   const getBooking = async () => {
     const { match } = props
     try {
       const result = await getData(`/booking/${match.params.id}`)
       setBooking(result.data)
-      console.log(result.data)
     } catch(e) {
       console.log(e)
     }
@@ -68,15 +118,60 @@ function ProductDetail({ t, ...props }) {
     }
   }
 
-  // const submitBiodata = async () => {
-
-  // }
-  const fillBiodata = (index) => {
-    biodataRef.current.handleIndex(index)
-    biodataRef.current.showModal()
+  const showDatachild = (child) => {
+    if (!_.isEmpty(booking)) {
+      if (booking.child_passport_ids.length > 0) {
+        const passport = booking.child_passport_ids[child];
+        if (passport) {
+          axios.get(`${KYC_API_V1}/passports/find_passport?id=${passport}&child=true`).then(res => {
+            let clone = [...childs]
+            clone[child] = res.data
+            setChilds(clone)
+          })
+        }
+      }
+    }
   }
 
-  console.log(adults)
+  const handleBiodata = (index, type, action) => {
+    biodataRef.current.showModal(action, index, type)
+  }
+
+  const pay = () => {
+    setOpenPayment(true)
+    const grossAmount = booking.price
+    let parameter = {
+      "transaction_details": {
+        "order_id": `${booking.id}${Date.now()}`,
+        "gross_amount": grossAmount
+      }, "credit_card":{
+        "secure" : true
+      }
+    };
+    let updateMidtrans = {
+      booking_id: booking.id,
+      midtrans_id: `${booking.id}${Date.now()}`,
+      status: 0
+    }
+    axios.post(`${PROXY}/https://app.sandbox.midtrans.com/snap/v1/transactions`, parameter, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      auth: {
+        username: MIDTRANS_SERVER,
+        password: ''
+      }
+    }).then(res => {
+      axios.post(`${B2B_API_V1}/bookings/update_midtrans`, updateMidtrans, {
+        headers: {
+          Authorization: JSON.parse(localStorage.getItem('authUser'))?.token || ''
+        }
+      })
+      window.snap.pay(`${res.data.token}`)
+      setOpenPayment(false)
+    })
+  }
 
   return (
     <MainPage>
@@ -115,7 +210,7 @@ function ProductDetail({ t, ...props }) {
                         {booking.child && `Anak: ${booking.child} orang`}
                       </Descriptions.Item>
                       <Descriptions.Item label="Status Pemesanan" span={3}>
-                        <Badge status="warning" text="Pending" />
+                        <Badge status="warning" text={paymentStatus} />
                       </Descriptions.Item>
                       <Descriptions.Item label="Total Harga Paket" span={3}>
                         Rp {thousandFormat(parseInt(booking.price))}
@@ -132,13 +227,13 @@ function ProductDetail({ t, ...props }) {
                           <Space direction="vertical" size={14}>
                             {adult && typeof(adult) === 'object' ? (
                               <Fragment>
-                                <Button size="large" type="secondary">
+                                <Button size="large" type="secondary" block>
                                   {t("booking_details.see_identity_button")}
                                 </Button>
-                                <Button size="large" type="secondary">
+                                <Button size="large" type="secondary" block>
                                   {t("booking_details.see_passport_button")}
                                 </Button>
-                                <Button size="large" type="secondary">
+                                <Button size="large" type="secondary" block>
                                   {t("booking_details.see_saving_button")}
                                 </Button>
                               </Fragment>
@@ -148,11 +243,11 @@ function ProductDetail({ t, ...props }) {
                               </Button>
                             )}
                             {booking.adult_bio_ids[index] ? (
-                              <Button size="large" type="primary">
+                              <Button size="large" type="primary" onClick={() => handleBiodata(index, 'adult', 'show')} block>
                                 {t("booking_details.see_biodata_button")}
                               </Button>
                             ) : (
-                              <Button size="large" block onClick={() => fillBiodata(index)}>
+                              <Button size="large" onClick={() => handleBiodata(index, 'adult', 'create')} block>
                                 {t("booking_details.fill_biodata")}
                               </Button>
                             )}
@@ -162,82 +257,40 @@ function ProductDetail({ t, ...props }) {
                     </Card>
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Anak</p>
                     <Card>
-                      {adults.length > 0 && adults.map((adult, index) =>
+                      {childs.length > 0 && childs.map((child, index) =>
                         <Card.Grid key={index}>
                           <h5>Peserta {index + 1}</h5>
-                          {adult && typeof(adult) === 'object' ? (
-                            <Fragment>
-                              <Button type="secondary">
-                                {t("booking_details.see_identity_button")}
+                          <Space direction="vertical" size={14}>
+                            {child && typeof(child) === 'object' ? (
+                              <Fragment>
+                                <Button type="secondary" block>
+                                  {t("booking_details.see_identity_button")}
+                                </Button>
+                                <Button type="secondary" block>
+                                  {t("booking_details.see_passport_button")}
+                                </Button>
+                                <Button type="secondary" block>
+                                  {t("booking_details.see_saving_button")}
+                                </Button>
+                              </Fragment>
+                            ) : (
+                              <Button size="large" block>
+                                {t("booking_details.fill_identity_and_passport")}
                               </Button>
-                              <Button type="secondary">
-                                {t("booking_details.see_passport_button")}
+                            )}
+                            {booking.child_bio_ids[index] ? (
+                              <Button size="large" type="primary" onClick={() => handleBiodata(index, 'child', 'show')} block>
+                                {t("booking_details.see_biodata_button")}
                               </Button>
-                              <Button type="secondary">
-                                {t("booking_details.see_saving_button")}
+                            ) : (
+                              <Button size="large" onClick={() => handleBiodata(index, 'child', 'create')} block>
+                                {t("booking_details.fill_biodata")}
                               </Button>
-                            </Fragment>
-                          ) : (
-                            <Button type="primary">
-                              {t("booking_details.fill_identity_and_passport")}
-                            </Button>
-                          )}
-                          {booking.adult_bio_ids[index] ? (
-                            <Button type="primary">
-                              {t("booking_details.see_biodata_button")}
-                            </Button>
-                          ) : (
-                            <Button type="primary">
-                              {t("booking_details.fill_biodata")}
-                            </Button>
-                          )}
+                            )}
+                          </Space>
                         </Card.Grid>
                       )}
                     </Card>
-
-                    {/* {adults.length > 0 && adults.map((adult, index) =>
-                      <div className="col-lg-4" key={index}>
-                        <div className="identity-item box_style_1">
-                          <h3 className="inner">{t("booking_details.passenger")} {index + 1}</h3>
-                          {adult && typeof(adult) === "object" ? (
-                            <Fragment>
-                              <button className="btn_full" onClick={() => this._toggleIdentityModal(adult)}>
-                                {t("booking_details.see_identity_button")}
-                              </button>
-                              <button className="btn_full" onClick={() => this._togglePassportModal(passports[index])}>
-                                {t("booking_details.see_passport_button")}
-                              </button>
-                              {data.booking_type === "savings" &&
-                                <button className="btn_full" onClick={() => this._toggleSavingModal(data.identity_ids[index], 'adult')}>
-                                  {t("booking_details.see_saving_button")}
-                                </button>
-                              }
-                            </Fragment>
-                          ) : (
-                            <a
-                              href={`${KYC_URL}?referrer=${window.location.href}/${index}`}
-                              className="btn_full_outline"
-                              style={{marginBottom: '10px'}}
-                            >
-                                {t("booking_details.fill_identity_and_passport")}
-                              </a>
-                          )}
-                          {data.adult_bio_ids[index] ? (
-                            <button className="btn_full" onClick={() => this._toggleBiodataModal(data.adult_bio_ids[index])}>
-                              {t("booking_details.see_biodata_button")}
-                            </button>
-                          ) : (
-                            <button
-                              className="btn_full_outline"
-                              style={{width: '100%', marginBottom: '10px'}}
-                              onClick={() => this._toggleCreateBioModal(index, "adult")}
-                            >
-                              {t("booking_details.fill_biodata")}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    )} */}
                   </div>
                 </Space>
               </div>
@@ -245,13 +298,38 @@ function ProductDetail({ t, ...props }) {
                 <div className="selected-packages">
                   <div className="package-info">
                     <Title level={5}>Status Pesanan</Title>
+                    <p>{paymentStatus}</p>
                   </div>
+                  {booking.booking_type === 'full' ? (
+                    booking.booking_status !== 'cancelled' ? (
+                      <Fragment>
+                        {paymentStatus === 'Menunggu Pembayaran' &&
+                          <Button
+                            className="secondary"
+                            onClick={pay}
+                            loading={openPayment}
+                            size="large"
+                            block
+                          >
+                            {t('booking_details.pay_now')}
+                            
+                          </Button>
+                        }
+                      </Fragment>
+                    ) : (
+                      <Title level={3}>{t('booking_details.cancelled')}</Title>
+                    )
+                  ) : (
+                    <Title level={3}>{t('booking_details.data_filling')}</Title>
+                  )}
                 </div>
               </Affix>
             </Space>
             <Biodata
               t={t}
               ref={biodataRef}
+              booking={booking}
+              refreshData={() => getBooking()}
               {...props}
             />
           </Fragment>

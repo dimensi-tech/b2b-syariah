@@ -26,7 +26,6 @@ function Products({ t, ...props }) {
     try {
       const result = await getData('/products/list_products?q[name_cont]=' + params.search)
       setProducts(result.data)
-      console.log(result.data)
     } catch(e) {
       console.log(e)
     }

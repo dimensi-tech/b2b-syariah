@@ -2,7 +2,7 @@
 import { Fragment, useState, useRef } from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
-import { Layout, Menu, Row, Col, Dropdown, Button, Drawer } from 'antd'
+import { Layout, Menu, Row, Col, Dropdown, Button, Drawer, Modal } from 'antd'
 import { HomeOutlined, ShoppingOutlined, UserOutlined, MenuOutlined, PercentageOutlined, WalletOutlined } from '@ant-design/icons'
 import { css, jsx } from '@emotion/core'
 import styled from '@emotion/styled'
@@ -35,11 +35,23 @@ function Header({ t, ...props }) {
 
   const privateMenu = (
     <Menu>
-      <Menu.Item key="1" onClick={() => handleLogout()}>
+      <Menu.Item key="2" onClick={() => handleLogout()}>
         Logout
       </Menu.Item>
     </Menu>
   )
+
+  const menuComingSoon = (type) => {
+    Modal.info({
+      title: 'Coming Soon',
+      content: (
+        <div>
+          <p>Fitur <b>{type}</b> masih dalam tahap pengembangan</p>
+        </div>
+      ),
+      onOk() {},
+    })
+  }
 
   return (
     <Fragment>
@@ -75,11 +87,15 @@ function Header({ t, ...props }) {
                 <Menu.Item key="1" icon={<HomeOutlined />}>
                   <a href="/">{t('header.home')}</a>
                 </Menu.Item>
-                <Menu.Item key="2" icon={<ShoppingOutlined />}>
+                <Menu.Item key="2" icon={<ShoppingOutlined />} onClick={() => menuComingSoon('Souvenir')}>
                   {t('header.souvenir')}
                 </Menu.Item>
-                <Menu.Item key="3" icon={<PercentageOutlined />}>{t('header.voucher')}</Menu.Item>
-                <Menu.Item key="4" icon={<WalletOutlined />}>{t('header.saving')}</Menu.Item>
+                <Menu.Item key="3" icon={<PercentageOutlined />} onClick={() => menuComingSoon('Voucher')}>
+                  {t('header.voucher')}
+                </Menu.Item>
+                <Menu.Item key="4" icon={<WalletOutlined />} onClick={() => menuComingSoon('Tabungan')}>
+                  {t('header.saving')}
+                </Menu.Item>
               </Menu>
             </Col>
             <Col
