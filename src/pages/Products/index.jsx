@@ -23,8 +23,12 @@ function Products({ t, ...props }) {
   }, [location])
 
   const getProducts = async () => {
+    const parameters = []
+    if (params.search) {
+      parameters.push(`q[name_cont]=${params.search}`)
+    }
     try {
-      const result = await getData('/products/list_products?q[name_cont]=' + params.search)
+      const result = await getData(`/products/list_products${parameters.length > 0 ? `?${parameters.join('&')}` : ''}`)
       setProducts(result.data)
     } catch(e) {
       console.log(e)

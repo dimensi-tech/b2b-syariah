@@ -5,7 +5,9 @@
     "voucher": "Voucher",
     "saving": "Tabungan",
     "login": "Masuk",
-    "register": "Daftar"
+    "register": "Daftar",
+    "logout": "Keluar",
+    "booking_history": "Riwayat Pesanan"
   },
   "login": {
     "title": "Masuk",
@@ -75,16 +77,26 @@
   },
   "booking_details": {
     "see_identity_button": "Lihat KTP",
-    "see_passport_button": "Lihat Passport",
+    "see_passport_button": "Lihat Paspor",
     "see_saving_button": "Lihat Tabungan",
     "see_biodata_button": "Lihat Biodata",
-    "fill_identity_and_passport": "Isi KTP & Passport",
+    "fill_identity_and_passport": "Isi KTP & Paspor",
     "fill_biodata": "Isi Biodata",
     "pay_now": "Bayar Sekarang",
     "cancelled": "Pesanan telah dibatalkan",
     "data_filling": "Isilah data peserta",
     "biodata": {
       "title": "Biodata"
+    },
+    "identity": {
+      "title": "KTP"
+    },
+    "passport": {
+      "title": "Paspor"
     }
+  },
+  "booking_history": {
+    "title": "Riwayat Pesanan",
+    "detail_link": "Detail Pesanan"
   }
 }

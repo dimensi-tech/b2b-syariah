@@ -69,7 +69,7 @@ function ProductDetail({ t, ...props }) {
                 </div>
                 <a href="#!">{product.category.name}</a>
                 <a href="#!" className="product-destination">
-                  {product.travel_destination.destination}
+                  {product.travel_destination?.destination}
                 </a>
               </Space>
             </div>

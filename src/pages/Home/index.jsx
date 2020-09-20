@@ -40,7 +40,6 @@ function Home({ t, ...props }) {
               pageDots: false,
               wrapAround: true,
               contain: true,
-              adaptiveHeight: false,
               lazyLoad: true
             }}
           >

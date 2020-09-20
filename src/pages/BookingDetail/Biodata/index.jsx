@@ -4,7 +4,7 @@ import { Modal, Form, Input, Button } from 'antd'
 import { jsx } from '@emotion/core'
 import { getData, postData } from 'helpers/FetchData'
 
-const Login = forwardRef(({ t, ...props}, ref) => {
+const Biodata = forwardRef(({ t, ...props}, ref) => {
   const formRef = useRef(null)
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
@@ -153,4 +153,4 @@ const Login = forwardRef(({ t, ...props}, ref) => {
   )
 })
 
-export default Login
+export default Biodata

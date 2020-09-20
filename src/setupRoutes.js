@@ -1,5 +1,6 @@
 import React from 'react'
 import Loadable from 'react-loadable'
+import Preloader from 'services/Preloader'
 
 export const ROUTES = [
   {
@@ -8,7 +9,7 @@ export const ROUTES = [
     exact: true,
     component: Loadable({
       loader: () => import('pages/Home'),
-      loading: () => <div>Loading...</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -17,7 +18,7 @@ export const ROUTES = [
     exact: true,
     component: Loadable({
       loader: () => import('pages/About'),
-      loading: () => <div>Loading...</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -26,7 +27,7 @@ export const ROUTES = [
     exact: true,
     component: Loadable({
       loader: () => import('pages/Products'),
-      loading: () => <div>Loading...</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -35,7 +36,7 @@ export const ROUTES = [
     exact: true,
     component: Loadable({
       loader: () => import('pages/ProductDetail'),
-      loading: () => <div>Loading...</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -44,7 +45,7 @@ export const ROUTES = [
     exact: true,
     component: Loadable({
       loader: () => import('pages/ProductBooking'),
-      loading: () => <div>Loading...</div>
+      loading: () => <Preloader />
     })
   },
   {
@@ -53,7 +54,34 @@ export const ROUTES = [
     exact: true,
     component: Loadable({
       loader: () => import('pages/BookingDetail'),
-      loading: () => <div>Loading...</div>
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: true,
+    path: '/booking-history',
+    exact: true,
+    component: Loadable({
+      loader: () => import('pages/BookingHistory'),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: false,
+    path: '/booking/:product_id/:index',
+    exact: true,
+    component: Loadable({
+      loader: () => import('callbacks/BookingUpdateIdentity'),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: false,
+    path: '/assign_passport/:product_id/:index',
+    exact: true,
+    component: Loadable({
+      loader: () => import('callbacks/BookingUpdatePassport'),
+      loading: () => <Preloader />
     })
   }
 ]

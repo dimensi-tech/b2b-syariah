@@ -10,8 +10,10 @@ import axios from 'axios'
 import MainPage from 'services/MainPage'
 import { thousandFormat } from 'services/TextFormat'
 import { getData } from 'helpers/FetchData'
-import { KYC_API_V1, B2B_API_V1, MIDTRANS_SERVER } from 'helpers/Environment'
+import { HOST_URL, KYC_URL, KYC_API_V1, B2B_API_V1, MIDTRANS_SERVER } from 'helpers/Environment'
 import Biodata from './Biodata'
+import Identity from './Identity'
+import Passport from './Passport'
 import './style.scss'
 
 const { Title } = Typography
@@ -25,6 +27,8 @@ function ProductDetail({ t, ...props }) {
   const [midtrans, setMidtrans] = useState({})
   const [openPayment, setOpenPayment] = useState(false)
   const biodataRef = useRef(null)
+  const identityRef = useRef(null)
+  const passportRef = useRef(null)
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -209,9 +213,14 @@ function ProductDetail({ t, ...props }) {
                         Dewasa: {booking.adult} orang<br />
                         {booking.child && `Anak: ${booking.child} orang`}
                       </Descriptions.Item>
-                      <Descriptions.Item label="Status Pemesanan" span={3}>
-                        <Badge status="warning" text={paymentStatus} />
+                      <Descriptions.Item label="Status Pesanan" span={3}>
+                        {booking.booking_status}
                       </Descriptions.Item>
+                      {booking.booking_status !== 'cancelled' &&
+                        <Descriptions.Item label="Status Pesanan" span={3}>
+                          <Badge status="warning" text={paymentStatus} />
+                        </Descriptions.Item>
+                      }
                       <Descriptions.Item label="Total Harga Paket" span={3}>
                         Rp {thousandFormat(parseInt(booking.price))}
                       </Descriptions.Item>
@@ -226,20 +235,22 @@ function ProductDetail({ t, ...props }) {
                           <h5>Peserta {index + 1}</h5>
                           <Space direction="vertical" size={14}>
                             {adult && typeof(adult) === 'object' ? (
-                              <Fragment>
-                                <Button size="large" type="secondary" block>
+                              <Space direction="vertical" size={14}>
+                                <Button size="large" type="primary" onClick={() => identityRef.current.showModal(index)} block>
                                   {t("booking_details.see_identity_button")}
                                 </Button>
-                                <Button size="large" type="secondary" block>
+                                <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index)} block>
                                   {t("booking_details.see_passport_button")}
                                 </Button>
-                                <Button size="large" type="secondary" block>
+                                {/* <Button size="large" type="secondary" block>
                                   {t("booking_details.see_saving_button")}
-                                </Button>
-                              </Fragment>
+                                </Button> */}
+                              </Space>
                             ) : (
                               <Button size="large" block>
-                                {t("booking_details.fill_identity_and_passport")}
+                                <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`}>
+                                  {t("booking_details.fill_identity_and_passport")}
+                                </a>
                               </Button>
                             )}
                             {booking.adult_bio_ids[index] ? (
@@ -263,19 +274,15 @@ function ProductDetail({ t, ...props }) {
                           <Space direction="vertical" size={14}>
                             {child && typeof(child) === 'object' ? (
                               <Fragment>
-                                <Button type="secondary" block>
-                                  {t("booking_details.see_identity_button")}
-                                </Button>
-                                <Button type="secondary" block>
+                                <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index, 'child')} block>
                                   {t("booking_details.see_passport_button")}
-                                </Button>
-                                <Button type="secondary" block>
-                                  {t("booking_details.see_saving_button")}
                                 </Button>
                               </Fragment>
                             ) : (
                               <Button size="large" block>
-                                {t("booking_details.fill_identity_and_passport")}
+                                <a href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${booking.id}/${index}&passport_only=true`}>
+                                  {t("booking_details.fill_identity_and_passport")}
+                                </a>
                               </Button>
                             )}
                             {booking.child_bio_ids[index] ? (
@@ -298,7 +305,7 @@ function ProductDetail({ t, ...props }) {
                 <div className="selected-packages">
                   <div className="package-info">
                     <Title level={5}>Status Pesanan</Title>
-                    <p>{paymentStatus}</p>
+                    <p>{booking.booking_status !== 'cancelled' && paymentStatus}</p>
                   </div>
                   {booking.booking_type === 'full' ? (
                     booking.booking_status !== 'cancelled' ? (
@@ -320,7 +327,13 @@ function ProductDetail({ t, ...props }) {
                       <Title level={3}>{t('booking_details.cancelled')}</Title>
                     )
                   ) : (
-                    <Title level={3}>{t('booking_details.data_filling')}</Title>
+                    booking.booking_status !== 'cancelled' ? (
+                      <Fragment>
+                        <Title level={3}>{t('booking_details.data_filling')}</Title>
+                      </Fragment>
+                    ) : (
+                      <Title level={3} danger>{t('booking_details.cancelled')}</Title>
+                    )
                   )}
                 </div>
               </Affix>
@@ -330,6 +343,18 @@ function ProductDetail({ t, ...props }) {
               ref={biodataRef}
               booking={booking}
               refreshData={() => getBooking()}
+              {...props}
+            />
+            <Identity
+              t={t}
+              ref={identityRef}
+              booking={booking}
+              {...props}
+            />
+            <Passport
+              t={t}
+              ref={passportRef}
+              booking={booking}
               {...props}
             />
           </Fragment>

@@ -35,8 +35,11 @@ function Header({ t, ...props }) {
 
   const privateMenu = (
     <Menu>
+      <Menu.Item key="1">
+        <a href="/booking-history">{t('header.booking_history')}</a>
+      </Menu.Item>
       <Menu.Item key="2" onClick={() => handleLogout()}>
-        Logout
+        {t('header.logout')}
       </Menu.Item>
     </Menu>
   )
