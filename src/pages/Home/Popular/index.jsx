@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Typography, Space, Card, Divider, Rate } from 'antd'
-import { getData } from 'helpers/FetchData'
+import { postData } from 'helpers/FetchData'
 import { thousandFormat } from 'services/TextFormat'
 
 const { Title } = Typography
@@ -15,7 +15,7 @@ function Popular(props) {
 
   const getProducts = async () => {
     try {
-      const result = await getData('/products/list_products')
+      const result = await postData('/products/list_products')
       setPopular(result.data)
     } catch(e) {
       console.log(e)

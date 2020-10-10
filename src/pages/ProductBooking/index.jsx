@@ -47,6 +47,40 @@ function ProductBooking({ t, ...props }) {
     const childPrice = parseInt(selectedPackage.child_price) * watch('child')
     return watch('child') ? (adultPrice + childPrice) : adultPrice
   }
+
+  const getDownPayment = () => {
+    const totalPrice = getTotalPrice()
+    if (selectedPackage.down_payment_type === 'percentage') {
+      return totalPrice * selectedPackage.down_payment_percentage / 100
+    } else {
+      return selectedPackage.down_payment_flat
+    }
+  }
+
+  const getSavingPrice = (type) => {
+    const isDpPercentage = selectedPackage.down_payment_type === 'percentage'
+    const price = parseInt(selectedPackage[`${type}_price`]) * watch(type)
+    const savingPrice =  price - (isDpPercentage ? getDpPercentageValue(price) : (selectedPackage.down_payment_flat / 2))
+    return savingPrice / watch(type)
+  }
+
+  const getSavingPreview = () => {
+    const currentSavingId = watch('saving_package_id') || selectedPackage.saving_packages[0]?.id
+    const saving = _.find(selectedPackage.saving_packages, (sp) => sp.id === currentSavingId)
+    return (
+      [...Array(saving.sort).keys()].map(index =>
+        <tr>
+          <td>Nabung ke-{index + 1}</td>
+          <td>Rp {thousandFormat(getSavingPrice('adult') / saving.sort)}/orang</td>
+          <td>Rp {thousandFormat(getSavingPrice('child') / saving.sort)}/orang</td>
+        </tr>
+      )
+    )
+  }
+
+  const getDpPercentageValue = (value) => {
+    return value * selectedPackage.down_payment_percentage / 100
+  }
   
   const onSubmit = async data => {
     setLoadingBooking(true)
@@ -200,21 +234,41 @@ function ProductBooking({ t, ...props }) {
                         )}
                       />
                       {parseInt(watch('booking_type')) === 2 &&
-                        <Controller
-                          name="saving_package_id"
-                          control={control}
-                          rules={{ required: true }}
-                          defaultValue={selectedPackage.saving_packages[0]?.id}
-                          render={({ value }) => (
-                            <Radio.Group onChange={(e) => setValue('saving_package_id', e.target.value)} value={value} buttonStyle="solid">
-                              {selectedPackage.saving_packages.map(savingPackage =>
-                                <Radio key={savingPackage.id} value={savingPackage.id}>
-                                  {savingPackage.sort} bulan
-                                </Radio>
-                              )}
-                            </Radio.Group>
-                          )}
-                        />
+                        <Fragment>
+                          <Controller
+                            name="saving_package_id"
+                            control={control}
+                            rules={{ required: true }}
+                            defaultValue={selectedPackage.saving_packages[0]?.id}
+                            render={({ value }) => (
+                              <Radio.Group onChange={(e) => setValue('saving_package_id', e.target.value)} value={value} buttonStyle="solid">
+                                {selectedPackage.saving_packages.map(savingPackage =>
+                                  <Radio key={savingPackage.id} value={savingPackage.id}>
+                                    {savingPackage.sort} bulan
+                                  </Radio>
+                                )}
+                              </Radio.Group>
+                            )}
+                          />
+                          <div className="down-payment-amount">
+                            <p>Down Payment</p>
+                            <span>Rp {thousandFormat(getDownPayment())}</span>
+                          </div>
+                          <div className="savings-preview">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th>Dewasa</th>
+                                  <th>Anak</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {getSavingPreview()}
+                              </tbody>
+                            </table>
+                          </div>
+                        </Fragment>
                       }
                     </div>
                   </div>

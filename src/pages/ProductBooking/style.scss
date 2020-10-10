@@ -84,7 +84,7 @@
           }
         }
         .select-booking-type {
-          border: 1px solid rgba(82, 196, 26, 0.125);
+          border: 1px solid #d9d9d9;
           border-radius: 12px;
           overflow: hidden;
           .ant-radio-group {
@@ -119,6 +119,37 @@
                 }
                 .ant-radio {
                   display: none;
+                }
+              }
+            }
+          }
+          .down-payment-amount {
+            border-top: 1px solid #d9d9d9;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            span {
+              font-weight: 700;
+            }
+          }
+          .savings-preview {
+            border-top: 1px solid #d9d9d9;
+            table {
+              width: 100%;
+              tr {
+                &:not(:last-child) {
+                  border-bottom: 1px solid #d9d9d9;
+                }
+              }
+              th {
+                background: rgb(82, 196, 26);
+                color: #fff;
+              }
+              th, td {
+                padding: 1rem;
+                &:first-child {
+                  padding: 1rem 1.5rem;
                 }
               }
             }

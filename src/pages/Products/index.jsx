@@ -6,7 +6,7 @@ import Filter from './Filter'
 import MainPage from 'services/MainPage'
 import Search from 'shared/Search'
 import { thousandFormat } from 'services/TextFormat'
-import { getData } from 'helpers/FetchData'
+import { postData } from 'helpers/FetchData'
 import './style.scss'
 
 const { Title } = Typography
@@ -28,7 +28,7 @@ function Products({ t, ...props }) {
       parameters.push(`q[name_cont]=${params.search}`)
     }
     try {
-      const result = await getData(`/products/list_products${parameters.length > 0 ? `?${parameters.join('&')}` : ''}`)
+      const result = await postData(`/products/list_products${parameters.length > 0 ? `?${parameters.join('&')}` : ''}`)
       setProducts(result.data)
     } catch(e) {
       console.log(e)
