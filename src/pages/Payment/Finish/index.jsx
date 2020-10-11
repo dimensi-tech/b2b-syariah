@@ -5,7 +5,6 @@ import { postData } from 'helpers/FetchData'
 
 export default function PaymentFinish() {
   const booking = JSON.parse(localStorage.getItem('booking'))
-  localStorage.removeItem('booking')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
