@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { useState, useEffect, Fragment, useRef } from 'react'
 import { withTranslation } from 'react-i18next'
-import { Card, Typography, Divider, Space, Badge, Select, Tabs, Button, Descriptions, Affix, PageHeader } from 'antd'
-import { TagTwoTone, IdcardTwoTone, RocketTwoTone, EnvironmentTwoTone } from '@ant-design/icons'
+import { Card, Typography, Divider, Space, Badge, Button, Descriptions, Affix, PageHeader } from 'antd'
+import { TagTwoTone } from '@ant-design/icons'
 import { css, jsx } from '@emotion/core'
 import _ from 'lodash'
 import moment from 'moment'
@@ -10,10 +10,11 @@ import axios from 'axios'
 import MainPage from 'services/MainPage'
 import { thousandFormat } from 'services/TextFormat'
 import { getData } from 'helpers/FetchData'
-import { HOST_URL, KYC_URL, KYC_API_V1, B2B_API_V1, MIDTRANS_SERVER } from 'helpers/Environment'
+import { HOST_URL, KYC_URL, B2B_API_V1, MIDTRANS_SERVER } from 'helpers/Environment'
 import Biodata from './Biodata'
 import Identity from './Identity'
 import Passport from './Passport'
+import Saving from './Saving'
 import './style.scss'
 
 const { Title } = Typography
@@ -29,6 +30,7 @@ function ProductDetail({ t, ...props }) {
   const biodataRef = useRef(null)
   const identityRef = useRef(null)
   const passportRef = useRef(null)
+  const savingRef = useRef(null)
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -41,27 +43,27 @@ function ProductDetail({ t, ...props }) {
   useEffect(() => {
     if (!_.isEmpty(booking) && _.isEmpty(adults)) {
       if (booking.identity_ids.length > 0) {
-        setAdults(booking.identity_ids);
-        [...Array(booking.adult).keys()].map(adult =>
-          booking.identity_ids[adult] !== null ? showDataAdult(adult) : null
+        const currentAdults = [...Array(booking.adult).keys()].map(adult =>
+          booking.identity_ids[adult] || null
         )
+        setAdults(currentAdults)
       } else {
-        const adults = [...Array(booking.adult).keys()].map(adult => null)
-        setAdults(adults)
+        const currentAdults = [...Array(booking.adult).keys()].map(adult => null)
+        setAdults(currentAdults)
       }
     }
   }, [booking, adults])
 
   useEffect(() => {
     if (!_.isEmpty(booking) && _.isEmpty(childs)) {
-      if (booking.identity_ids.length > 0) {
-        setChilds(booking.identity_ids);
-        [...Array(booking.child).keys()].map(child =>
-          booking.identity_ids[child] !== null ? showDatachild(child) : null
+      if (booking.child_passport_ids.length > 0) {
+        const currentChilds = [...Array(booking.child).keys()].map(child =>
+          booking.child_passport_ids[child] || null
         )
+        setChilds(currentChilds)
       } else {
-        const childs = [...Array(booking.child).keys()].map(child => null)
-        setChilds(childs)
+        const currentChilds = [...Array(booking.child).keys()].map(child => null)
+        setChilds(currentChilds)
       }
     }
   }, [booking, childs])
@@ -69,8 +71,14 @@ function ProductDetail({ t, ...props }) {
   useEffect(() => {
     if (booking?.midtrans_id && Object.keys(midtrans).length === 0) {
       axios.get(`${PROXY}/https://api.sandbox.midtrans.com/v2/${booking.midtrans_id}/status`, {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        auth: {
+          username: MIDTRANS_SERVER,
+          password: ''
+        }
       }).then(res => {
         setMidtrans(res)
         const expireDate = moment(res.data.transacation_time).add(1, 'days').format('DD MMMM YYYY, h:mm:ss a')
@@ -107,51 +115,22 @@ function ProductDetail({ t, ...props }) {
     }
   }
 
-  const showDataAdult = (adult) => {
-    if (!_.isEmpty(booking)) {
-      if (booking.identity_ids.length > 0) {
-        const identity = booking.identity_ids[adult];
-        if (identity) {
-          axios.get(`${KYC_API_V1}/identities/find_identity?id=${identity}`).then(res => {
-            let clone = [...adults]
-            clone[adult] = res.data
-            setAdults(clone)
-          })
-        }
-      }
-    }
-  }
-
-  const showDatachild = (child) => {
-    if (!_.isEmpty(booking)) {
-      if (booking.child_passport_ids.length > 0) {
-        const passport = booking.child_passport_ids[child];
-        if (passport) {
-          axios.get(`${KYC_API_V1}/passports/find_passport?id=${passport}&child=true`).then(res => {
-            let clone = [...childs]
-            clone[child] = res.data
-            setChilds(clone)
-          })
-        }
-      }
-    }
-  }
-
   const handleBiodata = (index, type, action) => {
     biodataRef.current.showModal(action, index, type)
   }
 
   const pay = () => {
     setOpenPayment(true)
-    const grossAmount = booking.price
+    const isSaving = booking.booking_type === 'savings'
+    const grossAmount = isSaving ? getDownPayment() : booking.price
     let parameter = {
       "transaction_details": {
         "order_id": `${booking.id}${Date.now()}`,
         "gross_amount": grossAmount
-      }, "credit_card":{
+      }, "credit_card": {
         "secure" : true
       }
-    };
+    }
     let updateMidtrans = {
       booking_id: booking.id,
       midtrans_id: `${booking.id}${Date.now()}`,
@@ -167,6 +146,7 @@ function ProductDetail({ t, ...props }) {
         password: ''
       }
     }).then(res => {
+      localStorage.setItem('booking', JSON.stringify(booking))
       axios.post(`${B2B_API_V1}/bookings/update_midtrans`, updateMidtrans, {
         headers: {
           Authorization: JSON.parse(localStorage.getItem('authUser'))?.token || ''
@@ -175,6 +155,25 @@ function ProductDetail({ t, ...props }) {
       window.snap.pay(`${res.data.token}`)
       setOpenPayment(false)
     })
+  }
+
+  const getDownPayment = () => {
+    const selectedPackage = booking.package
+    if (selectedPackage.down_payment_type === 'percentage') {
+      return booking.price * selectedPackage.down_payment_percentage / 100
+    } else {
+      return selectedPackage.down_payment_flat
+    }
+  }
+
+  const getStatus = () => {
+    switch (booking.booking_status) {
+      case 'pending':
+        return <Badge status="warning" text={t(`booking_details.${booking.booking_type}.pending`)} />
+      default:
+        props.history.push('/')
+        break
+    }
   }
 
   return (
@@ -198,8 +197,8 @@ function ProductDetail({ t, ...props }) {
                   <div className="booking-information">
                     <Descriptions title="Informasi Pesanan" bordered>
                       <Descriptions.Item label="Paket" span={3}>
-                        {booking.product.name} - {booking.package.name}<br />
-                        <Button type="link" href={`/product/${booking.product.id}`} target="_blank" css={css`padding: 0`}>
+                        {booking.product?.name} - {booking.package?.name}<br />
+                        <Button type="link" href={`/product/${booking.product?.id}`} target="_blank" css={css`padding: 0`}>
                           Lihat detail
                         </Button>
                       </Descriptions.Item>
@@ -207,18 +206,23 @@ function ProductDetail({ t, ...props }) {
                         {moment(booking.departure_date, 'YYYY-MM-DD').format('DD MMMM YYYY')}
                       </Descriptions.Item>
                       <Descriptions.Item label="Lama Perjalanan" span={3}>
-                        {booking.package.duration_trip} hari
+                        {booking.package?.duration_trip} hari
                       </Descriptions.Item>
                       <Descriptions.Item label="Jumlah Peserta" span={3}>
                         Dewasa: {booking.adult} orang<br />
                         {booking.child && `Anak: ${booking.child} orang`}
                       </Descriptions.Item>
                       <Descriptions.Item label="Status Pesanan" span={3}>
-                        {booking.booking_status}
+                        {getStatus()}
                       </Descriptions.Item>
-                      {booking.booking_status !== 'cancelled' &&
+                      {/* {booking.booking_status !== 'cancelled' &&
                         <Descriptions.Item label="Status Pesanan" span={3}>
                           <Badge status="warning" text={paymentStatus} />
+                        </Descriptions.Item>
+                      } */}
+                      {booking.booking_type === 'savings' &&
+                        <Descriptions.Item label="Total Down Payment (DP)" span={3}>
+                          Rp {thousandFormat(parseInt(getDownPayment()))}
                         </Descriptions.Item>
                       }
                       <Descriptions.Item label="Total Harga Paket" span={3}>
@@ -234,7 +238,7 @@ function ProductDetail({ t, ...props }) {
                         <Card.Grid key={index}>
                           <h5>Peserta {index + 1}</h5>
                           <Space direction="vertical" size={14}>
-                            {adult && typeof(adult) === 'object' ? (
+                            {adult && typeof(adult) === 'number' ? (
                               <Space direction="vertical" size={14}>
                                 <Button size="large" type="primary" onClick={() => identityRef.current.showModal(index)} block>
                                   {t("booking_details.see_identity_button")}
@@ -242,9 +246,11 @@ function ProductDetail({ t, ...props }) {
                                 <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index)} block>
                                   {t("booking_details.see_passport_button")}
                                 </Button>
-                                {/* <Button size="large" type="secondary" block>
-                                  {t("booking_details.see_saving_button")}
-                                </Button> */}
+                                {booking.booking_type === "savings" &&
+                                  <Button size="large" type="primary" onClick={() => savingRef.current.showModal(adult, 'adult')} block>
+                                    {t("booking_details.see_saving_button")}
+                                  </Button>
+                                }
                               </Space>
                             ) : (
                               <Button size="large" block>
@@ -272,16 +278,21 @@ function ProductDetail({ t, ...props }) {
                         <Card.Grid key={index}>
                           <h5>Peserta {index + 1}</h5>
                           <Space direction="vertical" size={14}>
-                            {child && typeof(child) === 'object' ? (
-                              <Fragment>
+                            {child && typeof(child) === 'number' ? (
+                              <Space direction="vertical" size={14}>
                                 <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index, 'child')} block>
                                   {t("booking_details.see_passport_button")}
                                 </Button>
-                              </Fragment>
+                                {booking.booking_type === "savings" &&
+                                  <Button size="large" type="primary" onClick={() => savingRef.current.showModal(child, 'child')} block>
+                                    {t("booking_details.see_saving_button")}
+                                  </Button>
+                                }
+                              </Space>
                             ) : (
                               <Button size="large" block>
                                 <a href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${booking.id}/${index}&passport_only=true`}>
-                                  {t("booking_details.fill_identity_and_passport")}
+                                  {t("booking_details.fill_passport")}
                                 </a>
                               </Button>
                             )}
@@ -304,10 +315,22 @@ function ProductDetail({ t, ...props }) {
               <Affix offsetTop={89}>
                 <div className="selected-packages">
                   <div className="package-info">
-                    <Title level={5}>Status Pesanan</Title>
+                    <Title level={5}>Status Pembayaran</Title>
                     <p>{booking.booking_status !== 'cancelled' && paymentStatus}</p>
                   </div>
-                  {booking.booking_type === 'full' ? (
+                  <Button
+                    className="secondary"
+                    onClick={pay}
+                    loading={openPayment}
+                    size="large"
+                    block
+                  >
+                    {t(`booking_details.${booking.booking_type}.pay_now`)}
+                    
+                  </Button>
+
+                  {/* <Title level={3}>{t('booking_details.data_filling')}</Title> */}
+                  {/* {booking.booking_type === 'full' ? (
                     booking.booking_status !== 'cancelled' ? (
                       <Fragment>
                         {paymentStatus === 'Menunggu Pembayaran' &&
@@ -334,7 +357,7 @@ function ProductDetail({ t, ...props }) {
                     ) : (
                       <Title level={3} danger>{t('booking_details.cancelled')}</Title>
                     )
-                  )}
+                  )} */}
                 </div>
               </Affix>
             </Space>
@@ -354,6 +377,12 @@ function ProductDetail({ t, ...props }) {
             <Passport
               t={t}
               ref={passportRef}
+              booking={booking}
+              {...props}
+            />
+            <Saving
+              t={t}
+              ref={savingRef}
               booking={booking}
               {...props}
             />

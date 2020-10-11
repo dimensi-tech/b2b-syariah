@@ -67,7 +67,7 @@ export const ROUTES = [
     })
   },
   {
-    private: false,
+    private: true,
     path: '/booking/:product_id/:index',
     exact: true,
     component: Loadable({
@@ -81,6 +81,33 @@ export const ROUTES = [
     exact: true,
     component: Loadable({
       loader: () => import('callbacks/BookingUpdatePassport'),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: false,
+    path: '/payment/finish',
+    exact: true,
+    component: Loadable({
+      loader: () => import('pages/Payment/Finish'),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: false,
+    path: '/payment/unfinish',
+    exact: true,
+    component: Loadable({
+      loader: () => import('pages/Payment/Unfinish'),
+      loading: () => <Preloader />
+    })
+  },
+  {
+    private: false,
+    path: '/payment/error',
+    exact: true,
+    component: Loadable({
+      loader: () => import('pages/Payment/Error'),
       loading: () => <Preloader />
     })
   }

@@ -58,10 +58,12 @@ function ProductBooking({ t, ...props }) {
   }
 
   const getSavingPrice = (type) => {
+    const currentSavingId = watch('saving_package_id') || selectedPackage.saving_packages[0]?.id
+    const saving = _.find(selectedPackage.saving_packages, (sp) => sp.id === currentSavingId)
     const isDpPercentage = selectedPackage.down_payment_type === 'percentage'
     const price = parseInt(selectedPackage[`${type}_price`]) * watch(type)
     const savingPrice =  price - (isDpPercentage ? getDpPercentageValue(price) : (selectedPackage.down_payment_flat / 2))
-    return savingPrice / watch(type)
+    return savingPrice / watch(type) / saving.sort
   }
 
   const getSavingPreview = () => {
@@ -69,10 +71,10 @@ function ProductBooking({ t, ...props }) {
     const saving = _.find(selectedPackage.saving_packages, (sp) => sp.id === currentSavingId)
     return (
       [...Array(saving.sort).keys()].map(index =>
-        <tr>
+        <tr key={index}>
           <td>Nabung ke-{index + 1}</td>
-          <td>Rp {thousandFormat(getSavingPrice('adult') / saving.sort)}/orang</td>
-          <td>Rp {thousandFormat(getSavingPrice('child') / saving.sort)}/orang</td>
+          <td><b>Rp {thousandFormat(getSavingPrice('adult'))}</b> per orang</td>
+          <td><b>Rp {thousandFormat(getSavingPrice('child'))}</b> per orang</td>
         </tr>
       )
     )
@@ -99,6 +101,13 @@ function ProductBooking({ t, ...props }) {
               <form onSubmit={handleSubmit(onSubmit)} className="product-booking-form">
                 <input type="hidden" name="customer_id" ref={register} value={currentUser().customer_id} />
                 <input type="hidden" name="package_id" ref={register} value={match.params.package_id} />
+                <input type="hidden" name="booking_status" ref={register} value='pending' />
+                {parseInt(watch('booking_type')) === 2 &&
+                  <Fragment>
+                    <input type="text" name="adult_amount_saving" ref={register} value={getSavingPrice('adult')} />
+                    <input type="text" name="child_amount_saving" ref={register} value={getSavingPrice('child')} />
+                  </Fragment>
+                }
                 <Space direction="vertical" size={20}>
                   <PageHeader
                     className="site-page-header"
@@ -251,7 +260,7 @@ function ProductBooking({ t, ...props }) {
                             )}
                           />
                           <div className="down-payment-amount">
-                            <p>Down Payment</p>
+                            <p>Down Payment (DP)</p>
                             <span>Rp {thousandFormat(getDownPayment())}</span>
                           </div>
                           <div className="savings-preview">
@@ -283,7 +292,9 @@ function ProductBooking({ t, ...props }) {
                     </div>
                     <Input placeholder="Masukan kode voucher" />
                   </div>
-                  <Button type="primary" htmlType="submit" className="submit-package">Pesan Paket</Button>
+                  <Button type="primary" htmlType="submit" className="submit-package" loading={loadingBooking}>
+                    Pesan Paket
+                  </Button>
                 </Space>
               </form>
               <Affix offsetTop={89}>

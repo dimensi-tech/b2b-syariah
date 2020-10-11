@@ -82,6 +82,7 @@
     "see_biodata_button": "Lihat Biodata",
     "fill_identity_and_passport": "Isi KTP & Paspor",
     "fill_biodata": "Isi Biodata",
+    "fill_passport": "Isi Paspor",
     "pay_now": "Bayar Sekarang",
     "cancelled": "Pesanan telah dibatalkan",
     "data_filling": "Isilah data peserta",
@@ -93,6 +94,14 @@
     },
     "passport": {
       "title": "Paspor"
+    },
+    "full": {
+      "pending": "Menunggu Pembayaran",
+      "pay_now": "Bayar Sekarang"
+    },
+    "savings": {
+      "pending": "Proses Bayar DP",
+      "pay_now": "Bayar DP Sekarang"
     }
   },
   "booking_history": {
