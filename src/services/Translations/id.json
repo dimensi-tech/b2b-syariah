@@ -85,6 +85,7 @@
     "fill_passport": "Isi Paspor",
     "pay_now": "Bayar Sekarang",
     "cancelled": "Pesanan telah dibatalkan",
+    "paid": "Pembayaran Anda telah lunas, mohon untuk mengisi data seperti KTP, Paspor, dan Biodata",
     "data_filling": "Isi KTP/Paspor penumpang untuk generate data Tabungan",
     "biodata": {
       "title": "Biodata"
@@ -97,11 +98,14 @@
     },
     "full": {
       "pending": "Menunggu Pembayaran",
-      "pay_now": "Bayar Sekarang"
+      "cancelled": "Pesanan Dibatalkan",
+      "pay_now": "Bayar Sekarang",
+      "paid": "Pembayaran telah lunas"
     },
     "savings": {
       "pending": "Proses Bayar DP",
       "saving_progress": "Proses Menabung",
+      "cancelled": "Pesanan Dibatalkan",
       "pay_now": "Bayar DP Sekarang"
     },
     "dataSaving": {

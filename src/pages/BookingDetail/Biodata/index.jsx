@@ -103,7 +103,7 @@ const Biodata = forwardRef(({ t, ...props}, ref) => {
           <Form.Item
             rules={[{ required: true, message: 'Tidak boleh kosong' }]}
             name="name"
-            label="Nama Peserta"
+            label="Nama Penumpang"
           >
             <Input placeholder="John" readOnly={action === 'show'} />
           </Form.Item>

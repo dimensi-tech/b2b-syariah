@@ -156,7 +156,7 @@ function ProductBooking({ t, ...props }) {
                       <IdcardTwoTone twoToneColor="#52c41a" />
                       <PageHeader
                         className="site-page-header"
-                        title="Jumlah Peserta"
+                        title="Jumlah Penumpang"
                         css={css`padding: 0`}
                       />
                     </div>
@@ -170,7 +170,7 @@ function ProductBooking({ t, ...props }) {
                           defaultValue=""
                           render={({ onChange }) => (
                           <Select
-                            placeholder="Pilih jumlah peserta"
+                            placeholder="Pilih jumlah penumpang"
                             defaultValue={selectedPackage.min_adult}
                             onChange={onChange}
                           >
@@ -198,7 +198,7 @@ function ProductBooking({ t, ...props }) {
                             render={({ onChange }) => (
                             <Select
                               defaultValue={selectedPackage.min_child}
-                              placeholder="Pilih jumlah peserta"
+                              placeholder="Pilih jumlah penumpang"
                               onChange={onChange}
                             >
                               {_.range(selectedPackage.min_child, selectedPackage.max_child + 1).map((person) =>

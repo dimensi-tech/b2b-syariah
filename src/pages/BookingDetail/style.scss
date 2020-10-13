@@ -45,7 +45,7 @@
       width: auto !important;
       transition: width 0.5s ease;
       min-width: 350px;
-      .anticon-exclamation-circle {
+      .ant-alert-icon {
         top: 18px;
       }
     }
@@ -57,6 +57,9 @@
       box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
       min-width: 414px;
       overflow: hidden;
+      p, span {
+        max-width: 414px;
+      }
       .package-info {
         display: flex;
         flex-direction: column;

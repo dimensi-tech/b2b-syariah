@@ -80,7 +80,8 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
     let updateMidtrans = {
       id: data.id,
       midtrans_id: `${booking.id}${data.id}${Date.now()}`,
-      status: 0
+      status: 0,
+      bookingId: booking.id
     }
     localStorage.setItem('saving', JSON.stringify(updateMidtrans))
     axios.post(`${PROXY}/https://app.sandbox.midtrans.com/snap/v1/transactions`, parameter, {

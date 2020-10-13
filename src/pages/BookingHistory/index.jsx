@@ -64,7 +64,7 @@ function BookingHistory({ t, ...props }) {
             <div className="booking-options">
               <Title level={4}>{t('booking_history.title')}</Title>
               <Select defaultValue="popular" size="large" dropdownMatchSelectWidth={false} bordered={false} onChange={handleChangeSort}>
-                <Option value="popular">Pemesanan Terakhir</Option>
+                <Option value="popular">Berdasarkan Pesanan Terakhir</Option>
               </Select>
             </div>
             <div className="list-bookings">
@@ -79,15 +79,22 @@ function BookingHistory({ t, ...props }) {
                   }
                   actions={[
                     <Button type="link" onClick={() => redirectToDetail(booking.id)}>{t('booking_history.detail_link')}</Button>,
-                    <Button type="link" disabled>Ganti Tgl Keberangkatan</Button>,
+                    // <Button type="link" disabled>Ganti Tgl Keberangkatan</Button>,
+                    <p></p>,
                     <Popconfirm
                       title="Yakin ingin membatalkan pesanan?"
                       onConfirm={() => cancelBooking(booking.id)}
                       okText="Ya, Yakin"
                       cancelText="Tidak"
-                      disabled={booking.booking_status === 'cancelled'}
+                      disabled={['paid', 'cancelled'].includes(booking.booking_status)}
                     >
-                      <Button type="link" disabled={booking.booking_status === 'cancelled'} danger>Batalkan</Button>
+                      <Button
+                        type="link"
+                        disabled={['paid', 'cancelled'].includes(booking.booking_status)}
+                        danger
+                      >
+                        Batalkan Pesanan
+                      </Button>
                     </Popconfirm>,
                   ]}
                 >
@@ -116,9 +123,16 @@ function BookingHistory({ t, ...props }) {
                       <p>Jakarta</p>
                     </div>
                     <div className="booking-info">
+                      <p>Tanggal Pemesanan</p>
+                      <p>{moment(booking.created_at).format('DD MMMM YYYY')}</p>
+                    </div>
+                    <div className="booking-info">
                       <p>Status Pesanan</p>
                       {booking.booking_status &&
-                        <Badge color={booking.booking_status === 'cancelled' ? 'red' : 'blue' } text={booking.booking_status} />
+                        <Badge
+                          color={['cancelled', 'pending'].includes(booking.booking_status) ? 'red' : 'blue' }
+                          text={t(`booking_details.${booking.booking_type}.${booking.booking_status}`)}
+                        />
                       }
                     </div>
                   </Space>

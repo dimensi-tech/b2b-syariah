@@ -172,9 +172,13 @@ function ProductDetail({ t, ...props }) {
   const getStatus = () => {
     switch (booking.booking_status) {
       case 'pending':
-        return <Badge status="warning" text={t(`booking_details.${booking.booking_type}.pending`)} />
+        return <Badge color="red" text={t(`booking_details.${booking.booking_type}.pending`)} />
       case 'saving_progress':
         return <Badge color="blue" text={t(`booking_details.${booking.booking_type}.saving_progress`)} />
+      case 'cancelled':
+        return <Badge color="red" text={t(`booking_details.${booking.booking_type}.cancelled`)} />
+      case 'paid':
+        return <Badge color="green" text={t(`booking_details.${booking.booking_type}.paid`)} />
       default:
         props.history.push('/')
         break
@@ -213,7 +217,7 @@ function ProductDetail({ t, ...props }) {
                       <Descriptions.Item label="Lama Perjalanan" span={3}>
                         {booking.package?.duration_trip} hari
                       </Descriptions.Item>
-                      <Descriptions.Item label="Jumlah Peserta" span={3}>
+                      <Descriptions.Item label="Jumlah Penumpang" span={3}>
                         Dewasa: {booking.adult} orang<br />
                         {booking.child && `Anak: ${booking.child} orang`}
                       </Descriptions.Item>
@@ -236,93 +240,105 @@ function ProductDetail({ t, ...props }) {
                     </Descriptions>
                   </div>
                   <div className="person-information">
-                    <h5>Informasi Peserta</h5>
+                    <h5>Informasi Penumpang</h5>
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Dewasa</p>
-                    <Card css={css`margin-bottom: 1rem`}>
-                      {adults.length > 0 && adults.map((adult, index) =>
-                        <Card.Grid key={index}>
-                          <h5>Peserta {index + 1}</h5>
-                          <Space direction="vertical" size={14}>
-                            {adult && typeof(adult) === 'number' ? (
-                              <Space direction="vertical" size={14}>
-                                <Button size="large" type="primary" onClick={() => identityRef.current.showModal(index)} block>
-                                  {t("booking_details.see_identity_button")}
-                                </Button>
-                                <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index)} block>
-                                  {t("booking_details.see_passport_button")}
-                                </Button>
-                                {booking.booking_type === "savings" &&
-                                  <Button size="large" type="primary" onClick={() => savingRef.current.showModal(adult, 'adult')} block>
-                                    {t("booking_details.see_saving_button")}
+                    {booking.booking_status !== 'cancelled' ? (
+                      <Card css={css`margin-bottom: 1rem`}>
+                        {adults.length > 0 && adults.map((adult, index) =>
+                          <Card.Grid key={index}>
+                            <h5>Penumpang {index + 1}</h5>
+                            <Space direction="vertical" size={14}>
+                              {adult && typeof(adult) === 'number' ? (
+                                <Space direction="vertical" size={14}>
+                                  <Button size="large" type="primary" onClick={() => identityRef.current.showModal(index)} block>
+                                    {t("booking_details.see_identity_button")}
                                   </Button>
-                                }
-                              </Space>
-                            ) : (
-                              <Button size="large" block>
-                                <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`}>
-                                  {t("booking_details.fill_identity_and_passport")}
-                                </a>
-                              </Button>
-                            )}
-                            {booking.adult_bio_ids[index] ? (
-                              <Button size="large" type="primary" onClick={() => handleBiodata(index, 'adult', 'show')} block>
-                                {t("booking_details.see_biodata_button")}
-                              </Button>
-                            ) : (
-                              <Button size="large" onClick={() => handleBiodata(index, 'adult', 'create')} block>
-                                {t("booking_details.fill_biodata")}
-                              </Button>
-                            )}
-                          </Space>
-                        </Card.Grid>
-                      )}
-                    </Card>
+                                  <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index)} block>
+                                    {t("booking_details.see_passport_button")}
+                                  </Button>
+                                  {booking.booking_type === "savings" &&
+                                    <Button size="large" type="primary" onClick={() => savingRef.current.showModal(adult, 'adult')} block>
+                                      {t("booking_details.see_saving_button")}
+                                    </Button>
+                                  }
+                                </Space>
+                              ) : (
+                                <Button size="large" block>
+                                  <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`}>
+                                    {t("booking_details.fill_identity_and_passport")}
+                                  </a>
+                                </Button>
+                              )}
+                              {booking.adult_bio_ids[index] ? (
+                                <Button size="large" type="primary" onClick={() => handleBiodata(index, 'adult', 'show')} block>
+                                  {t("booking_details.see_biodata_button")}
+                                </Button>
+                              ) : (
+                                <Button size="large" onClick={() => handleBiodata(index, 'adult', 'create')} block>
+                                  {t("booking_details.fill_biodata")}
+                                </Button>
+                              )}
+                            </Space>
+                          </Card.Grid>
+                        )}
+                      </Card>
+                    ) : (
+                      <p>-</p>
+                    )}
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Anak</p>
-                    <Card>
-                      {childs.length > 0 && childs.map((child, index) =>
-                        <Card.Grid key={index}>
-                          <h5>Peserta {index + 1}</h5>
-                          <Space direction="vertical" size={14}>
-                            {child && typeof(child) === 'number' ? (
-                              <Space direction="vertical" size={14}>
-                                <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index, 'child')} block>
-                                  {t("booking_details.see_passport_button")}
-                                </Button>
-                                {booking.booking_type === "savings" &&
-                                  <Button size="large" type="primary" onClick={() => savingRef.current.showModal(child, 'child')} block>
-                                    {t("booking_details.see_saving_button")}
+                    {booking.booking_status !== 'cancelled' ? (
+                      <Card>
+                        {childs.length > 0 && childs.map((child, index) =>
+                          <Card.Grid key={index}>
+                            <h5>Penumpang {index + 1}</h5>
+                            <Space direction="vertical" size={14}>
+                              {child && typeof(child) === 'number' ? (
+                                <Fragment>
+                                  <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index, 'child')} block>
+                                    {t("booking_details.see_passport_button")}
                                   </Button>
-                                }
-                              </Space>
-                            ) : (
-                              <Button size="large" block>
-                                <a href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${booking.id}/${index}&passport_only=true`}>
-                                  {t("booking_details.fill_passport")}
-                                </a>
-                              </Button>
-                            )}
-                            {booking.child_bio_ids[index] ? (
-                              <Button size="large" type="primary" onClick={() => handleBiodata(index, 'child', 'show')} block>
-                                {t("booking_details.see_biodata_button")}
-                              </Button>
-                            ) : (
-                              <Button size="large" onClick={() => handleBiodata(index, 'child', 'create')} block>
-                                {t("booking_details.fill_biodata")}
-                              </Button>
-                            )}
-                          </Space>
-                        </Card.Grid>
-                      )}
-                    </Card>
+                                  {booking.booking_type === "savings" && booking.booking_status !== "pending" &&
+                                    <Button style={{ marginTop: 14 }} size="large" type="primary" onClick={() => savingRef.current.showModal(child, 'child')} block>
+                                      {t("booking_details.see_saving_button")}
+                                    </Button>
+                                  }
+                                </Fragment>
+                              ) : (
+                                <Button size="large" block>
+                                  <a href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${booking.id}/${index}&passport_only=true`}>
+                                    {t("booking_details.fill_passport")}
+                                  </a>
+                                </Button>
+                              )}
+                              {booking.child_bio_ids[index] ? (
+                                <Button size="large" type="primary" onClick={() => handleBiodata(index, 'child', 'show')} block>
+                                  {t("booking_details.see_biodata_button")}
+                                </Button>
+                              ) : (
+                                <Button size="large" onClick={() => handleBiodata(index, 'child', 'create')} block>
+                                  {t("booking_details.fill_biodata")}
+                                </Button>
+                              )}
+                            </Space>
+                          </Card.Grid>
+                        )}
+                      </Card>
+                    ) : (
+                      <p>-</p>
+                    )}
                   </div>
                 </Space>
               </div>
               <Affix offsetTop={89}>
                 <div className="selected-packages">
-                  <div className="package-info">
-                    <Title level={5}>Status Pembayaran</Title>
-                    <p>{booking.booking_status !== 'cancelled' && paymentStatus}</p>
-                  </div>
+                  {booking.booking_status !== 'cancelled' &&
+                    <div className="package-info">
+                      <Title level={5}>Status Pembayaran</Title>
+                      <p style={{ maxWidth: 414 }}>
+                        {booking.booking_status !== 'cancelled' && paymentStatus}
+                      </p>
+                    </div>
+                  }
                   {paymentStatus !== 'Loading...' ? (
                     <Fragment>
                       {booking.booking_status === 'pending' &&
@@ -345,42 +361,28 @@ function ProductDetail({ t, ...props }) {
                           showIcon
                         />
                       }
+                      {booking.booking_status === 'cancelled' &&
+                        <Alert
+                          message="Pesanan Dibatalkan"
+                          description={t('booking_details.cancelled')}
+                          type="error"
+                          showIcon
+                        />
+                      }
+                      {booking.booking_status === 'paid' &&
+                        <Alert
+                          message="Pesanan Berhasil"
+                          description={t('booking_details.paid')}
+                          type="success"
+                          showIcon
+                        />
+                      }
                     </Fragment>
                   ) : (
                     <p align="center">
                       <LoadingOutlined style={{ fontSize: 24 }} spin />
                     </p>
                   )}
-
-                  {/* <Title level={3}>{t('booking_details.data_filling')}</Title> */}
-                  {/* {booking.booking_type === 'full' ? (
-                    booking.booking_status !== 'cancelled' ? (
-                      <Fragment>
-                        {paymentStatus === 'Menunggu Pembayaran' &&
-                          <Button
-                            className="secondary"
-                            onClick={pay}
-                            loading={openPayment}
-                            size="large"
-                            block
-                          >
-                            {t('booking_details.pay_now')}
-                            
-                          </Button>
-                        }
-                      </Fragment>
-                    ) : (
-                      <Title level={3}>{t('booking_details.cancelled')}</Title>
-                    )
-                  ) : (
-                    booking.booking_status !== 'cancelled' ? (
-                      <Fragment>
-                        <Title level={3}>{t('booking_details.data_filling')}</Title>
-                      </Fragment>
-                    ) : (
-                      <Title level={3} danger>{t('booking_details.cancelled')}</Title>
-                    )
-                  )} */}
                 </div>
               </Affix>
             </Space>
