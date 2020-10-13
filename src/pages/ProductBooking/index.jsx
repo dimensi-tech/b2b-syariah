@@ -104,8 +104,9 @@ function ProductBooking({ t, ...props }) {
                 <input type="hidden" name="booking_status" ref={register} value='pending' />
                 {parseInt(watch('booking_type')) === 2 &&
                   <Fragment>
-                    <input type="text" name="adult_amount_saving" ref={register} value={getSavingPrice('adult')} />
-                    <input type="text" name="child_amount_saving" ref={register} value={getSavingPrice('child')} />
+                    <input type="hidden" name="adult_amount_saving" ref={register} value={getSavingPrice('adult')} />
+                    <input type="hidden" name="child_amount_saving" ref={register} value={getSavingPrice('child')} />
+                    <input type="hidden" name="dp_amount" ref={register} value={getDownPayment()} />
                   </Fragment>
                 }
                 <Space direction="vertical" size={20}>

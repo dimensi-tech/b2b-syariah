@@ -15,12 +15,14 @@ const { Option } = Select
 
 function BookingHistory({ t, ...props }) {
   const [bookings, setBookings] = useState([])
+  const [page, setPage] = useState(1)
+  const [metaPage, setMetaPage] = useState({})
   const { location } = props
   const params = queryString.parse(location.search)
 
   useEffect(() => {
     getBookings()
-  }, [location])
+  }, [location, page])
 
   const getBookings = async () => {
     const parameters = []
@@ -28,8 +30,11 @@ function BookingHistory({ t, ...props }) {
       parameters.push(`q[name_cont]=${params.search}`)
     }
     try {
-      const result = await getData('/bookings/list_bookings')
-      setBookings(result.data)
+      const result = await postData('/bookings/list_bookings', {
+        page
+      })
+      setBookings(result.data?.booking)
+      setMetaPage(result.data?.meta)
     } catch(e) {
       console.log(e)
     }
@@ -63,7 +68,7 @@ function BookingHistory({ t, ...props }) {
               </Select>
             </div>
             <div className="list-bookings">
-              {bookings.length > 0 && bookings.map((booking, index) =>
+              {bookings?.length > 0 && bookings.map((booking, index) =>
                 <Card
                   key={index}
                   cover={
@@ -120,7 +125,12 @@ function BookingHistory({ t, ...props }) {
                 </Card>
               )}
             </div>
-            <Pagination defaultCurrent={1} total={50} style={{ marginTop: '1rem' }} />
+            <Pagination
+              defaultCurrent={page}
+              total={metaPage.total_pages}
+              onChange={(page) => setPage(page)}
+              style={{ marginTop: '1rem' }}
+            />
           </div>
         </div>
       </div>

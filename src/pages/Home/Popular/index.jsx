@@ -16,7 +16,7 @@ function Popular(props) {
   const getProducts = async () => {
     try {
       const result = await postData('/products/list_products')
-      setPopular(result.data)
+      setPopular(result.data?.product)
     } catch(e) {
       console.log(e)
     }

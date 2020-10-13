@@ -15,12 +15,14 @@ const { Option } = Select
 
 function Products({ t, ...props }) {
   const [products, setProducts] = useState([])
+  const [page, setPage] = useState(1)
+  const [metaPage, setMetaPage] = useState({})
   const { location } = props
   const params = queryString.parse(location.search)
 
   useEffect(() => {
     getProducts()
-  }, [location])
+  }, [location, page])
 
   const getProducts = async () => {
     const parameters = []
@@ -28,8 +30,11 @@ function Products({ t, ...props }) {
       parameters.push(`q[name_cont]=${params.search}`)
     }
     try {
-      const result = await postData(`/products/list_products${parameters.length > 0 ? `?${parameters.join('&')}` : ''}`)
-      setProducts(result.data)
+      const result = await postData(`/products/list_products${parameters.length > 0 ? `?${parameters.join('&')}` : ''}`, {
+        page
+      })
+      setProducts(result.data?.product)
+      setMetaPage(result.data?.meta)
     } catch(e) {
       console.log(e)
     }
@@ -101,7 +106,12 @@ function Products({ t, ...props }) {
                 </Card>
               )}
             </div>
-            <Pagination defaultCurrent={1} total={50} style={{ marginTop: '1rem' }} />
+            <Pagination
+              onChange={(page) => setPage(page)}
+              defaultCurrent={page}
+              total={metaPage.total_pages}
+              style={{ marginTop: '1rem' }}
+            />
           </div>
         </div>
       </div>

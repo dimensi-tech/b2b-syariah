@@ -82,12 +82,13 @@ function ProductDetail({ t, ...props }) {
       }).then(res => {
         setMidtrans(res)
         const expireDate = moment(res.data.transacation_time).add(1, 'days').format('DD MMMM YYYY, h:mm:ss a')
+        const isSaving = booking.booking_type === 'savings'
         switch (res.data?.transaction_status) {
           case 'pending':
             setPaymentStatus(`Status pembayaran pending, mohon bayar sebelum tanggal ${expireDate}`)
             break
           case 'settlement':
-            setPaymentStatus('Pembayaran telah selesai')
+            setPaymentStatus(isSaving ? 'DP sudah dibayarkan' : 'Pembayaran telah selesai')
             break
           case 'deny':
             setPaymentStatus('Menunggu Pembayaran')
