@@ -36,9 +36,9 @@ export default function PaymentFinish() {
           <Result
             status="success"
             title="Pembayaran Berhasil"
-            subTitle={`No Booking: ${booking.id}`}
+            subTitle={`No Booking: ${booking?.id || saving?.id}`}
             extra={[
-              <Button href={`/booking/${booking.id}`} type="primary" key="booking">
+              <Button href={`/booking/${booking?.id || saving?.id}`} type="primary" key="booking">
                 Kembali ke detail pesanan
               </Button>,
               <Button href="/" key="home">Beranda</Button>,
