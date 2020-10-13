@@ -30,12 +30,13 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
     {
       title: 'Status',
       dataIndex: 'status',
-      key: 'status'
+      key: 'status',
+      render: (text) => t(`booking_details.dataSaving.${text}`)
     },
     {
       title: '',
       key: 'action',
-      render: (text, record) => (record.status !== 'paid' &&
+      render: (text, record) => (record.status === 'unpaid' &&
         <Button
           type="primary"
           onClick={() => pay(record)}
@@ -81,6 +82,7 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
       midtrans_id: `${booking.id}${data.id}${Date.now()}`,
       status: 0
     }
+    localStorage.setItem('saving', JSON.stringify(updateMidtrans))
     axios.post(`${PROXY}/https://app.sandbox.midtrans.com/snap/v1/transactions`, parameter, {
       headers: {
         'Accept': 'application/json',
@@ -91,12 +93,6 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
         password: ''
       }
     }).then(res => {
-      localStorage.setItem('booking', JSON.stringify(booking))
-      axios.post(`${B2B_API_V1}/bookings/saving_paid`, updateMidtrans, {
-        headers: {
-          Authorization: JSON.parse(localStorage.getItem('authUser'))?.token || ''
-        }
-      })
       window.snap.pay(`${res.data.token}`)
       setOpenPayment(undefined)
     })
@@ -153,6 +149,7 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
       visible={visible}
       onCancel={handleCancel}
       footer={false}
+      wrapClassName="saving-modal"
     >
       {saving &&
         <Table columns={columns} dataSource={saving} />

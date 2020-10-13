@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { useState, useEffect, Fragment, useRef } from 'react'
 import { withTranslation } from 'react-i18next'
-import { Card, Typography, Divider, Space, Badge, Button, Descriptions, Affix, PageHeader } from 'antd'
-import { TagTwoTone } from '@ant-design/icons'
+import { Card, Typography, Divider, Space, Badge, Button, Descriptions, Affix, PageHeader, Alert } from 'antd'
+import { TagTwoTone, LoadingOutlined } from '@ant-design/icons'
 import { css, jsx } from '@emotion/core'
 import _ from 'lodash'
 import moment from 'moment'
@@ -33,6 +33,8 @@ function ProductDetail({ t, ...props }) {
   const savingRef = useRef(null)
 
   useEffect(() => {
+    localStorage.removeItem('saving')
+    localStorage.removeItem('booking')
     const script = document.createElement('script')
     script.src = 'https://app.sandbox.midtrans.com/snap/snap.js'
     script.setAttribute('data-client-key', "SB-Mid-server-YAxhhaXZP5u3MJchUadi296f")
@@ -171,6 +173,8 @@ function ProductDetail({ t, ...props }) {
     switch (booking.booking_status) {
       case 'pending':
         return <Badge status="warning" text={t(`booking_details.${booking.booking_type}.pending`)} />
+      case 'saving_progress':
+        return <Badge color="blue" text={t(`booking_details.${booking.booking_type}.saving_progress`)} />
       default:
         props.history.push('/')
         break
@@ -319,16 +323,34 @@ function ProductDetail({ t, ...props }) {
                     <Title level={5}>Status Pembayaran</Title>
                     <p>{booking.booking_status !== 'cancelled' && paymentStatus}</p>
                   </div>
-                  <Button
-                    className="secondary"
-                    onClick={pay}
-                    loading={openPayment}
-                    size="large"
-                    block
-                  >
-                    {t(`booking_details.${booking.booking_type}.pay_now`)}
-                    
-                  </Button>
+                  {paymentStatus !== 'Loading...' ? (
+                    <Fragment>
+                      {booking.booking_status === 'pending' &&
+                        <Button
+                          className="secondary"
+                          onClick={pay}
+                          loading={openPayment}
+                          size="large"
+                          block
+                        >
+                          {t(`booking_details.${booking.booking_type}.pay_now`)}
+                          
+                        </Button>
+                      }
+                      {booking.booking_status === 'saving_progress' &&
+                        <Alert
+                          message="Memproses Tabungan"
+                          description={t('booking_details.data_filling')}
+                          type="warning"
+                          showIcon
+                        />
+                      }
+                    </Fragment>
+                  ) : (
+                    <p align="center">
+                      <LoadingOutlined style={{ fontSize: 24 }} spin />
+                    </p>
+                  )}
 
                   {/* <Title level={3}>{t('booking_details.data_filling')}</Title> */}
                   {/* {booking.booking_type === 'full' ? (

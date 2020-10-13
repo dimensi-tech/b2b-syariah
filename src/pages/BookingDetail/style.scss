@@ -45,6 +45,9 @@
       width: auto !important;
       transition: width 0.5s ease;
       min-width: 350px;
+      .anticon-exclamation-circle {
+        top: 18px;
+      }
     }
     .selected-packages {
       border: 1px solid rgb(221, 221, 221);
@@ -94,5 +97,12 @@
     h5 {
       margin: 0;
     }
+  }
+}
+
+.saving-modal {
+  .ant-modal {
+    width: auto !important;
+    max-width: 768px;
   }
 }

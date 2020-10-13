@@ -5,6 +5,7 @@ import { postData } from 'helpers/FetchData'
 
 export default function PaymentFinish() {
   const booking = JSON.parse(localStorage.getItem('booking'))
+  const saving = JSON.parse(localStorage.getItem('saving'))
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -12,7 +13,10 @@ export default function PaymentFinish() {
   }, [])
 
   const changeStatus = async () => {
-    if (booking) {
+    if (saving) {
+      const result = await postData('/bookings/saving_paid', saving)
+      result && setLoading(false)
+    } else if (booking) {
       const bookingStatus = booking.booking_type === 'savings' ? 'saving_progress' : 'paid'
       const result = await postData('/bookings/update_booking_status', {
         booking_id: booking.id,
