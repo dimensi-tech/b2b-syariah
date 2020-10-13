@@ -14,7 +14,7 @@ export default function PaymentFinish() {
   const changeStatus = async () => {
     if (booking) {
       const bookingStatus = booking.booking_type === 'savings' ? 'saving_progress' : 'paid'
-      const result = await postData('/bookings/down_payment', {
+      const result = await postData('/bookings/update_booking_status', {
         booking_id: booking.id,
         booking_status: bookingStatus
       })
