@@ -2,7 +2,7 @@
 import { Fragment, useState, useRef } from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
-import { Layout, Menu, Row, Col, Dropdown, Button, Drawer, Modal } from 'antd'
+import { Layout, Menu, Row, Col, Dropdown, Button, Drawer, Modal, Divider } from 'antd'
 import { HomeOutlined, ShoppingOutlined, UserOutlined, MenuOutlined, PercentageOutlined, WalletOutlined } from '@ant-design/icons'
 import { css, jsx } from '@emotion/core'
 import styled from '@emotion/styled'
@@ -135,9 +135,39 @@ function Header({ t, ...props }) {
                 onClose={() => setMenu(false)}
                 visible={menu}
               >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+
+                <p>
+                  <a href="/">{t('header.home')}</a>
+                </p>
+                <p>
+                  <a href="#!" onClick={() => menuComingSoon('Souvenir')}>{t('header.souvenir')}</a>
+                </p>
+                <p>
+                  <a href="#!" onClick={() => menuComingSoon('Voucher')}>{t('header.voucher')}</a>
+                </p>
+                <p>
+                  <a href="#!" onClick={() => menuComingSoon('Tabungan')}>{t('header.saving')}</a>
+                </p>
+                <Divider />
+                {login ? (
+                  <Fragment>
+                    <p>
+                      <a href="/booking-history">{t('header.booking_history')}</a>
+                    </p>
+                    <p>
+                      <a href="#!" onClick={() => handleLogout()}>{t('header.logout')}</a>
+                    </p>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <p>
+                      <a href="#!" onClick={() => registerRef.current.showModal()}>{t('header.register')}</a>
+                    </p>
+                    <p>
+                      <a href="#!" onClick={() => loginRef.current.showModal()}>{t('header.login')}</a>
+                    </p>
+                  </Fragment>
+                )}
               </Drawer>
             </Col>
           </Row>

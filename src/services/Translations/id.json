@@ -56,7 +56,7 @@
     "notification": {
       "success": {
         "title": "Berhasil Daftar",
-        "description": "Anda sekarang sudah bisa masuk"
+        "description": "Periksa email Anda untuk link konfirmasi akun"
       },
       "error": {
         "title": "Daftar Gagal",

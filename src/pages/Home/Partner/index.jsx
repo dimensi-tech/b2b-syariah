@@ -21,7 +21,7 @@ function Partner() {
             <img src="https://3.bp.blogspot.com/-jZjY3C_OHn8/VlVpDeroSpI/AAAAAAAAAGI/s2L8jJNbaMs/s1600/logo-alhijaz-indowisata-2015-2016.jpg" alt="logo" />
           </div>
           <div className="partner-logo">
-            <img src="https://travelumrohaji.com/wp-content/uploads/2020/03/logo-jejakimani-black-white-934x1024.png" alt="logo" />
+            <img src="https://ihram.asia/themes/ihram/assets/images/logo.png" alt="logo" />
           </div>
           <div className="partner-logo">
             <img src="https://res.cloudinary.com/umrohcom/image/upload/v1554698641/biro_cover/kujjtacyjzxmcttzpgr0.png" alt="logo" />

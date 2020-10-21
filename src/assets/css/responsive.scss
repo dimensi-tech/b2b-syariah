@@ -1,0 +1,286 @@
+@media only screen and (max-width: 1024px) {
+  .booking-detail-content {
+    .booking-body {
+      flex-direction: column-reverse;
+      .ant-page-header-heading-left {
+        flex-wrap: wrap;
+      }
+      .ant-space-item {
+        width: 100% !important;
+        &:last-child {
+          div {
+            &:empty {
+              display: none;
+            }
+          }
+        }
+        &:first-child {
+          margin-right: 0 !important;
+          padding-right: 0 !important;
+          margin-top: 1.5rem;
+        }
+        .selected-packages {
+          box-shadow: none !important;
+          min-width: unset !important;
+        }
+        .ant-affix {
+          position: static !important;
+          top: unset !important;
+          height: auto !important;
+        }
+      }
+    }
+    .person-information {
+      .ant-card-grid {
+        width: 50% !important;
+      }
+    }
+  }
+  .products-content {
+    .products-body {
+      .list-products {
+        .ant-card {
+          width: 100% !important;
+          .ant-card-cover {
+            background: #353535;
+            & > img {
+              width: auto !important;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+  footer {
+    .footer-content {
+      .ant-col {
+        flex: 0 0 50%;
+        max-width: unset;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .bookings-content {
+    .bookings-body {
+      .list-bookings {
+        & > .ant-card {
+          display: flex;
+          width: 100% !important;
+          flex-wrap: wrap;
+          .ant-card-cover {
+            flex: 0 0 200px;
+            & > img {
+              width: auto !important;
+              height: 100%;
+            }
+          }
+          .ant-card-body {
+            padding-top: 0;
+            flex: 0 0 calc(100% - 200px);
+          }
+          .ant-card-actions {
+            flex: 0 0 100%;
+          }
+        }
+      }
+    }
+  }
+  .product-content {
+    .product-body {
+      flex-direction: column;
+      & > .ant-space-item {
+        width: 100% !important;
+        &:last-child {
+          div {
+            &:empty {
+              display: none;
+            }
+          }
+        }
+      }
+      .select-packages {
+        box-shadow: none !important;
+        min-width: unset !important;
+      }
+      .ant-affix {
+        position: static !important;
+        top: unset !important;
+        height: auto !important;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 663px) {
+  .bookings-content {
+    .bookings-body {
+      .list-bookings {
+        & > .ant-card {
+          width: 100% !important;
+          .ant-card-cover {
+            flex: 0 0 100%;
+            background: #353535;
+          }
+          .ant-card-body {
+            flex: 0 0 100%;
+          }
+        }
+      }
+    }
+  }
+  .products-content {
+    .products-body {
+      flex-direction: column;
+      padding: 0 1rem;
+      & > *:last-child {
+        margin: 0 !important;
+        .product-options {
+          .ant-select-selector {
+            &:after {
+              line-height: 49px;
+            }
+          }
+        }
+      }
+      .products-filter {
+        margin: 0 !important;
+        & > .ant-card {
+          width: 100% !important;
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
+  }
+  .home-content {
+    .product-items {
+      .ant-card {
+        width: 100% !important;
+        display: flex;
+        .ant-card-cover {
+          flex: 0 0 200px;
+        }
+        .ant-card-body {
+          flex: 0 0 calc(100% - 200px);
+        }
+      }
+    }
+    .home-quote {
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  footer {
+    .footer-content {
+      .ant-col {
+        flex: 0 0 100%;
+        p {
+          margin-bottom: 0;
+        }
+        &:not(:last-of-type) {
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  body {
+    display: flex;
+  }
+  .bookings-content {
+    .bookings-body {
+      .list-bookings {
+        & > .ant-card {
+          .ant-card-body {
+            .ant-card-meta-title {
+              font-size: 2rem;
+            }
+            .booking-info {
+              flex-wrap: wrap;
+              justify-content: flex-start !important;
+              p {
+                width: 100%;
+                &:first-child {
+                  font-weight: 700;
+                }
+              }
+            }
+          }
+          .ant-card-actions {
+            li {
+              width: 100% !important;
+              border-right: 0 !important;
+              margin: 0 !important;
+              padding: 1rem;
+              &:not(:last-of-type) {
+                border-bottom: 1px solid #f0f0f0;
+              }
+              &:nth-child(2) {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .booking-detail-content {
+    .person-information {
+      .ant-card-grid {
+        width: 100% !important;
+      }
+    }
+  }
+  .search-form {
+    .ant-btn {
+      padding: 0 1.5rem !important;
+      span {
+        font-size: 1.25rem;
+        svg {
+          width: 20px;
+        }
+      }
+    }
+  }
+  .home-content {
+    .home-search {
+      .search-form {
+        & > span {
+          top: 29px !important;
+        }
+        & > button {
+          position: relative !important;
+          height: 50px !important;
+          margin-top: 1rem !important;
+          width: 100%;
+        }
+      }
+    }
+    .product-items {
+      .ant-card {
+        display: block;
+        .ant-card-cover {
+          background: #353535;
+          & > img {
+            width: 100% !important;
+            height: auto !important;
+          }
+        }
+      }
+    }
+    .partner-content {
+      flex-wrap: wrap;
+      .partner-info {
+        width: 100%;
+        max-width: unset !important;
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+}
