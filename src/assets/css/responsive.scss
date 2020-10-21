@@ -36,6 +36,38 @@
       }
     }
   }
+  .product-booking-content {
+    .product-body {
+      flex-direction: column;
+      & > .ant-space-item {
+        width: 100% !important;
+        &:not(:last-of-type) {
+          margin-bottom: 1.5rem;
+        }
+        &:last-child {
+          div {
+            &:empty {
+              display: none;
+            }
+          }
+        }
+        &:first-child {
+          margin-right: 0 !important;
+          padding-right: 0 !important;
+          margin-top: 1.5rem;
+        }
+        .selected-packages {
+          box-shadow: none !important;
+          min-width: unset !important;
+        }
+        .ant-affix {
+          position: static !important;
+          top: unset !important;
+          height: auto !important;
+        }
+      }
+    }
+  }
   .products-content {
     .products-body {
       .list-products {
@@ -190,9 +222,6 @@
 }
 
 @media only screen and (max-width: 520px) {
-  body {
-    display: flex;
-  }
   .bookings-content {
     .bookings-body {
       .list-bookings {
