@@ -39,6 +39,13 @@
   .product-booking-content {
     .product-body {
       flex-direction: column;
+      .ant-page-header-heading-left {
+        flex-wrap: wrap;
+        .ant-page-header-heading-title {
+          margin-right: 0 !important;
+          width: calc(100% -32px);
+        }
+      }
       & > .ant-space-item {
         width: 100% !important;
         &:not(:last-of-type) {
@@ -309,6 +316,40 @@
         width: 100%;
         max-width: unset !important;
         margin-bottom: 1.5rem;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 476px) {
+  .product-booking-content {
+    .product-body {
+      .product-booking-form {
+        .form-group {
+          .select-person {
+            & > span.person-price {
+              margin-left: 0 !important;
+              margin-top: 0.5rem !important;
+            }
+          }
+          .form-header {
+            .ant-page-header {
+              overflow: hidden;
+              .ant-page-header-heading-title {
+                font-size: 1.15rem;
+              }
+            }
+          }
+          .down-payment-amount {
+            flex-direction: column;
+          }
+          .savings-preview {
+            overflow: auto;
+            td {
+              white-space: nowrap;
+            }
+          }
+        }
       }
     }
   }
