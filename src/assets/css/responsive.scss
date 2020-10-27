@@ -27,6 +27,7 @@
           position: static !important;
           top: unset !important;
           height: auto !important;
+          min-width: unset !important;
         }
       }
     }
@@ -302,8 +303,10 @@
       .ant-card {
         display: block;
         .ant-card-cover {
-          background: #353535;
+          background: transparent;
+          height: auto !important;
           & > img {
+            position: relative !important;
             width: 100% !important;
             height: auto !important;
           }
@@ -316,6 +319,25 @@
         width: 100%;
         max-width: unset !important;
         margin-bottom: 1.5rem;
+      }
+    }
+  }
+  .product-content {
+    .product-body {
+      & > .ant-space-item {
+        &:first-child {
+          padding-right: 0 !important;
+          .ant-row {
+            .ant-col {
+              flex: 0 0 100% !important;
+              max-width: 100% !important;
+            }
+          }
+        }
+      }
+      .package-price {
+        flex-direction: column;
+        align-items: flex-start !important;
       }
     }
   }
