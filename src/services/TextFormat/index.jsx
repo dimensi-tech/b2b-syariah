@@ -1,3 +1,4 @@
 export const thousandFormat = (value) => {
-  return value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+  const currentValue = parseFloat(value).toFixed(0)
+  return currentValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }

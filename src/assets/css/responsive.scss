@@ -1,4 +1,8 @@
 @media only screen and (max-width: 1024px) {
+  .ant-page-header-heading-sub-title {
+    white-space: normal !important;
+    margin: 0 !important;
+  }
   .booking-detail-content {
     .booking-body {
       flex-direction: column-reverse;
@@ -67,11 +71,18 @@
         .selected-packages {
           box-shadow: none !important;
           min-width: unset !important;
+          .package-info {
+            flex-direction: column;
+            h5 {
+              padding: 0 !important;
+            }
+          }
         }
         .ant-affix {
           position: static !important;
           top: unset !important;
           height: auto !important;
+          min-width: unset !important;
         }
       }
     }
@@ -149,6 +160,7 @@
         position: static !important;
         top: unset !important;
         height: auto !important;
+        min-width: unset !important;
       }
     }
   }
