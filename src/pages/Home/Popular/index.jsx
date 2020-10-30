@@ -31,7 +31,7 @@ function Popular(props) {
     <Space direction="vertical" style={{ padding: '0 2rem 2rem' }}>
       <Title level={2}>Popular Trip</Title>
       <div className="product-items">
-        {popular.length > 0 && popular.slice(0,8).map((product, index) =>
+        {popular?.length > 0 && popular.slice(0,8).map((product, index) =>
           <Card
             key={index}
             hoverable

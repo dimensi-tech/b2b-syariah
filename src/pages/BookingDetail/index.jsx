@@ -44,7 +44,7 @@ function ProductDetail({ t, ...props }) {
 
   useEffect(() => {
     if (!_.isEmpty(booking) && _.isEmpty(adults)) {
-      if (booking.identity_ids.length > 0) {
+      if (booking.identity_ids?.length > 0) {
         const currentAdults = [...Array(booking.adult).keys()].map(adult =>
           booking.identity_ids[adult] || null
         )
@@ -58,7 +58,7 @@ function ProductDetail({ t, ...props }) {
 
   useEffect(() => {
     if (!_.isEmpty(booking) && _.isEmpty(childs)) {
-      if (booking.child_passport_ids.length > 0) {
+      if (booking.child_passport_ids?.length > 0) {
         const currentChilds = [...Array(booking.child).keys()].map(child =>
           booking.child_passport_ids[child] || null
         )
@@ -244,7 +244,7 @@ function ProductDetail({ t, ...props }) {
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Dewasa</p>
                     {booking.booking_status !== 'cancelled' ? (
                       <Card css={css`margin-bottom: 1rem`}>
-                        {adults.length > 0 && adults.map((adult, index) =>
+                        {adults?.length > 0 && adults.map((adult, index) =>
                           <Card.Grid key={index}>
                             <h5>Penumpang {index + 1}</h5>
                             <Space direction="vertical" size={14}>
@@ -288,7 +288,7 @@ function ProductDetail({ t, ...props }) {
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Anak</p>
                     {booking.booking_status !== 'cancelled' ? (
                       <Card>
-                        {childs.length > 0 && childs.map((child, index) =>
+                        {childs?.length > 0 && childs.map((child, index) =>
                           <Card.Grid key={index}>
                             <h5>Penumpang {index + 1}</h5>
                             <Space direction="vertical" size={14}>
