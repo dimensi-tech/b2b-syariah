@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withTranslation } from 'react-i18next'
-import { Card, Typography, Divider, Space, Rate, Select, Pagination } from 'antd'
+import { Card, Typography, Divider, Space, Rate, Select, Pagination, Result } from 'antd'
 import queryString from 'query-string'
 import Filter from './Filter'
 import MainPage from 'services/MainPage'
@@ -24,14 +24,18 @@ function Products({ t, ...props }) {
     getProducts()
   }, [location, page])
 
-  const getProducts = async () => {
-    const parameters = []
+  const getProducts = async (filter) => {
+    setProducts([])
+    let nameSearch = {}
     if (params.search) {
-      parameters.push(`q[name_cont]=${params.search}`)
+      nameSearch = {
+        name_cont: params.search
+      }
     }
     try {
-      const result = await postData(`/products/list_products${parameters.length > 0 ? `?${parameters.join('&')}` : ''}`, {
-        page
+      const result = await postData(`/products/list_products`, {
+        page,
+        q: {...nameSearch, ...filter}
       })
       setProducts(result.data?.product)
       setMetaPage(result.data?.meta)
@@ -53,19 +57,19 @@ function Products({ t, ...props }) {
       <div className="products-content">
         <Search t={t} />
         <div className="products-body">
-          <Filter />
+          <Filter getProducts={(filter) => getProducts(filter)} />
           <div>
             <div className="product-options">
               <Title level={4}>{t('products.result')}</Title>
               <Select defaultValue="popular" size="large" dropdownMatchSelectWidth={false} bordered={false} onChange={handleChangeSort}>
                 <Option value="popular">Popular</Option>
-                <Option value="min">Harga Terendah</Option>
+                {/* <Option value="min">Harga Terendah</Option>
                 <Option value="max">Harga Tertinggi</Option>
-                <Option value="departure">Waktu Keberangkatan Terdekat</Option>
+                <Option value="departure">Waktu Keberangkatan Terdekat</Option> */}
               </Select>
             </div>
             <div className="list-products">
-              {products.length > 0 && products.map((product, index) =>
+              {products?.length > 0 ? products.map((product, index) =>
                 <Card
                   key={index}
                   hoverable
@@ -104,12 +108,20 @@ function Products({ t, ...props }) {
                     </div>
                   </Space>
                 </Card>
+              ) : (
+                <div style={{margin: '0 auto'}}>
+                  <Result
+                    status="404"
+                    title="Not Found"
+                    subTitle="Produk yang anda cari tidak ditemukan"
+                  />
+                </div>
               )}
             </div>
             <Pagination
               onChange={(page) => setPage(page)}
               defaultCurrent={page}
-              total={metaPage.total_pages}
+              total={metaPage?.total_pages}
               style={{ marginTop: '1rem' }}
             />
           </div>

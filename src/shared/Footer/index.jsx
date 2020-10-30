@@ -23,7 +23,7 @@ function Footer() {
           <Col span={4}>
             <Space direction="vertical">
               <Title level={4}>
-                Products
+                Produk
               </Title>
               <a href="#!">Halal Trip</a>
               <a href="#!">Souvenir</a>

@@ -67,7 +67,7 @@ export const ROUTES = [
     })
   },
   {
-    private: true,
+    private: false,
     path: '/booking/:product_id/:index',
     exact: true,
     component: Loadable({

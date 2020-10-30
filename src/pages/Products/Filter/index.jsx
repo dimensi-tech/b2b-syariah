@@ -15,10 +15,22 @@ function Filter({ t, ...props }) {
 
   const onChangeRangePrice = (value) => {
     setRangePrice(value)
+    props.getProducts({
+      packages_adult_price_gteq: value[0],
+      packages_adult_price_lteq: value[1],
+      packages_duration_trip_gteq: durationTrip[0],
+      packages_duration_trip_lteq: durationTrip[1]
+    })
   }
 
   const onChangeDurationTrip = (value) => {
     setDurationTrip(value)
+    props.getProducts({
+      packages_duration_trip_gteq: value[0],
+      packages_duration_trip_lteq: value[1],
+      packages_adult_price_gteq: rangePrice[0],
+      packages_adult_price_lteq: rangePrice[1]
+    })
   }
 
   const onChangeDepartureDate = (value) => {
@@ -28,13 +40,13 @@ function Filter({ t, ...props }) {
   return (
     <div className="products-filter">
       <Card title="Filter" style={{ width: 300 }}>
-        <Space direction="vertical" size={10} css={css`width: 100%`}>
+        {/* <Space direction="vertical" size={10} css={css`width: 100%`}>
           <Title level={5}>Waktu Keberangkatan</Title>
           <div className="datepicker-filter">
             <DatePicker onChange={onChangeDepartureDate} picker="month" />
           </div>
         </Space>
-        <Divider />
+        <Divider /> */}
         <Space direction="vertical" size={10} css={css`width: 100%`}>
           <Title level={5}>Range Harga</Title>
           <div>

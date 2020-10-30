@@ -13,7 +13,7 @@ function BookingUpdateIdenity(props) {
       const { location, match, history } = props
       const parameters = queryString.parse(location.search)
       let passports = []
-      if (booking.child_passport_ids.length > 0) {
+      if (booking.child_passport_ids?.length > 0) {
         passports = [...Array(booking.child).keys()].map((index) => booking.child_passport_ids[index] !== null ? booking.child_passport_ids[index] : '')
         passports[match.params.index] = parameters.identity_callback
       } else {
