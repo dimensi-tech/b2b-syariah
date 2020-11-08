@@ -358,7 +358,7 @@ function ProductDetail({ t, ...props }) {
                   }
                   {paymentStatus !== 'Loading...' ? (
                     <Fragment>
-                      {booking.booking_status === 'pending' &&
+                      {['pending', 'payment_50', 'payment_final'].includes(booking.booking_status) &&
                         <Button
                           className="secondary"
                           onClick={pay}

@@ -124,21 +124,21 @@ const Biodata = forwardRef(({ t, ...props}, ref) => {
           <Form.Item
             rules={[{ required: true, message: 'Tidak boleh kosong' }]}
             name="heir_name"
-            label="Nama Ahli Waris"
+            label="Nama Saudara Tidak Serumah"
           >
             <Input placeholder="" readOnly={action === 'show'} />
           </Form.Item>
           <Form.Item
             rules={[{ required: true, message: 'Tidak boleh kosong' }]}
             name="heir_contact"
-            label="Kontak Ahli Waris"
+            label="Kontak Saudara Tidak Serumah"
           >
             <Input placeholder="" readOnly={action === 'show'} />
           </Form.Item>
           <Form.Item
             rules={[{ required: true, message: 'Tidak boleh kosong' }]}
             name="family_relation"
-            label="Hubungan Ahli Waris"
+            label="Hubungan Saudara Tidak Serumah"
           >
             <Input placeholder="" readOnly={action === 'show'} />
           </Form.Item>
