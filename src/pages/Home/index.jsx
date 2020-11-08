@@ -30,7 +30,7 @@ function Home({ t, ...props }) {
   return (
     <Fragment>
       <Header />
-      <div className="container" css={css`padding-top: 64px`}>
+      <div className="container home-page" css={css`padding-top: 64px`}>
         {slider?.length > 0 &&
           <Slider
             data={slider}

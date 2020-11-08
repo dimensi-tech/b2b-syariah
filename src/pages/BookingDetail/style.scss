@@ -39,6 +39,27 @@
         margin-bottom: 20px;
       }
       .person-information {
+        .ant-card-body {
+          padding: 0;
+        }
+        table {
+          width: 100%;
+          tr {
+            &:not(:last-child) {
+              border-bottom: 1px solid #d9d9d9;
+            }
+          }
+          th {
+            background: rgb(82, 196, 26);
+            color: #fff;
+          }
+          th, td {
+            padding: 1rem;
+            &:first-child {
+              padding: 1rem 1.5rem;
+            }
+          }
+        }
       }
     }
     .ant-affix {

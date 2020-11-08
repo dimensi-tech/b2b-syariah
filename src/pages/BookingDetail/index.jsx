@@ -27,6 +27,8 @@ function ProductDetail({ t, ...props }) {
   const [paymentStatus, setPaymentStatus] = useState('Loading...')
   const [midtrans, setMidtrans] = useState({})
   const [openPayment, setOpenPayment] = useState(false)
+  const [adultBiodatas, setAdultBiodatas] = useState([])
+  const [childBiodatas, setChildBiodatas] = useState([])
   const biodataRef = useRef(null)
   const identityRef = useRef(null)
   const passportRef = useRef(null)
@@ -41,6 +43,32 @@ function ProductDetail({ t, ...props }) {
     document.body.appendChild(script)
     getBooking()
   }, [])
+
+  useEffect(() => {
+    if (!_.isEmpty(booking)) {
+      if (booking.adult_bio_ids?.length > 0) {
+        setAdultBiodatas(_.fill(Array(booking.adult_bio_ids.length), null))
+        booking.adult_bio_ids.forEach((adultBio, index) => getBiodata(adultBio, index, 'adult'))
+      }
+      if (booking.child_bio_ids?.length > 0) {
+        setChildBiodatas(_.fill(Array(booking.child_bio_ids.length), null))
+        booking.child_bio_ids.forEach((childBio, index) => getBiodata(childBio, index, 'child'))
+      }
+    }
+  }, [booking])
+
+  const getBiodata = async (id, index, type) => {
+    if (id) {
+      const response = await getData(`/biodatas/detail_biodata`, {
+        biodata_id: id
+      })
+      if (response) {
+        let biodatas = type === 'adult' ? adultBiodatas : childBiodatas
+        biodatas[index] = response.data
+        type === 'adult' ? setAdultBiodatas(biodatas) : setChildBiodatas(biodatas)
+      }
+    }
+  }
 
   useEffect(() => {
     if (!_.isEmpty(booking) && _.isEmpty(adults)) {
@@ -261,43 +289,70 @@ function ProductDetail({ t, ...props }) {
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Dewasa</p>
                     {booking.booking_status !== 'cancelled' ? (
                       <Card css={css`margin-bottom: 1rem`}>
-                        {adults?.length > 0 && adults.map((adult, index) =>
-                          <Card.Grid key={index}>
-                            <h5>Penumpang {index + 1}</h5>
-                            <Space direction="vertical" size={14}>
-                              {adult && typeof(adult) === 'number' ? (
-                                <Space direction="vertical" size={14}>
-                                  <Button size="large" type="primary" onClick={() => identityRef.current.showModal(index)} block>
-                                    {t("booking_details.see_identity_button")}
-                                  </Button>
-                                  <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index)} block>
-                                    {t("booking_details.see_passport_button")}
-                                  </Button>
-                                  {booking.booking_type === "savings" &&
-                                    <Button size="large" type="primary" onClick={() => savingRef.current.showModal(adult, 'adult')} block>
-                                      {t("booking_details.see_saving_button")}
-                                    </Button>
-                                  }
-                                </Space>
-                              ) : (
-                                <Button size="large" block>
-                                  <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`}>
-                                    {t("booking_details.fill_identity_and_passport")}
-                                  </a>
-                                </Button>
+                        {adults?.length > 0 &&
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Nama</th>
+                                <th>KTP</th>
+                                <th>Paspor</th>
+                                <th>Biodata</th>
+                                {booking.booking_type === "savings" &&
+                                  <th>Tabungan</th>
+                                }
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {adults.map((adult, index) =>
+                                <tr key={index}>
+                                  <td style={{ whiteSpace: 'nowrap' }}>
+                                    {adultBiodatas[index]?.name || `Penumpang ${index + 1}`}
+                                  </td>
+                                  <td colSpan={adult && typeof(adult) === 'number' ? 1 : 2}>
+                                    {adult && typeof(adult) === 'number' ? (
+                                      <Button size="large" type="primary" onClick={() => identityRef.current.showModal(index)} block>
+                                        {t("booking_details.see_identity_button")}
+                                      </Button>
+                                    ) : (
+                                      <Button size="large" block>
+                                        <a href={`${KYC_URL}?referrer=${window.location.href}/${index}`}>
+                                          {t("booking_details.fill_identity_and_passport")}
+                                        </a>
+                                      </Button>
+                                    )}
+                                  </td>
+                                  {adult && typeof(adult) === 'number' && (
+                                      <td>
+                                        <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index)} block>
+                                          {t("booking_details.see_passport_button")}
+                                        </Button>
+                                      </td>
+                                    )}
+                                  <td>
+                                    {booking.adult_bio_ids[index] ? (
+                                      <Button size="large" type="primary" onClick={() => handleBiodata(index, 'adult', 'show')} block>
+                                        {t("booking_details.see_biodata_button")}
+                                      </Button>
+                                    ) : (
+                                      <Button size="large" onClick={() => handleBiodata(index, 'adult', 'create')} block>
+                                        {t("booking_details.fill_biodata")}
+                                      </Button>
+                                    )}
+                                  </td>
+                                  <td>
+                                    {adult && typeof(adult) === 'number' && booking.booking_type === "savings" ? (
+                                      <Button size="large" type="primary" onClick={() => savingRef.current.showModal(adult, 'adult')} block>
+                                        {t("booking_details.see_saving_button")}
+                                      </Button>
+                                    ) : (
+                                      '-'
+                                    )}
+                                  </td>
+                                </tr>
                               )}
-                              {booking.adult_bio_ids[index] ? (
-                                <Button size="large" type="primary" onClick={() => handleBiodata(index, 'adult', 'show')} block>
-                                  {t("booking_details.see_biodata_button")}
-                                </Button>
-                              ) : (
-                                <Button size="large" onClick={() => handleBiodata(index, 'adult', 'create')} block>
-                                  {t("booking_details.fill_biodata")}
-                                </Button>
-                              )}
-                            </Space>
-                          </Card.Grid>
-                        )}
+                            </tbody>
+                          </table>
+                        }
                       </Card>
                     ) : (
                       <p>-</p>
@@ -305,40 +360,60 @@ function ProductDetail({ t, ...props }) {
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Anak</p>
                     {booking.booking_status !== 'cancelled' ? (
                       <Card>
-                        {childs?.length > 0 && childs.map((child, index) =>
-                          <Card.Grid key={index}>
-                            <h5>Penumpang {index + 1}</h5>
-                            <Space direction="vertical" size={14}>
-                              {child && typeof(child) === 'number' ? (
-                                <Fragment>
-                                  <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index, 'child')} block>
-                                    {t("booking_details.see_passport_button")}
-                                  </Button>
-                                  {booking.booking_type === "savings" && booking.booking_status !== "pending" &&
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Nama</th>
+                              <th>Paspor</th>
+                              <th>Biodata</th>
+                              {booking.booking_type === "savings" &&
+                                <th>Tabungan</th>
+                              }
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {childs.map((child, index) =>
+                              <tr key={index}>
+                                <td style={{ whiteSpace: 'nowrap' }}>
+                                  {childBiodatas[index]?.name || `Penumpang ${index + 1}`}
+                                </td>
+                                <td>
+                                  {child && typeof(child) === 'number' ? (
+                                    <Button size="large" type="primary" onClick={() => passportRef.current.showModal(index, 'child')} block>
+                                      {t("booking_details.see_passport_button")}
+                                    </Button>
+                                  ) : (
+                                    <Button size="large" block>
+                                      <a href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${booking.id}/${index}&passport_only=true`}>
+                                        {t("booking_details.fill_passport")}
+                                      </a>
+                                    </Button>
+                                  )}
+                                </td>
+                                <td>
+                                  {booking.child_bio_ids[index] ? (
+                                    <Button size="large" type="primary" onClick={() => handleBiodata(index, 'child', 'show')} block>
+                                      {t("booking_details.see_biodata_button")}
+                                    </Button>
+                                  ) : (
+                                    <Button size="large" onClick={() => handleBiodata(index, 'child', 'create')} block>
+                                      {t("booking_details.fill_biodata")}
+                                    </Button>
+                                  )}
+                                </td>
+                                <td>
+                                  {child && typeof(child) === 'number' && booking.booking_type === "savings" ? (
                                     <Button style={{ marginTop: 14 }} size="large" type="primary" onClick={() => savingRef.current.showModal(child, 'child')} block>
                                       {t("booking_details.see_saving_button")}
                                     </Button>
-                                  }
-                                </Fragment>
-                              ) : (
-                                <Button size="large" block>
-                                  <a href={`${KYC_URL}?referrer=${HOST_URL}/assign_passport/${booking.id}/${index}&passport_only=true`}>
-                                    {t("booking_details.fill_passport")}
-                                  </a>
-                                </Button>
-                              )}
-                              {booking.child_bio_ids[index] ? (
-                                <Button size="large" type="primary" onClick={() => handleBiodata(index, 'child', 'show')} block>
-                                  {t("booking_details.see_biodata_button")}
-                                </Button>
-                              ) : (
-                                <Button size="large" onClick={() => handleBiodata(index, 'child', 'create')} block>
-                                  {t("booking_details.fill_biodata")}
-                                </Button>
-                              )}
-                            </Space>
-                          </Card.Grid>
-                        )}
+                                  ) : (
+                                    '-'
+                                  )}
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
                       </Card>
                     ) : (
                       <p>-</p>
@@ -366,7 +441,7 @@ function ProductDetail({ t, ...props }) {
                           size="large"
                           block
                         >
-                          {t(`booking_details.${booking.booking_type}.pay_now`)}
+                          {t(`booking_details.${booking.booking_type}.pay_now.${booking.booking_status}`)}
                         </Button>
                       }
                       {booking.booking_status === 'saving_progress' &&

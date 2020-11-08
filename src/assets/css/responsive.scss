@@ -207,6 +207,22 @@
       }
     }
   }
+  .home-page {
+    .slider {
+      .slider-content {
+        height: 250px;
+        position: relative;
+        background: #F1F8E9;
+        img {
+          position: absolute;
+          width: 150%;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
   .home-content {
     .product-items {
       .ant-card {
@@ -220,10 +236,26 @@
         }
       }
     }
+    .home-search {
+      .search-form {
+        * {
+          font-size: 1rem !important;
+        }
+        button {
+          padding: 1rem 1.5rem;
+        }
+      }
+      h3 {
+        font-size: 1.5rem;
+      }
+    }
     .home-quote {
       h1 {
         font-size: 1.5rem;
       }
+    }
+    h2 {
+      font-size: 1.5rem;
     }
   }
   footer {

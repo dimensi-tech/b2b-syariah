@@ -82,7 +82,7 @@ function ProductBooking({ t, ...props }) {
 
   const onSubmit = async data => {
     setLoadingBooking(true)
-    if (data.booking_type === '2') {
+    if (data.booking_type === 2) {
       data.booking_status = 'saving_progress'
     }
     const response = await postData('/bookings/create_booking', {
