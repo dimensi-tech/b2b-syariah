@@ -40,7 +40,6 @@ function BookingUpdateIdenity(props) {
 
   const getBooking = async (id) => {
     const response = await getData(`/booking/${id}`)
-    console.log(response)
     response && setBooking(response.data)
   }
 

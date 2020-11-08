@@ -97,9 +97,11 @@
       "title": "Paspor"
     },
     "full": {
-      "pending": "Menunggu Pembayaran",
+      "pending": "Proses Bayar DP",
       "cancelled": "Pesanan Dibatalkan",
-      "pay_now": "Bayar Sekarang",
+      "pay_now": "Bayar DP Sekarang",
+      "payment_50": "Bayar Pelusanan 50%",
+      "payment_final": "Bayar Pelusanan",
       "paid": "Pembayaran telah lunas"
     },
     "savings": {

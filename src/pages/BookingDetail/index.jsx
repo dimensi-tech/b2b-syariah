@@ -90,7 +90,7 @@ function ProductDetail({ t, ...props }) {
             setPaymentStatus(`Status pembayaran pending, mohon bayar sebelum tanggal ${expireDate}`)
             break
           case 'settlement':
-            setPaymentStatus(isSaving ? 'DP sudah dibayarkan' : 'Pembayaran telah selesai')
+            setPaymentStatus(!isSaving ? 'DP sudah dibayarkan' : 'Pembayaran telah selesai')
             break
           case 'deny':
             setPaymentStatus('Menunggu Pembayaran')
@@ -124,8 +124,17 @@ function ProductDetail({ t, ...props }) {
 
   const pay = () => {
     setOpenPayment(true)
-    const isSaving = booking.booking_type === 'savings'
-    const grossAmount = isSaving ? getDownPayment() : booking.price
+    let grossAmount = booking.price
+    switch (booking.booking_status) {
+      case 'pending':
+        grossAmount = getDownPayment()
+      case 'payment_50':
+        grossAmount = (booking.price - getDownPayment()) / 2
+      case 'payment_final':
+        grossAmount = (booking.price - getDownPayment()) / 2
+      default:
+        grossAmount = booking.price
+    }
     let parameter = {
       "transaction_details": {
         "order_id": `${booking.id}${Date.now()}`,
@@ -177,10 +186,14 @@ function ProductDetail({ t, ...props }) {
         return <Badge color="blue" text={t(`booking_details.${booking.booking_type}.saving_progress`)} />
       case 'cancelled':
         return <Badge color="red" text={t(`booking_details.${booking.booking_type}.cancelled`)} />
+      case 'payment_50':
+        return <Badge color="yellow" text={t(`booking_details.${booking.booking_type}.payment_50`)} />
+      case 'payment_final':
+        return <Badge color="yellow" text={t(`booking_details.${booking.booking_type}.payment_final`)} />
       case 'paid':
         return <Badge color="green" text={t(`booking_details.${booking.booking_type}.paid`)} />
       default:
-        props.history.push('/')
+        // props.history.push('/')
         break
     }
   }
@@ -229,9 +242,9 @@ function ProductDetail({ t, ...props }) {
                           <Badge status="warning" text={paymentStatus} />
                         </Descriptions.Item>
                       } */}
-                      {booking.booking_type === 'savings' &&
+                      {booking.booking_type === 'full' &&
                         <Descriptions.Item label="Total Down Payment (DP)" span={3}>
-                          Rp {thousandFormat(parseInt(getDownPayment()))}
+                          Rp {thousandFormat(parseInt(getDownPayment()))} {booking.booking_status !== 'pending' && '(Lunas)'}
                         </Descriptions.Item>
                       }
                       <Descriptions.Item label="Total Harga Paket" span={3}>
@@ -350,7 +363,6 @@ function ProductDetail({ t, ...props }) {
                           block
                         >
                           {t(`booking_details.${booking.booking_type}.pay_now`)}
-                          
                         </Button>
                       }
                       {booking.booking_status === 'saving_progress' &&

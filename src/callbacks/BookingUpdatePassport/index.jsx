@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import queryString from 'query-string'
 import axios from 'axios'
-import _ from 'lodash'
 import { B2B_API_V1 } from 'helpers/Environment'
 import { getData } from 'helpers/FetchData'
 
-function BookingUpdateIdenity(props) {
+function BookingUpdatePassport(props) {
   const [booking, setBooking] = useState()
   
   useEffect(() => {
@@ -41,7 +40,6 @@ function BookingUpdateIdenity(props) {
 
   const getBooking = async (id) => {
     const response = await getData(`/booking/${id}`)
-    console.log(response)
     response && setBooking(response.data)
   }
 
@@ -50,4 +48,4 @@ function BookingUpdateIdenity(props) {
   )
 }
 
-export default BookingUpdateIdenity
+export default BookingUpdatePassport

@@ -17,7 +17,17 @@ export default function PaymentFinish() {
       const result = await postData('/bookings/saving_paid', saving)
       result && setLoading(false)
     } else if (booking) {
-      const bookingStatus = booking.booking_type === 'savings' ? 'saving_progress' : 'paid'
+      let bookingStatus = ''
+      switch (booking.booking_status) {
+        case 'pending':
+          bookingStatus = 'payment_50'
+        case 'payment_50':
+          bookingStatus = 'payment_final'
+        case 'payment_final':
+          bookingStatus = 'paid'
+        default:
+          bookingStatus = 'pending'
+      }
       const result = await postData('/bookings/update_booking_status', {
         booking_id: booking.id,
         booking_status: bookingStatus

@@ -62,7 +62,7 @@ function ProductBooking({ t, ...props }) {
     const saving = _.find(selectedPackage.saving_packages, (sp) => sp.id === currentSavingId)
     const isDpPercentage = selectedPackage.down_payment_type === 'percentage'
     const price = parseInt(selectedPackage[`${type}_price`]) * watch(type)
-    const savingPrice =  price - (isDpPercentage ? getDpPercentageValue(price) : (selectedPackage.down_payment_flat / 2))
+    const savingPrice =  price
     return savingPrice / watch(type) / saving.sort
   }
 
@@ -80,12 +80,11 @@ function ProductBooking({ t, ...props }) {
     )
   }
 
-  const getDpPercentageValue = (value) => {
-    return value * selectedPackage.down_payment_percentage / 100
-  }
-  
   const onSubmit = async data => {
     setLoadingBooking(true)
+    if (data.booking_type === '2') {
+      data.booking_status = 'saving_progress'
+    }
     const response = await postData('/bookings/create_booking', {
       booking: data
     })
@@ -243,6 +242,12 @@ function ProductBooking({ t, ...props }) {
                           </Radio.Group>
                         )}
                       />
+                      {parseInt(watch('booking_type')) === 1 &&
+                        <div className="down-payment-amount">
+                          <p>Down Payment (DP)</p>
+                          <span>Rp {thousandFormat(getDownPayment())}</span>
+                        </div>
+                      }
                       {parseInt(watch('booking_type')) === 2 &&
                         <Fragment>
                           <Controller
@@ -260,10 +265,6 @@ function ProductBooking({ t, ...props }) {
                               </Radio.Group>
                             )}
                           />
-                          <div className="down-payment-amount">
-                            <p>Down Payment (DP)</p>
-                            <span>Rp {thousandFormat(getDownPayment())}</span>
-                          </div>
                           <div className="savings-preview">
                             <table>
                               <thead>
