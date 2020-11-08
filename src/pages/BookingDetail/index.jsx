@@ -128,12 +128,16 @@ function ProductDetail({ t, ...props }) {
     switch (booking.booking_status) {
       case 'pending':
         grossAmount = getDownPayment()
+        break
       case 'payment_50':
         grossAmount = (booking.price - getDownPayment()) / 2
+        break
       case 'payment_final':
         grossAmount = (booking.price - getDownPayment()) / 2
+        break
       default:
         grossAmount = booking.price
+        break
     }
     let parameter = {
       "transaction_details": {

@@ -21,12 +21,16 @@ export default function PaymentFinish() {
       switch (booking.booking_status) {
         case 'pending':
           bookingStatus = 'payment_50'
+          break
         case 'payment_50':
           bookingStatus = 'payment_final'
+          break
         case 'payment_final':
           bookingStatus = 'paid'
+          break
         default:
           bookingStatus = 'pending'
+          break
       }
       const result = await postData('/bookings/update_booking_status', {
         booking_id: booking.id,
