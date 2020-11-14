@@ -170,7 +170,7 @@ function ProductDetail({ t, ...props }) {
     let parameter = {
       "transaction_details": {
         "order_id": `${booking.id}${Date.now()}`,
-        "gross_amount": grossAmount
+        "gross_amount": parseInt(grossAmount)
       }, "credit_card": {
         "secure" : true
       }
@@ -288,7 +288,13 @@ function ProductDetail({ t, ...props }) {
                     <h5>Informasi Penumpang</h5>
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Dewasa</p>
                     {booking.booking_status !== 'cancelled' ? (
-                      <Card css={css`margin-bottom: 1rem`}>
+                      <Card css={
+                        css`
+                          margin-bottom: 1rem;
+                          overflow: auto;
+                          max-width: 100%
+                        `
+                      }>
                         {adults?.length > 0 &&
                           <table>
                             <thead>
@@ -359,7 +365,7 @@ function ProductDetail({ t, ...props }) {
                     )}
                     <p css={css`font-weight: 500;padding-bottom: 0.5rem`}>Anak</p>
                     {booking.booking_status !== 'cancelled' ? (
-                      <Card>
+                      <Card style={{ overflow: 'auto', maxWidth: '100%' }}>
                         <table>
                           <thead>
                             <tr>

@@ -27,9 +27,6 @@ function Partner() {
             <img src="https://res.cloudinary.com/umrohcom/image/upload/v1554698641/biro_cover/kujjtacyjzxmcttzpgr0.png" alt="logo" />
           </div>
           <div className="partner-logo">
-            <img src="https://aliago.id/assets/travelix/images/logo%20(1).png" alt="logo" />
-          </div>
-          <div className="partner-logo">
             <img src="https://pbs.twimg.com/profile_images/734656343055835136/x3wZWfLQ_400x400.jpg" alt="logo" />
           </div>
           <div className="partner-logo">

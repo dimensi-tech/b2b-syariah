@@ -68,7 +68,8 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
   const pay = (data) => {
     setOpenPayment(data.id)
     const { booking } = props
-    const grossAmount = data.amount
+    const grossAmount = parseInt(data.amount)
+    console.log(grossAmount)
     let parameter = {
       "transaction_details": {
         "order_id": `${booking.id}${data.id}${Date.now()}`,
@@ -121,7 +122,6 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
       [`${type === 'adult' ? 'identity_id' : 'passport_id'}`]: childId  
     })
 
-    // console.log(result.data)
     if (result) {
       const data = result.data?.map((saving, index) => {
         let item = {}
@@ -134,7 +134,6 @@ const Saving = forwardRef(({ t, ...props}, ref) => {
         return item
       })
       setSaving(data)
-      console.log(data)
     }
   }
   

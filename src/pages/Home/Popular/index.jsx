@@ -49,7 +49,7 @@ function Popular(props) {
               />
               <div className="product-info">
                 <p>Mulai dari</p>
-                <Title level={5}>Rp {thousandFormat(parseInt(product.package.price))}</Title>
+                <Title level={5}>Rp {thousandFormat(parseInt(product.package?.adult_price))}</Title>
               </div>
               <Divider style={{ margin: 0 }} />
               <div className="product-info">
@@ -62,7 +62,7 @@ function Popular(props) {
               </div>
               <div className="product-info">
                 <p>Durasi Perjalanan</p>
-                <p>{product.package.duration_trip} hari</p>
+                <p>{product.package?.duration_trip} hari</p>
               </div>
               <div className="product-info">
                 <p>Berangkat Dari</p>
