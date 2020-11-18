@@ -87,6 +87,7 @@
     "cancelled": "Pesanan telah dibatalkan",
     "paid": "Pembayaran Anda telah lunas, mohon untuk mengecek ulang data seperti KTP, Paspor, dan Biodata",
     "data_filling": "Isi KTP/Paspor penumpang untuk generate data Tabungan",
+    "data_valid": "Admin kami sedang mengecheck kelengkapan data Penumpang. Mohon isi data penumpang dengan lengkap dan benar",
     "biodata": {
       "title": "Biodata"
     },

@@ -63,14 +63,14 @@ function ProductBooking({ t, ...props }) {
     const isDpPercentage = selectedPackage.down_payment_type === 'percentage'
     const price = parseInt(selectedPackage[`${type}_price`]) * watch(type)
     const savingPrice =  price
-    return savingPrice / watch(type) / saving.sort
+    return savingPrice / watch(type) / saving?.sort
   }
 
   const getSavingPreview = () => {
     const currentSavingId = watch('saving_package_id') || selectedPackage.saving_packages[0]?.id
     const saving = _.find(selectedPackage.saving_packages, (sp) => sp.id === currentSavingId)
     return (
-      [...Array(saving.sort).keys()].map(index =>
+      [...Array(saving?.sort).keys()].map(index =>
         <tr key={index}>
           <td>Nabung ke-{index + 1}</td>
           <td><b>Rp {thousandFormat(getSavingPrice('adult'))}</b> per orang</td>

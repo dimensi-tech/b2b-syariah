@@ -345,15 +345,17 @@ function ProductDetail({ t, ...props }) {
                                       </Button>
                                     )}
                                   </td>
-                                  <td>
-                                    {adult && typeof(adult) === 'number' && booking.booking_type === "savings" ? (
-                                      <Button size="large" type="primary" onClick={() => savingRef.current.showModal(adult, 'adult')} block>
-                                        {t("booking_details.see_saving_button")}
-                                      </Button>
-                                    ) : (
-                                      '-'
-                                    )}
-                                  </td>
+                                  {booking.booking_type === "savings" &&
+                                    <td>
+                                      {adult && typeof(adult) === 'number' && booking.booking_type === "savings" ? (
+                                        <Button size="large" type="primary" onClick={() => savingRef.current.showModal(adult, 'adult')} block>
+                                          {t("booking_details.see_saving_button")}
+                                        </Button>
+                                      ) : (
+                                        '-'
+                                      )}
+                                    </td>
+                                  }
                                 </tr>
                               )}
                             </tbody>
@@ -407,15 +409,17 @@ function ProductDetail({ t, ...props }) {
                                     </Button>
                                   )}
                                 </td>
-                                <td>
-                                  {child && typeof(child) === 'number' && booking.booking_type === "savings" ? (
-                                    <Button style={{ marginTop: 14 }} size="large" type="primary" onClick={() => savingRef.current.showModal(child, 'child')} block>
-                                      {t("booking_details.see_saving_button")}
-                                    </Button>
-                                  ) : (
-                                    '-'
-                                  )}
-                                </td>
+                                {booking.booking_type === "savings" &&
+                                  <td>
+                                    {child && typeof(child) === 'number' && booking.booking_type === "savings" ? (
+                                      <Button style={{ marginTop: 14 }} size="large" type="primary" onClick={() => savingRef.current.showModal(child, 'child')} block>
+                                        {t("booking_details.see_saving_button")}
+                                      </Button>
+                                    ) : (
+                                      '-'
+                                    )}
+                                  </td>
+                                }
                               </tr>
                             )}
                           </tbody>
@@ -445,10 +449,20 @@ function ProductDetail({ t, ...props }) {
                           onClick={pay}
                           loading={openPayment}
                           size="large"
+                          disabled={booking.booking_status === 'payment_50' && !booking.data_valid}
                           block
                         >
                           {t(`booking_details.${booking.booking_type}.pay_now.${booking.booking_status}`)}
                         </Button>
+                      }
+                      {booking.booking_status === 'payment_50' && !booking.data_valid &&
+                        <Alert
+                          message="Verifikasi Data Penumpang"
+                          description={t('booking_details.data_valid')}
+                          type="warning"
+                          showIcon
+                          style={{ marginTop: '1rem' }}
+                        />
                       }
                       {booking.booking_status === 'saving_progress' &&
                         <Alert

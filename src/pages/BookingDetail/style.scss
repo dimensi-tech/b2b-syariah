@@ -102,6 +102,9 @@
         border-radius: 8px;
         background: rgb(82, 196, 26);
         color: #fff;
+        &:disabled {
+          background: #757575;
+        }
       }
       h3 {
         text-align: center;
