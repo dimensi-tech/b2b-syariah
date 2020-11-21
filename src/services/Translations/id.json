@@ -113,7 +113,9 @@
       "pending": "Proses Bayar DP",
       "saving_progress": "Proses Menabung",
       "cancelled": "Pesanan Dibatalkan",
-      "pay_now": "Bayar DP Sekarang"
+      "pay_now": {
+        "pending": "Bayar DP Sekarang"
+      }
     },
     "dataSaving": {
       "unpaid": "Belum Menabung",

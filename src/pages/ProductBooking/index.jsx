@@ -114,7 +114,7 @@ function ProductBooking({ t, ...props }) {
                     onBack={() => history.push(`/product/${match.params.id}`)}
                     title="Pesan Paket"
                     subTitle="Pastikan data pesanan anda sudah benar"
-                    css={css`padding: 0`}
+                    css={css`padding: 0, text-overflow: initial`}
                   />
                   <div className="form-group">
                     <div className="form-header">
@@ -122,7 +122,7 @@ function ProductBooking({ t, ...props }) {
                       <PageHeader
                         className="site-page-header"
                         title="Pilih Tanggal Berangkat"
-                        css={css`padding: 0`}
+                        css={css`padding: 0, text-overflow: initial`}
                       />
                     </div>
                     <Controller
@@ -156,7 +156,7 @@ function ProductBooking({ t, ...props }) {
                       <PageHeader
                         className="site-page-header"
                         title="Jumlah Penumpang"
-                        css={css`padding: 0`}
+                        css={css`padding: 0, text-overflow: initial`}
                       />
                     </div>
                     <Space direction="vertical" css={css`width: 100%`} size={20}>
@@ -222,7 +222,7 @@ function ProductBooking({ t, ...props }) {
                       <PageHeader
                         className="site-page-header"
                         title="Tipe Pembayaran"
-                        css={css`padding: 0`}
+                        css={css`padding: 0, text-overflow: initial`}
                       />
                     </div>
                     <div className="select-booking-type">
@@ -289,7 +289,7 @@ function ProductBooking({ t, ...props }) {
                       <PageHeader
                         className="site-page-header"
                         title="Kode Voucher"
-                        css={css`padding: 0`}
+                        css={css`padding: 0, text-overflow: initial`}
                       />
                     </div>
                     <Input placeholder="Masukan kode voucher" />
