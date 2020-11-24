@@ -1,6 +1,6 @@
 @media only screen and (max-width: 1024px) {
   .ant-page-header-heading-sub-title {
-    white-space: normal !important;
+    // white-space: normal !important;
     margin: 0 !important;
   }
   .booking-detail-content {
@@ -388,6 +388,18 @@
 }
 
 @media only screen and (max-width: 476px) {
+  .booking-information {
+    .ant-descriptions-view {
+      table {
+        tbody {
+          tr {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+  }
   .product-booking-content {
     .product-body {
       .product-booking-form {

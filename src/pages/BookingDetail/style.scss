@@ -17,6 +17,9 @@
       border: 1px solid rgb(221, 221, 221);
       border-radius: 12px;
       padding: 1.5rem;
+      .ant-page-header-heading-sub-title {
+        white-space: normal;
+      }
       .ant-space {
         width: 100%;
       }
